@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><title>tests</title>
+<link rel="stylesheet" href="../css/primary.css">
+</head>
+<body data-page="lessons">
+<pre id="result">running…</pre>
+<div data-lesson-editor></div>
+<div data-toast></div>
+<script src="../js/data.js"></script>
+<script src="../js/render.js"></script>
+<script src="../js/editor.js"></script>
+<script>
+var out = [], fails = 0;
+function check(name, got, want) {
+  var ok = JSON.stringify(got) === JSON.stringify(want);
+  if (!ok) fails++;
+  out.push((ok ? 'PASS  ' : 'FAIL  ') + name +
+    (ok ? '' : '\n        got  ' + JSON.stringify(got) + '\n        want ' + JSON.stringify(want)));
+}
+function ok(name, cond) { check(name, !!cond, true); }
+function btn(label) {
+  return Array.prototype.filter.call(document.querySelectorAll('button'), function (b) {
+    return b.textContent.trim() === label;
+  })[0];
+}
+function setVal(node, value) {
+  node.value = value;
+  node.dispatchEvent(new Event('input', { bubbles: true }));
+}
+
+setTimeout(function () {
+  try {
+    /* ---- editor booted ---- */
+    var output = document.querySelector('.ed-output');
+    ok('editor built an export textarea', !!output);
+    ok('editor built a live preview', !!document.querySelector('.ed-preview-body'));
+
+    /* ---- starter template loads and serializes ---- */
+    btn('Load a starter template').click();
+    var obj = JSON.parse(document.querySelector('.ed-output').value);
+    check('template id', obj.id, 'my-new-lesson');
+    check('template block count', obj.content.length, 9);
+    check('template covers every block type',
+      obj.content.map(function (c) { return c.type; }).sort().filter(function (v, i, a) {
+        return a.indexOf(v) === i;
+      }), ['callout', 'code', 'download', 'image', 'link-embed', 'qa', 'text', 'video']);
+    check('code block survives verbatim',
+      JSON.stringify(obj.content).indexOf('Time.deltaTime') !== -1, true);
+    check('list figure split into items', obj.content[1].figures[0].items.length, 3);
+    check('download block references a real file',
+      !!obj.files[obj.content.filter(function (c) { return c.type === 'download'; })[0].figures[0].fileRef], true);
+
+    /* ---- preview renders through the REAL renderer ---- */
+    var preview = document.querySelector('.ed-preview-body');
+    check('preview drew every article block', preview.querySelectorAll('.block').length, 9);
+    ok('preview used the shared code renderer', !!preview.querySelector('.code-pre'));
+    ok('preview used the shared callout renderer', !!preview.querySelector('.callout.tip'));
+    ok('preview drew the files panel', !!preview.querySelector('.files-panel'));
+
+    /* ---- typing the title derives the slug ---- */
+    var titleInput = Array.prototype.filter.call(
+      document.querySelectorAll('.ed-field'), function (f) {
+        return f.querySelector('.ed-field-label').textContent === 'Title';
+      })[0].querySelector('input');
+    setVal(titleInput, 'Enemy AI Patrols');
+    var obj2 = JSON.parse(document.querySelector('.ed-output').value);
+    check('title flows into the export', obj2.title, 'Enemy AI Patrols');
+
+    /* ---- warnings fire on a broken draft ---- */
+    setVal(titleInput, '');
+    var warnText = document.querySelector('.ed-warnings').textContent;
+    ok('empty title raises a warning', warnText.indexOf('needs a title') !== -1);
+
+    /* ---- round-trip: export -> normalize -> render, same as lesson.html ---- */
+    btn('Load a starter template').click();
+    var exported = JSON.parse(document.querySelector('.ed-output').value);
+    var lesson = GDCData.normalizeLesson(exported);
+    ok('exported object normalizes', !!lesson);
+    check('round-trip keeps every block', lesson.content.length, 9);
+    var article = GDCRender.renderArticle(lesson);
+    check('round-trip renders every block', article.querySelectorAll('.block').length, 9);
+    var codeCard = exported.content.filter(function (c) { return c.type === 'code'; })[0];
+    check('round-trip keeps the code intact',
+      article.querySelector('.code-pre code').textContent, codeCard.figures[0].code);
+    ok('round-trip renders the video embed', !!article.querySelector('.video-frame iframe'));
+    ok('round-trip resolves the download block', !!article.querySelector('.file-list.inline .file-row'));
+    ok('round-trip renders the Q&A block', article.querySelectorAll('.qa-item').length === 2);
+
+    /* ---- progress persistence ---- */
+    GDCData.writeProgress('test-lesson', ['step-0-a', 'step-1-b']);
+    check('progress round-trips', GDCData.readProgress('test-lesson'), ['step-0-a', 'step-1-b']);
+    GDCData.writeProgress('test-lesson', []);
+    check('empty progress clears', GDCData.readProgress('test-lesson'), []);
+
+    /* ---- render.js never injects markup ---- */
+    var nasty = GDCData.normalizeLesson({
+      id: 'x', title: '<img src=x onerror=alert(1)>', summary: 'hi',
+      content: [{ type: 'text', figures: [{ type: 'paragraph', text: '<script>bad()<\/script>' }] }]
+    });
+    var card = GDCRender.renderLessonCard(nasty);
+    ok('title is escaped, not parsed', card.querySelector('.lesson-card-title img') === null);
+    var art = GDCRender.renderArticle(nasty);
+    ok('paragraph is escaped, not parsed', art.querySelector('script') === null);
+    check('escaped text still reads correctly',
+      art.querySelector('.block-paragraph').textContent, '<script>bad()<\/script>');
+
+    /* ---- YouTube URL forms all become embeds ---- */
+    check('watch url -> embed', GDCRender.toEmbedUrl('https://www.youtube.com/watch?v=jlX_u2-iX6g'),
+      'https://www.youtube.com/embed/jlX_u2-iX6g');
+    check('short url -> embed', GDCRender.toEmbedUrl('https://youtu.be/jlX_u2-iX6g'),
+      'https://www.youtube.com/embed/jlX_u2-iX6g');
+    check('embed url passes through', GDCRender.toEmbedUrl('https://www.youtube.com/embed/jlX_u2-iX6g'),
+      'https://www.youtube.com/embed/jlX_u2-iX6g');
+  } catch (err) {
+    fails++;
+    out.push('THREW  ' + err.message + '\n' + err.stack);
+  }
+  document.getElementById('result').textContent =
+    out.join('\n') + '\n\n' + (fails ? fails + ' FAILURE(S)' : 'all browser tests passed');
+}, 1200);
+</script>
+</body></html>

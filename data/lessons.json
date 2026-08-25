@@ -1,0 +1,3037 @@
+{
+  "$comment": "Lesson catalog for gamedevclub.tech. Author new entries with editor.html.",
+  "updatedAt": "2026-08-24",
+  "lessons": [
+    {
+      "id": "unity-platformer",
+      "visibility": true,
+      "title": "Platformer",
+      "summary": "Learn the basics of Unity.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "mechanics",
+        "level-design"
+      ],
+      "difficulty": "beginner",
+      "series": "Unity Projects",
+      "thumbnail": "imgs/lessons/unity-platformer.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "level-design",
+        "mechanics",
+        "unity-projects"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/unity-platformer.svg",
+          "alt": "Platformer lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Part 1 — Learn the basics of Unity",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1ugm3NQ4EpwGPnMV1Qatjpg_fKsOzTx25kdln8N5wgd8/present?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 2 — Learn the basics of platformer movement",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1c5ln-wJxPvNhHOX1slNmT_J9QbfOD40KyoDxjMmSLfI/present?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 3 — Learn how to build custom levels",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1aGglrUInO9r9Lz2vsy_eKW3t-muL5aUvj9JLueRBupU/present?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 4 — Learn how to create platformer coins and powerups",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1AJTgrfiVILUTWm2yjaE8n_UB5WOtS6b2u_-dPRaFo6s/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn the basics of Unity."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            },
+            {
+              "fileRef": 1
+            },
+            {
+              "fileRef": 2
+            },
+            {
+              "fileRef": 3
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unity-smash-bros",
+      "visibility": true,
+      "title": "Smash Bros",
+      "summary": "Learn the basics of level design.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "mechanics",
+        "level-design"
+      ],
+      "difficulty": "intermediate",
+      "series": "Unity Projects",
+      "thumbnail": "imgs/lessons/unity-smash-bros.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "level-design",
+        "mechanics",
+        "unity-projects"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/unity-smash-bros.svg",
+          "alt": "Smash Bros lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Part 1 — Learn the basics of level design",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1TjORtJXbPtyMolucF8VT2jgIVWPDZmKOLPLB_y8u7C8/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 2 — Learn how to create KOs",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/11uHRkHA8iJZxKFcnSl0ZP1dnfuyd_PvjtaWeqbSdhhs/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 3 — Learn how to implement local multiplayer",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1CXdRRE8cFQauAcPTxtjJht36zdAG-ueiQ63SJHkkzMw/edit#slide=id.p",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn the basics of level design."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            },
+            {
+              "fileRef": 1
+            },
+            {
+              "fileRef": 2
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unity-visual-novel",
+      "visibility": true,
+      "title": "Visual Novel",
+      "summary": "Learn the basics of installing Fungus to create Visual Novels with Unity.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "narrative",
+        "ui"
+      ],
+      "difficulty": "beginner",
+      "series": "Unity Projects",
+      "thumbnail": "imgs/lessons/unity-visual-novel.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "narrative",
+        "ui",
+        "unity-projects"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/unity-visual-novel.svg",
+          "alt": "Visual Novel lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Part 1 — Learn the basics of installing Fungus to create Visual Novels…",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1IF-1eDVtnEWGLZCs0BzcwR_JbUshF2mqBsA7oBb-4mU/present?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 2 — Learn how to create a more complex story with choices and other…",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1Fi-Jt7sKyn1BU9qqAuYIxDk3pD3Spq-t7_GRj3khyHY/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn the basics of installing Fungus to create Visual Novels with Unity."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            },
+            {
+              "fileRef": 1
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unity-fps",
+      "visibility": true,
+      "title": "FPS",
+      "summary": "Learn the basics of FPS movement and weapons.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "mechanics",
+        "level-design",
+        "animation"
+      ],
+      "difficulty": "intermediate",
+      "series": "Unity Projects",
+      "thumbnail": "imgs/lessons/unity-fps.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "animation",
+        "level-design",
+        "mechanics",
+        "unity-projects"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/unity-fps.svg",
+          "alt": "FPS lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Part 1 — Learn the basics of FPS movement and weapons",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/10aZ59YYNBVyEXO5qALbCagVEOBGDLF_MpdSeIWFIjKs/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 2 — Learn how to set up animations and prototype a FPS level/map",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/18KqTB_JP2EMX0g4rgNT_x7p-1jP8_Bjq3vbreylLMp4/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 3 — Learn how to create enemies in a FPS",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1wXc-fNPTGlu9LiuPFGsDx0h90rvjQMNODLOiRMu7Nmk/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn the basics of FPS movement and weapons."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            },
+            {
+              "fileRef": 1
+            },
+            {
+              "fileRef": 2
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unity-top-down-rpg",
+      "visibility": true,
+      "title": "Top-down RPG",
+      "summary": "Learn the basics of top-down movement.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "mechanics"
+      ],
+      "difficulty": "intermediate",
+      "series": "Unity Projects",
+      "thumbnail": "imgs/lessons/unity-top-down-rpg.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "mechanics",
+        "unity-projects"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/unity-top-down-rpg.svg",
+          "alt": "Top-down RPG lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Part 1 — Learn the basics of top-down movement",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1OyPKBPy1CJ-v9_6C9Arrlx8oPKqi-DUr2zI--MYBC2w/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 2 — Learn how to create enemies and combat",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1E6RX5KrrSpbdwL4TAXvXh8keOy8agIoc4Kp-er7a-bQ/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 3 — Learn how to use tilemaps and create levels",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1MF8bhrhSAp6BFNX5oxTL8yMLhEpSSfK7lCdoKAyszmY/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn the basics of top-down movement."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            },
+            {
+              "fileRef": 1
+            },
+            {
+              "fileRef": 2
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unity-escape-room",
+      "visibility": true,
+      "title": "2D Point and Click Escape Room",
+      "summary": "Learn the basics of items and scriptable objects.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "narrative",
+        "ui",
+        "mechanics"
+      ],
+      "difficulty": "intermediate",
+      "series": "Unity Projects",
+      "thumbnail": "imgs/lessons/unity-escape-room.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "mechanics",
+        "narrative",
+        "ui",
+        "unity-projects"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/unity-escape-room.svg",
+          "alt": "2D Point and Click Escape Room lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Part 1 — Learn the basics of items and scriptable objects",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1dtF9Zm5HR9QDP8P-0pGUSe4-lausZ4rWNFD8gaLl7pc/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 2 — Learn how to create locks and connect dialogue",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1KIFVZIuv7jjWN7Adf30WKo6nmhr4H_ZN5mfWy9KmSMI/edit#slide=id.p",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn the basics of items and scriptable objects."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            },
+            {
+              "fileRef": 1
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unity-voxel-terrain",
+      "visibility": true,
+      "title": "Procedural Voxel Terrain Generation",
+      "summary": "Learn the basics of setting up procedural generation.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "mechanics",
+        "art"
+      ],
+      "difficulty": "advanced",
+      "series": "Unity Projects",
+      "thumbnail": "imgs/lessons/unity-voxel-terrain.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "art",
+        "mechanics",
+        "unity-projects"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/unity-voxel-terrain.svg",
+          "alt": "Procedural Voxel Terrain Generation lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn the basics of setting up procedural generation",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1MQa_vbi6IdGtvgMl5ZKfgxen9aG0g2tTZdxsumvpdZg/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn the basics of setting up procedural generation."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unity-3d-racing",
+      "visibility": true,
+      "title": "3D Racing",
+      "summary": "Learn the basics of 3d racing.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "mechanics"
+      ],
+      "difficulty": "intermediate",
+      "series": "Unity Projects",
+      "thumbnail": "imgs/lessons/unity-3d-racing.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "mechanics",
+        "unity-projects"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/unity-3d-racing.svg",
+          "alt": "3D Racing lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn the basics of 3d racing",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1ynZnX8xNCGEq2xmAj2SO9p1QUR-d4IMK9BG-WhewdyU/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn the basics of 3d racing."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unity-online-multiplayer",
+      "visibility": true,
+      "title": "Online Multiplayer",
+      "summary": "Learn the basics of networking in Unity.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "programming",
+        "mechanics"
+      ],
+      "difficulty": "advanced",
+      "series": "Unity Projects",
+      "thumbnail": "imgs/lessons/unity-online-multiplayer.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "mechanics",
+        "programming",
+        "unity-projects"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/unity-online-multiplayer.svg",
+          "alt": "Online Multiplayer lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn the basics of networking in Unity",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1Sf5w6SJWSZfFq6TTsvHeQpFzTKwo3vi2ikHNJiJzqYA/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn the basics of networking in Unity."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "godot-platformer",
+      "visibility": true,
+      "title": "Platformer",
+      "summary": "Learn the basics of Godot",
+      "engines": [
+        "godot"
+      ],
+      "components": [
+        "mechanics",
+        "level-design"
+      ],
+      "difficulty": "beginner",
+      "series": "Godot Projects",
+      "thumbnail": "imgs/lessons/godot-platformer.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "godot-projects",
+        "level-design",
+        "mechanics"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/godot-platformer.svg",
+          "alt": "Platformer lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Part 1 — Learn the basics of Godot",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/13cyXnk9BLW0QQgyKfcmIMM8dL8ur7aRrI_R_u2xpGZQ/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 2 — Create a platformer character with animations and movement",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1H6fe1rid36cAqYoiQ6fMPIbYNrjNTdCbb5xULDmuk-I/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 3 — Create levels with a tilemap and a parallax background",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1umW_ZKDa1v9qNObvMq66VPu9dwS572Erqzd_zodSkWU/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 4 — Create powerups",
+          "kind": "link",
+          "url": " https://docs.google.com/presentation/d/1IwJoJFpJWxKdLtX1RbE4o3NSjLVXVwLARcW1tTJG0PY/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn the basics of Godot"
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            },
+            {
+              "fileRef": 1
+            },
+            {
+              "fileRef": 2
+            },
+            {
+              "fileRef": 3
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "godot-2d-rpg",
+      "visibility": true,
+      "title": "2D RPG",
+      "summary": "Create a top-down character with a simple projectile attack.",
+      "engines": [
+        "godot"
+      ],
+      "components": [
+        "mechanics"
+      ],
+      "difficulty": "intermediate",
+      "series": "Godot Projects",
+      "thumbnail": "imgs/lessons/godot-2d-rpg.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "godot-projects",
+        "mechanics"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/godot-2d-rpg.svg",
+          "alt": "2D RPG lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Part 1 — Create a top-down character with a simple projectile attack",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1gJKUD9LeEoHa8VMEw0vrwm-pgEqaX68nUDllSg7emPE/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 2 — Implement enemy attacks and damage",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1oc4w0w68KyuklkC4NnkuwIkM3DWA3CW6fdN24fIr1FE/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 3 — Create a tilemap world, game over screen, and main menu",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1zZf2Cbif7zy7q9gW7Gs8ezT3G3yd1uTw4rk7UmBKHm4/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Create a top-down character with a simple projectile attack."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            },
+            {
+              "fileRef": 1
+            },
+            {
+              "fileRef": 2
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "godot-2d",
+      "visibility": true,
+      "title": "2D",
+      "summary": "Intro to Godot",
+      "engines": [
+        "godot"
+      ],
+      "components": [
+        "mechanics",
+        "level-design"
+      ],
+      "difficulty": "beginner",
+      "series": "Godot Projects",
+      "thumbnail": "imgs/lessons/godot-2d.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "godot-projects",
+        "level-design",
+        "mechanics"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/godot-2d.svg",
+          "alt": "2D lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Part 1 — Intro to Godot",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1HyYhYCnfhHw6cKBp-efam321pq5_si7kIjyMDNX0kGc/edit#slide=id.g307cb4de00e_0_4490",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 2 — Platformer Character",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1U34pi0OHZpE5PCNQ-2j64sxIgPlqLj-ojoLRar8RvQk/edit#slide=id.g307cb4de00e_0_4490\n                        ",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 3 — Tile Based Terrain",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1U34pi0OHZpE5PCNQ-2j64sxIgPlqLj-ojoLRar8RvQk/edit#slide=id.g307cb4de00e_0_4490",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 4 — World Gen Part 1",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1QV1jaBMLfIbWlzXtZ4RKqb1lZ3QhiS7nRNio5jLvpUc/edit#slide=id.g307cb4de00e_0_4490",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 5 — Interactables/Enemies",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1Vql5IaCudjW4mXLSRpMjtc1q9_ZVStaxw1iLMCPf78s/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 6 — World Gen Part 2",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1MFghGNH8AGIWsmzU5cYugYPt4wZKbYmtTxBZPJRJmYs/edit#slide=id.g307cb4de00e_0_4490",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Intro to Godot"
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            },
+            {
+              "fileRef": 1
+            },
+            {
+              "fileRef": 2
+            },
+            {
+              "fileRef": 3
+            },
+            {
+              "fileRef": 4
+            },
+            {
+              "fileRef": 5
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "godot-3d",
+      "visibility": true,
+      "title": "3D",
+      "summary": "Movement in 3D",
+      "engines": [
+        "godot"
+      ],
+      "components": [
+        "mechanics"
+      ],
+      "difficulty": "intermediate",
+      "series": "Godot Projects",
+      "thumbnail": "imgs/lessons/godot-3d.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "godot-projects",
+        "mechanics"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/godot-3d.svg",
+          "alt": "3D lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Part 1 — Movement in 3D",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/18_TeYhV3xlHqgkuZ6yXUZCQj-_1uQ13C6ob6h2Uckjk/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 2 — Rotation in 3D",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1mh6fFGesIngvUQluzhWIjik4ERd2IR-TkQTJA7YAwRQ/edit?usp=sharing\n                        ",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 3 — The Main Menu",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1xzikSXP5OR-hFY1c1MUEyrTVK8T6nMvsE-xHCjpBDnA/edit?usp=sharing",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Movement in 3D"
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            },
+            {
+              "fileRef": 1
+            },
+            {
+              "fileRef": 2
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "installing-unity",
+      "visibility": true,
+      "title": "Installing Unity",
+      "summary": "Learn how to quickly install and setup the Unity Game Engine on your computer.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "tools"
+      ],
+      "difficulty": "beginner",
+      "series": "Unity Fundamentals",
+      "thumbnail": "imgs/lessons/installing-unity.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "tools",
+        "unity-fundamentals"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/installing-unity.svg",
+          "alt": "Installing Unity lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn how to quickly install and setup the Unity Game Engine on…",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vRw11Ob2b8o7QBKWjUyrviX18QbV8arjLbmE8BNBOq4hkA_7hzjkV2pyRKWMgEzI5cLE0RL8bUiZseY/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn how to quickly install and setup the Unity Game Engine on your computer."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "intro-to-unity",
+      "visibility": true,
+      "title": "Intro to Unity",
+      "summary": "Get familiar with the Unity Editor and learn how to move things around in your game.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "tools",
+        "programming"
+      ],
+      "difficulty": "beginner",
+      "series": "Unity Fundamentals",
+      "thumbnail": "imgs/lessons/intro-to-unity.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "programming",
+        "tools",
+        "unity-fundamentals"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/intro-to-unity.svg",
+          "alt": "Intro to Unity lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Get familiar with the Unity Editor and learn how to move things…",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vTpk2lW0ds_14KaP7y4eZeCRWl3p0OLnSZ-B1DaEuFjNZz1EVMvd5DuqhCBwxprsyCupuh_4tHQOE-z/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Get familiar with the Unity Editor and learn how to move things around in your game."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "intro-to-csharp",
+      "visibility": true,
+      "title": "Intro to C#",
+      "summary": "A crash course on C#, with a focus on how it can be used in Unity. Go from creating your first script to a full understanding of object oriented programming.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "programming"
+      ],
+      "difficulty": "beginner",
+      "series": "Unity Fundamentals",
+      "thumbnail": "imgs/lessons/intro-to-csharp.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "programming",
+        "unity-fundamentals"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/intro-to-csharp.svg",
+          "alt": "Intro to C# lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Part 1 — A crash course on C#, with a focus on how it can be used in…",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vTDZFDW4EZTBXI4RlXMQAS1K-MIdYRzw1WasKwu65vkfIFn0BqSLi-290ETUyZ-ShxZf2OcpLI2dbga/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 2",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vRDo8pF5ExbVoZB_DfF7r28kkqTpJlATOcDwJ-akfgZXxSJo1c82k8QPhoQsOuTGWWAJCdbRhC1RqIe/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 3",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vROE2wcd1kzq1yIoNsdZD8TTej6c3ncZpm3SNNtlfrIICa3cMbRdX6okPZ7hTnhFqyhET1Ba-VdFLcS/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 4",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vTyWkLRfAwwTaTSlTboCvVLP8qaUipm7E5-ictiNKjkZWkuYuDuFYJYzJ7pF6cDQMc0vZPnu-0-uvqM/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 5",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vQWAjj2UtH_rQ2ffJ5UPEZDn-BVixS07ecW8OAeky_aJW_X3cb3FRAci_XYCZPpaibfQHUPdewlSFLz/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "A crash course on C#, with a focus on how it can be used in Unity. Go from creating your first script to a full understanding of object oriented programming."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            },
+            {
+              "fileRef": 1
+            },
+            {
+              "fileRef": 2
+            },
+            {
+              "fileRef": 3
+            },
+            {
+              "fileRef": 4
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "working-with-apis",
+      "visibility": true,
+      "title": "Working with APIs",
+      "summary": "Learn to use documentation to teach yourself how to use all of the tools Unity gives you.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "programming"
+      ],
+      "difficulty": "beginner",
+      "series": "Unity Fundamentals",
+      "thumbnail": "imgs/lessons/working-with-apis.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "programming",
+        "unity-fundamentals"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/working-with-apis.svg",
+          "alt": "Working with APIs lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn to use documentation to teach yourself how to use all of…",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vSXgR-VPlCM49-KayRBCh0PfISW3ZZ2od6DXhFHhR86JSnyWaE2LuIeezAUUp8PTlMMsZMcxbmqTW8r/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn to use documentation to teach yourself how to use all of the tools Unity gives you."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "monobehaviour",
+      "visibility": true,
+      "title": "Monobehaviour",
+      "summary": "An overview of all of the functions and properties that are available to Unity scripts by default.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "programming"
+      ],
+      "difficulty": "beginner",
+      "series": "Unity Fundamentals",
+      "thumbnail": "imgs/lessons/monobehaviour.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "programming",
+        "unity-fundamentals"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/monobehaviour.svg",
+          "alt": "Monobehaviour lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — An overview of all of the functions and properties that are…",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vQpriBdVLy4a8BmC3DCwAYetRd6-flkeUCpNgAiWFvgeMMQq_wzIba7AgDEvwboC-Bw3lq8rnHttjtn/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "An overview of all of the functions and properties that are available to Unity scripts by default."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "user-input",
+      "visibility": true,
+      "title": "User Input",
+      "summary": "Learn how to recognize User Input through C#.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "programming",
+        "mechanics"
+      ],
+      "difficulty": "beginner",
+      "series": "Unity Fundamentals",
+      "thumbnail": "imgs/lessons/user-input.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "mechanics",
+        "programming",
+        "unity-fundamentals"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/user-input.svg",
+          "alt": "User Input lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn how to recognize User Input through C#",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vTBTaAqwVAJwF_YjgrA1_LLJU4tYyZ9xaFBlrH_vY08Y53fYeUYxdh5xdyb3kKAQGfhc5O4qZLvKSrW/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn how to recognize User Input through C#."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unity-2d-physics",
+      "visibility": true,
+      "title": "Unity 2D Physics",
+      "summary": "Learn how Vectors in Unity work and to use them effectively.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "mechanics",
+        "programming"
+      ],
+      "difficulty": "beginner",
+      "series": "Unity Fundamentals",
+      "thumbnail": "imgs/lessons/unity-2d-physics.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "mechanics",
+        "programming",
+        "unity-fundamentals"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/unity-2d-physics.svg",
+          "alt": "Unity 2D Physics lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn how Vectors in Unity work and to use them effectively",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vSDrMZ-fElNBJUOJvc43BopVOP2iVHGcUUk61DOsCfIpeVXgA-m3hYUZQ3783k7T0SWD0puF4Qzi2G6/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn how Vectors in Unity work and to use them effectively."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ui-and-scenemanager",
+      "visibility": true,
+      "title": "UI & SceneManager",
+      "summary": "Learn how to create a UI (user interface) in games and switch scene views.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "ui",
+        "programming"
+      ],
+      "difficulty": "beginner",
+      "series": "Unity Fundamentals",
+      "thumbnail": "imgs/lessons/ui-and-scenemanager.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "programming",
+        "ui",
+        "unity-fundamentals"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/ui-and-scenemanager.svg",
+          "alt": "UI & SceneManager lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Part 1 — Learn how to create a UI (user interface) in games and switch…",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vSgIjLRiUzCcVhH4S2p9CH_drquCnIi2qY2WEQmjqvHWzOaAzTZv7GtNtMbx6hd_huS5z12c28_OhUS/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 2",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vSESRufmETOCkhaDMmQF943PB5Ud5yydpON8kRl0IXLdGn_GR4P9hLyMnq3AAlZoY3Lb4bWFZDbD_0n/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 3",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vQRmFhem_SsVC8eZpNiIiCzYTkD1b_D2LstP17v2oC2uhOgOKFQ9lA6WXVFS35ZtePQz6QcDkaKGm4U/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        },
+        {
+          "name": "Part 4",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vT7fEai68jPZy6uwiKlEnL4E7_Jdf0tMf5bEuGCrUOBK6UZhV0NYb4bhrCq7UY4R-AO4AEv5R41qzjE/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn how to create a UI (user interface) in games and switch scene views."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            },
+            {
+              "fileRef": 1
+            },
+            {
+              "fileRef": 2
+            },
+            {
+              "fileRef": 3
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unity-animations",
+      "visibility": true,
+      "title": "Animations",
+      "summary": "Learn the fundamentals of Unity Animations.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "animation"
+      ],
+      "difficulty": "beginner",
+      "series": "Unity Fundamentals",
+      "thumbnail": "imgs/lessons/unity-animations.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "animation",
+        "unity-fundamentals"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/unity-animations.svg",
+          "alt": "Animations lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn the fundamentals of Unity Animations",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vQ5ZAb-fP_kHejiQab4KTlAPvk0yYxUL3kgqTtEZKVg1CqeKUkJSc_wy3qQMCDfDt6ShNSPfiti7ehg/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn the fundamentals of Unity Animations."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "github-and-unity",
+      "visibility": true,
+      "title": "Github and Unity",
+      "summary": "Learn how to get started with Github and Unity.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "tools"
+      ],
+      "difficulty": "intermediate",
+      "series": "Advanced Unity",
+      "thumbnail": "imgs/lessons/github-and-unity.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "advanced-unity",
+        "tools"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/github-and-unity.svg",
+          "alt": "Github and Unity lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn how to get started with Github and Unity",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/1oC3cSiGnqClFZagRP0aNDbpHq_zcahcddmryybxJeT0/present?slide=id.p",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn how to get started with Github and Unity."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "building-projects",
+      "visibility": true,
+      "title": "Building Projects",
+      "summary": "Learn how to build your Unity projects using WebGL.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "tools"
+      ],
+      "difficulty": "intermediate",
+      "series": "Advanced Unity",
+      "thumbnail": "imgs/lessons/building-projects.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "advanced-unity",
+        "tools"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/building-projects.svg",
+          "alt": "Building Projects lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn how to build your Unity projects using WebGL",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vQncbWXOqoPr1QndaLwKIg42mZ9aVTwBxzsCXUQ9kKjM0eZdOgC42vgwAbr8ZzkySMP3UssnV14rqes/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn how to build your Unity projects using WebGL."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unity-3d-physics",
+      "visibility": true,
+      "title": "Unity 3D Physics",
+      "summary": "Learn the fundamentals of Unity Physics and how to apply them to your own games.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "mechanics",
+        "programming"
+      ],
+      "difficulty": "intermediate",
+      "series": "Advanced Unity",
+      "thumbnail": "imgs/lessons/unity-3d-physics.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "advanced-unity",
+        "mechanics",
+        "programming"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/unity-3d-physics.svg",
+          "alt": "Unity 3D Physics lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn the fundamentals of Unity Physics and how to apply them…",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vQoOhEqnQEJ75ZN4zIK4sINp41WT6F-OzlqduJFXy3hvlq_oqR5-dYJoVIBFBVV07jeMOOHpIy0QNSM/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn the fundamentals of Unity Physics and how to apply them to your own games."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2d-lighting",
+      "visibility": true,
+      "title": "2D Lighting",
+      "summary": "Learn the fundamentals of 2D Lighting in Unity.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "art"
+      ],
+      "difficulty": "intermediate",
+      "series": "Advanced Unity",
+      "thumbnail": "imgs/lessons/2d-lighting.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "advanced-unity",
+        "art"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/2d-lighting.svg",
+          "alt": "2D Lighting lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn the fundamentals of 2D Lighting in Unity",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vRDZTdxpBfdygxusDLloaQhFJgP1zOF33HRBXki95l0Go5LIur7jPVq4DtBGj0RtRx21Jhs4ae4YOhx/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn the fundamentals of 2D Lighting in Unity."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "3d-lighting",
+      "visibility": true,
+      "title": "3D Lighting",
+      "summary": "Learn the fundamentals of 3D Lighting in Unity.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "art"
+      ],
+      "difficulty": "intermediate",
+      "series": "Advanced Unity",
+      "thumbnail": "imgs/lessons/3d-lighting.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "advanced-unity",
+        "art"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/3d-lighting.svg",
+          "alt": "3D Lighting lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn the fundamentals of 3D Lighting in Unity",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vS24IM_aRYOGfedQqxhlB3nwmeORYBimRWq6RqnWomNsd9Z-ld-OWpmDxSjxgU4t94EXtC5b3Iwb80S/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn the fundamentals of 3D Lighting in Unity."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "cinemachine",
+      "visibility": true,
+      "title": "Cinemachine",
+      "summary": "Learn how to operate Cinemachine in Unity.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "animation"
+      ],
+      "difficulty": "intermediate",
+      "series": "Advanced Unity",
+      "thumbnail": "imgs/lessons/cinemachine.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "advanced-unity",
+        "animation"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/cinemachine.svg",
+          "alt": "Cinemachine lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn how to operate Cinemachine in Unity",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vT33YuTNqDICgII9KzAM59p683O-khvPoelzh1kbSVtOJpJrcKMy4LQ4m_hGtqEHca4FgPvPVZsOk02/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn how to operate Cinemachine in Unity."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "singletons-and-game-managers",
+      "visibility": true,
+      "title": "Singletons & Game Managers",
+      "summary": "Learn how to use Singletons and Game Managers in Unity.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "programming"
+      ],
+      "difficulty": "advanced",
+      "series": "Advanced Unity",
+      "thumbnail": "imgs/lessons/singletons-and-game-managers.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "advanced-unity",
+        "programming"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/singletons-and-game-managers.svg",
+          "alt": "Singletons & Game Managers lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn how to use Singletons and Game Managers in Unity",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vTKJGaczuMWr2DkQXZudy5Y2MPnRYa0LPSqFuyXQvyXo4WyDlw8_snDFz_TTxU0My7TBDwm_SEMwFfp/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn how to use Singletons and Game Managers in Unity."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tilemaps",
+      "visibility": true,
+      "title": "Tilemaps",
+      "summary": "Learn how to use Tilemaps in Unity.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "level-design",
+        "art"
+      ],
+      "difficulty": "intermediate",
+      "series": "Advanced Unity",
+      "thumbnail": "imgs/lessons/tilemaps.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "advanced-unity",
+        "art",
+        "level-design"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/tilemaps.svg",
+          "alt": "Tilemaps lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn how to use Tilemaps in Unity",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vRHKY19E1GVqNcJcGWgVd3BOHDeNOYi8goAj8pHpmuufu6StTy7BClKUQ4-bHD39BQ2-UBYVF3ENL36/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn how to use Tilemaps in Unity."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "probuilder-3d-levels",
+      "visibility": true,
+      "title": "3D Levels in ProBuilder",
+      "summary": "Learn how to create 3D Levels with ProBuilder.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "level-design"
+      ],
+      "difficulty": "intermediate",
+      "series": "Advanced Unity",
+      "thumbnail": "imgs/lessons/probuilder-3d-levels.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "advanced-unity",
+        "level-design"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/probuilder-3d-levels.svg",
+          "alt": "3D Levels in ProBuilder lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn how to create 3D Levels with ProBuilder",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vQ0MqJZH733mhWfvExPj8JGBSS1PNzbbYcqrarw2eLtdXNbpYBfKoveOYQ7WlDspEgk6MjgTNBUndGa/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn how to create 3D Levels with ProBuilder."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "intro-to-ml-agents",
+      "visibility": true,
+      "title": "Intro to Unity ML Agents",
+      "summary": "Learn about the fundamental concepts of Unity ML Agents.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "ai"
+      ],
+      "difficulty": "advanced",
+      "series": "Unity ML",
+      "thumbnail": "imgs/lessons/intro-to-ml-agents.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "ai",
+        "unity-ml"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/intro-to-ml-agents.svg",
+          "alt": "Intro to Unity ML Agents lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn about the fundamental concepts of Unity ML Agents",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vSPjlgb5DAERndaoiK_mDxt6F6zQpy0SevfucZ1PvlNkWIMOrJV8MFyr3v0eVtN0py-symS3yabhvRb/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn about the fundamental concepts of Unity ML Agents."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "installing-ml-agents",
+      "visibility": true,
+      "title": "Installing ML Agents",
+      "summary": "Learn how to quickly install and setup Unity ML Agents on your computer.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "ai",
+        "tools"
+      ],
+      "difficulty": "advanced",
+      "series": "Unity ML",
+      "thumbnail": "imgs/lessons/installing-ml-agents.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "ai",
+        "tools",
+        "unity-ml"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/installing-ml-agents.svg",
+          "alt": "Installing ML Agents lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn how to quickly install and setup Unity ML Agents on your…",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vR5aOd9UTafQbDW9S8-1c8XYBUWAxTY-Yzxmn5H9gzeeuH_g-2epo7gKxnhEPr47twfivuaCdDwUesW/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn how to quickly install and setup Unity ML Agents on your computer."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "creating-ml-agents-project",
+      "visibility": true,
+      "title": "Creating a ML Agents Project",
+      "summary": "Learn how to create your own Unity ML Agents project.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "ai"
+      ],
+      "difficulty": "advanced",
+      "series": "Unity ML",
+      "thumbnail": "imgs/lessons/creating-ml-agents-project.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "ai",
+        "unity-ml"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/creating-ml-agents-project.svg",
+          "alt": "Creating a ML Agents Project lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn how to create your own Unity ML Agents project",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vQsimwhKeWTKVy05M3W81KDtFn0wNkb0v6BeAm7drTFDzj1jd-ZrX8IspfJM1bqLF5487zbcIR6Cd-3/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn how to create your own Unity ML Agents project."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "training-with-google-colab",
+      "visibility": true,
+      "title": "Training with Google Colab",
+      "summary": "Learn how to use Google Colab to train your models.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "ai",
+        "tools"
+      ],
+      "difficulty": "advanced",
+      "series": "Unity ML",
+      "thumbnail": "imgs/lessons/training-with-google-colab.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "ai",
+        "tools",
+        "unity-ml"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/training-with-google-colab.svg",
+          "alt": "Training with Google Colab lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn how to use Google Colab to train your models",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vROrgCtY0tzt8kij5fCvlXQ2nmuv4CZoTTCu98iDJIo8mfsW9dm0imSKx3H1bzZQgdWbACUh53Dvvl3/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn how to use Google Colab to train your models."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ml-model-building",
+      "visibility": true,
+      "title": "Model Building",
+      "summary": "Learn how to start building your models.",
+      "engines": [
+        "unity"
+      ],
+      "components": [
+        "ai",
+        "programming"
+      ],
+      "difficulty": "advanced",
+      "series": "Unity ML",
+      "thumbnail": "imgs/lessons/ml-model-building.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "ai",
+        "programming",
+        "unity-ml"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/ml-model-building.svg",
+          "alt": "Model Building lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn how to start building your models",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vSJo02NtWnFIRpyL9Z0cO9rfF9cioqKXHkVBNGNmgImZEiQnOzNRT-e0X4eSyfsSnztZGSS3x8Nq96t/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn how to start building your models."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "blender-sculpting",
+      "visibility": true,
+      "title": "Sculpting",
+      "summary": "Learn the basics of Blender sculpting.",
+      "engines": [
+        "any"
+      ],
+      "components": [
+        "art"
+      ],
+      "difficulty": "beginner",
+      "series": "Blender Modeling",
+      "thumbnail": "imgs/lessons/blender-sculpting.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "art",
+        "blender-modeling"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/blender-sculpting.svg",
+          "alt": "Sculpting lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn the basics of Blender sculpting",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vTszCzRxCCJ7-JTpbHpUVSvTYJ7MID24PBhwvgY2M0qYkUF0BscYGzGl6rxn7wKkC-ap0IeWNQTRBUX/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn the basics of Blender sculpting."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "blender-painting",
+      "visibility": true,
+      "title": "Painting",
+      "summary": "Learn the basics of painting models in Blender.",
+      "engines": [
+        "any"
+      ],
+      "components": [
+        "art"
+      ],
+      "difficulty": "beginner",
+      "series": "Blender Modeling",
+      "thumbnail": "imgs/lessons/blender-painting.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "art",
+        "blender-modeling"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/blender-painting.svg",
+          "alt": "Painting lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn the basics of painting models in Blender",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vRets4WF_lfCmrv00ZxLr08_8FlH2ZUxeCDEvc7sRhf7QqZaVWcZ6H1GGwNJWfurpKTkgN7p8kp9c5S/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn the basics of painting models in Blender."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "blender-animating",
+      "visibility": true,
+      "title": "Animating",
+      "summary": "Learn the basics of animating models in Blender.",
+      "engines": [
+        "any"
+      ],
+      "components": [
+        "art"
+      ],
+      "difficulty": "beginner",
+      "series": "Blender Modeling",
+      "thumbnail": "imgs/lessons/blender-animating.svg",
+      "author": "GDC Officers",
+      "writtenAt": "2024-09-01",
+      "updatedAt": null,
+      "durationMinutes": null,
+      "tags": [
+        "art",
+        "blender-modeling"
+      ],
+      "media": [
+        {
+          "type": "image",
+          "src": "imgs/lessons/blender-animating.svg",
+          "alt": "Animating lesson cover"
+        }
+      ],
+      "files": [
+        {
+          "name": "Lesson slides — Learn the basics of animating models in Blender",
+          "kind": "link",
+          "url": "https://docs.google.com/presentation/d/e/2PACX-1vQr_ZzfxG3d6MIjXhmTKX3Gnx6B9aErdo4dJb9MM09-utsWHyMJOgQX9zf7-h9xHOBnRB6Eb3goEYna/pub?start=false&loop=false&delayms=3000",
+          "icon": "slides",
+          "source": "Google Slides"
+        }
+      ],
+      "content": [
+        {
+          "type": "text",
+          "title": "What you'll build",
+          "figures": [
+            {
+              "type": "paragraph",
+              "text": "Learn the basics of animating models in Blender."
+            }
+          ]
+        },
+        {
+          "type": "download",
+          "title": "Follow along with the slides",
+          "figures": [
+            {
+              "fileRef": 0
+            }
+          ]
+        },
+        {
+          "type": "callout",
+          "figures": [
+            {
+              "tone": "note",
+              "text": "The written walkthrough for this lesson is still being written. For now the slide deck above is the complete lesson — open it and follow along. Officers: use the lesson editor to add the step-by-step text, code and screenshots."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

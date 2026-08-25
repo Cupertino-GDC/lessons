@@ -1,0 +1,606 @@
+/* ==========================================================================
+   primary.css — vendored Cupertino GDC design language
+   Source of truth: github.com/Cupertino-GDC/Cupertino-GDC.github.io
+     css/primary.css, css/index.css, css/lessons.css
+   Keeps this site visually continuous with the rest of gamedevclub.tech.
+   ========================================================================== */
+
+:root {
+    /* Surfaces */
+    --gdc-page: rgb(242, 242, 242);
+    --gdc-surface: #ffffff;
+    --gdc-surface-sunken: rgb(248, 248, 249);
+    --gdc-border: rgb(226, 230, 236);
+
+    /* Brand */
+    --gdc-navy: #003ba2;
+    --gdc-navy-deep: rgb(0, 37, 102);
+    --gdc-accent: rgb(97, 126, 190);
+    --gdc-accent-soft: rgb(168, 186, 226);
+    --gdc-accent-tint: rgba(97, 126, 190, 0.12);
+
+    /* Text */
+    --gdc-ink: rgb(10, 37, 64);
+    --gdc-ink-muted: rgb(68, 86, 104);
+    --gdc-ink-faint: rgb(129, 143, 158);
+
+    /* Status */
+    --gdc-green: rgb(127, 209, 134);
+    --gdc-green-ink: rgb(31, 122, 62);
+    --gdc-pink: rgb(230, 45, 150);
+    --gdc-blue: rgb(25, 119, 243);
+    --gdc-amber: rgb(214, 152, 32);
+    --gdc-amber-tint: rgba(240, 187, 74, 0.16);
+
+    /* Chrome */
+    --gdc-navbar: rgba(53, 54, 58, 0.75);
+    --gdc-footer: rgb(26, 26, 26);
+
+    /* Elevation — from .lessons-col / .lesson */
+    --gdc-shadow-card: 0 4px 50px 0 rgba(0, 0, 0, 0.1);
+    --gdc-shadow-sm: 0 4px 8px 0 rgba(0, 0, 0, 0.1);
+    --gdc-shadow-lift: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+    --gdc-radius: 10px;
+    --gdc-nav-h: 75px;
+
+    --gdc-font-body: 'Montserrat', sans-serif;
+    --gdc-font-ui: 'Noto Sans JP', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    font-family: var(--gdc-font-body);
+    background-color: var(--gdc-page);
+    color: var(--gdc-ink);
+    margin: 0;
+}
+
+::selection {
+    background: rgba(118, 250, 255, 0.164);
+    text-shadow: 0px 0px 2px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    background-color: rgb(0, 37, 102);
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 0px;
+    background: rgba(0, 0, 0, 0);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgb(97, 126, 190);
+    border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgb(79, 104, 156);
+}
+
+/* ---------------------------------------------------------------- navbar  */
+
+#navbar-div {
+    z-index: 10;
+    background-color: var(--gdc-navbar);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    position: fixed;
+    width: 100%;
+    text-align: center;
+    height: var(--gdc-nav-h);
+}
+
+#collapsibleNavbar {
+    overflow-x: auto;
+}
+
+ul.navbar-nav {
+    margin-bottom: 20px;
+}
+
+button.navbar-toggler.navbar-toggler-right {
+    border-color: white;
+    color: white;
+    background-color: white;
+}
+
+#navbar-logo {
+    filter: brightness(0) invert(1);
+    width: 117.75px;
+    height: 30.75px;
+    margin-right: 50px;
+    margin-left: 50px;
+    margin-top: 10px;
+    transition: all 0.3s;
+}
+
+#navbar-logo:hover {
+    opacity: 0.75;
+}
+
+.navbutton {
+    display: inline-block;
+    font-size: 24px;
+    color: white;
+    font-weight: 900;
+    padding: 3px 24px;
+    padding-top: 7.5px;
+    border-radius: 0px;
+    text-decoration: none;
+    position: relative;
+    margin-right: 50px;
+    transition: all 0.2s;
+    font-family: var(--gdc-font-ui);
+}
+
+.navbutton:hover,
+.navbutton:focus {
+    text-decoration: none;
+    color: var(--gdc-accent-soft);
+}
+
+.navbutton.active {
+    color: var(--gdc-accent-soft);
+}
+
+/* ------------------------------------------------------------------ hero  */
+
+#header {
+    height: 400px;
+    background-color: rgb(0, 37, 102);
+    color: white;
+    text-align: center;
+
+    background-color: #003ba2;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 1600 800'%3E%3Cg %3E%3Cpath fill='%23003696' d='M486 705.8c-109.3-21.8-223.4-32.2-335.3-19.4C99.5 692.1 49 703 0 719.8V800h843.8c-115.9-33.2-230.8-68.1-347.6-92.2C492.8 707.1 489.4 706.5 486 705.8z'/%3E%3Cpath fill='%23003289' d='M1600 0H0v719.8c49-16.8 99.5-27.8 150.7-33.5c111.9-12.7 226-2.4 335.3 19.4c3.4 0.7 6.8 1.4 10.2 2c116.8 24 231.7 59 347.6 92.2H1600V0z'/%3E%3Cpath fill='%23002e7d' d='M478.4 581c3.2 0.8 6.4 1.7 9.5 2.5c196.2 52.5 388.7 133.5 593.5 176.6c174.2 36.6 349.5 29.2 518.6-10.2V0H0v574.9c52.3-17.6 106.5-27.7 161.1-30.9C268.4 537.4 375.7 554.2 478.4 581z'/%3E%3Cpath fill='%23002972' d='M0 0v429.4c55.6-18.4 113.5-27.3 171.4-27.7c102.8-0.8 203.2 22.7 299.3 54.5c3 1 5.9 2 8.9 3c183.6 62 365.7 146.1 562.4 192.1c186.7 43.7 376.3 34.4 557.9-12.6V0H0z'/%3E%3Cpath fill='%23002566' d='M181.8 259.4c98.2 6 191.9 35.2 281.3 72.1c2.8 1.1 5.5 2.3 8.3 3.4c171 71.6 342.7 158.5 531.3 207.7c198.8 51.8 403.4 40.8 597.3-14.8V0H0v283.2C59 263.6 120.6 255.7 181.8 259.4z'/%3E%3Cpath fill='%23012159' d='M1600 0H0v136.3c62.3-20.9 127.7-27.5 192.2-19.2c93.6 12.1 180.5 47.7 263.3 89.6c2.6 1.3 5.1 2.6 7.7 3.9c158.4 81.1 319.7 170.9 500.3 223.2c210.5 61 430.8 49 636.6-16.6V0z'/%3E%3Cpath fill='%23011c4c' d='M454.9 86.3C600.7 177 751.6 269.3 924.1 325c208.6 67.4 431.3 60.8 637.9-5.3c12.8-4.1 25.4-8.4 38.1-12.9V0H288.1c56 21.3 108.7 50.6 159.7 82C450.2 83.4 452.5 84.9 454.9 86.3z'/%3E%3Cpath fill='%23011840' d='M1600 0H498c118.1 85.8 243.5 164.5 386.8 216.2c191.8 69.2 400 74.7 595 21.1c40.8-11.2 81.1-25.2 120.3-41.7V0z'/%3E%3Cpath fill='%23011434' d='M1397.5 154.8c47.2-10.6 93.6-25.3 138.6-43.8c21.7-8.9 43-18.8 63.9-29.5V0H643.4c62.9 41.7 129.7 78.2 202.1 107.4C1020.4 178.1 1214.2 196.1 1397.5 154.8z'/%3E%3Cpath fill='%23000e28' d='M1315.3 72.4c75.3-12.6 148.9-37.1 216.8-72.4h-723C966.8 71 1144.7 101 1315.3 72.4z'/%3E%3C/g%3E%3C/svg%3E");
+    background-attachment: fixed;
+    background-size: cover;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: var(--gdc-nav-h) 20px 0;
+}
+
+#header.compact {
+    height: 300px;
+}
+
+#title {
+    font-weight: 700;
+    font-size: 96px;
+    margin: 0;
+}
+
+#subtitle {
+    font-family: var(--gdc-font-ui);
+    font-size: 28px;
+    font-style: italic;
+    margin: 8px 0 0;
+}
+
+/* --------------------------------------------------------------- buttons  */
+/* Sweep-fill animation lifted from .register-button / .email-button         */
+
+.gdc-btn {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    border: 3px solid var(--gdc-accent);
+    background: transparent;
+    color: var(--gdc-accent);
+    padding: 12px 28px;
+    font-family: var(--gdc-font-ui);
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 1.2;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
+    transition-property: color, border-color;
+    transition-duration: 0.3s;
+}
+
+.gdc-btn:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--gdc-accent);
+    transform: scaleX(0);
+    transform-origin: 50%;
+    transition-property: transform;
+    transition-duration: 0.3s;
+    transition-timing-function: cubic-bezier(.5, 0, .9, .5);
+}
+
+.gdc-btn:hover,
+.gdc-btn:focus,
+.gdc-btn:active {
+    color: white;
+    text-decoration: none;
+}
+
+.gdc-btn:hover:before,
+.gdc-btn:focus:before,
+.gdc-btn:active:before {
+    transform: scaleX(1);
+}
+
+.gdc-btn.green { border-color: var(--gdc-green); color: var(--gdc-green-ink); }
+.gdc-btn.green:before { background: var(--gdc-green); }
+.gdc-btn.green:hover, .gdc-btn.green:focus { color: white; }
+
+.gdc-btn.navy { border-color: var(--gdc-navy); color: var(--gdc-navy); }
+.gdc-btn.navy:before { background: var(--gdc-navy); }
+
+.gdc-btn.ghost { border-color: var(--gdc-border); color: var(--gdc-ink-muted); }
+.gdc-btn.ghost:before { background: var(--gdc-accent); }
+.gdc-btn.ghost:hover, .gdc-btn.ghost:focus { border-color: var(--gdc-accent); color: white; }
+
+.gdc-btn.danger { border-color: rgb(214, 90, 90); color: rgb(184, 60, 60); }
+.gdc-btn.danger:before { background: rgb(214, 90, 90); }
+.gdc-btn.danger:hover, .gdc-btn.danger:focus { color: white; }
+
+.gdc-btn.small { padding: 7px 14px; font-size: 14px; border-width: 2px; }
+/* Named .full, not .block: article sections already own .block. */
+.gdc-btn.full { display: block; width: 100%; }
+
+.gdc-btn[disabled],
+.gdc-btn.is-disabled {
+    opacity: 0.45;
+    pointer-events: none;
+}
+
+/* ------------------------------------------------------------------ card  */
+
+.gdc-card {
+    background-color: var(--gdc-surface);
+    border-radius: var(--gdc-radius);
+    box-shadow: var(--gdc-shadow-card);
+}
+
+/* ---------------------------------------------------------------- footer  */
+
+#footer {
+    background-color: var(--gdc-footer);
+    color: white;
+    font-family: var(--gdc-font-ui);
+    font-weight: 900;
+    width: 100%;
+    padding: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+#footer-left { flex: 1 1 50%; min-width: 280px; }
+#footer-middle { flex: 1 1 20%; min-width: 160px; }
+#footer-right { flex: 1 1 22%; min-width: 240px; }
+
+#footer h1 { font-size: 32px; }
+#footer h2 { font-size: 26px; }
+#footer h3 { font-size: 20px; }
+#footer h4 { font-size: 18px; }
+
+.footer-link {
+    color: white;
+    transition: all 0.2s;
+    text-decoration: none;
+}
+
+.footer-link:hover {
+    text-decoration: none;
+    color: var(--gdc-accent);
+}
+
+.email-button, .instagram-button, .discord-button {
+    display: inline-block;
+    vertical-align: middle;
+    transform: perspective(1px) translateZ(0);
+    position: relative;
+    z-index: 0;
+    overflow: hidden;
+    background: transparent;
+    height: 60px;
+    width: 225px;
+    text-align: center;
+    line-height: 2.25;
+    font-family: var(--gdc-font-ui);
+    font-weight: 700;
+    font-size: 24px;
+    text-decoration: none;
+    transition-property: color;
+    transition-duration: 0.3s;
+    margin-bottom: 20px;
+}
+
+.email-button { border: 3px var(--gdc-green) solid; color: var(--gdc-green); }
+.instagram-button { border: 3px var(--gdc-pink) solid; color: var(--gdc-pink); }
+.discord-button { border: 3px var(--gdc-blue) solid; color: var(--gdc-blue); }
+
+.email-button:before, .instagram-button:before, .discord-button:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0; bottom: 0; left: 0; right: 0;
+    transform: scaleX(0);
+    transform-origin: 50%;
+    transition-property: transform;
+    transition-duration: 0.3s;
+    transition-timing-function: cubic-bezier(.5, 0, .9, .5);
+}
+
+.email-button:before { background: var(--gdc-green); }
+.instagram-button:before { background: var(--gdc-pink); }
+.discord-button:before { background: var(--gdc-blue); }
+
+.email-button:hover, .email-button:focus,
+.instagram-button:hover, .instagram-button:focus,
+.discord-button:hover, .discord-button:focus {
+    color: white;
+    text-decoration: none;
+}
+
+.email-button:hover:before, .email-button:focus:before,
+.instagram-button:hover:before, .instagram-button:focus:before,
+.discord-button:hover:before, .discord-button:focus:before {
+    transform: scaleX(1);
+}
+
+/* ------------------------------------------------------- lesson card     */
+/* Lives here, not in browse.css: renderLessonCard() is shared by the browse
+   grid AND the lesson page's related-lessons strip, so its styles must load
+   wherever the renderer does. */
+
+.lesson-card {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: var(--gdc-surface);
+    border: 2px solid transparent;
+    border-radius: var(--gdc-radius);
+    overflow: hidden;
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.2s;
+}
+
+.lesson-card:hover,
+.lesson-card:focus-visible {
+    border-color: var(--gdc-accent);
+    text-decoration: none;
+    color: inherit;
+}
+
+.lesson-card-media {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--gdc-navy-deep);
+    overflow: hidden;
+}
+
+.lesson-card-media img {
+    width: 100%;
+    max-width: 100%;   /* never let the cover's intrinsic 480px set the track */
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.lesson-badge {
+    position: absolute;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 6px;
+    padding: 4px 9px;
+    font-family: var(--gdc-font-ui);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.lesson-badge.engine {
+    top: 10px; left: 10px;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+}
+
+.lesson-badge.difficulty {
+    top: 10px; right: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--gdc-navy);
+}
+
+.lesson-badge.difficulty.intermediate { color: rgb(166, 106, 15); }
+.lesson-badge.difficulty.advanced { color: rgb(168, 52, 52); }
+
+.lesson-badge.done {
+    bottom: 10px; left: 10px;
+    background: var(--gdc-green);
+    color: #0d3a1d;
+}
+
+.lesson-badge.partial {
+    bottom: 10px; left: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    color: var(--gdc-accent);
+}
+
+.lesson-card-body {
+    padding: 16px 16px 10px;
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.lesson-card-title {
+    font-family: var(--gdc-font-body);
+    font-size: 19px;
+    font-weight: 700;
+    color: var(--gdc-navy);
+    margin: 0 0 7px;
+    line-height: 1.25;
+}
+
+.lesson-card-summary {
+    font-family: var(--gdc-font-ui);
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--gdc-ink-muted);
+    margin: 0 0 12px;
+    flex: 1 1 auto;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.lesson-card-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.chip {
+    background: var(--gdc-accent-tint);
+    color: var(--gdc-accent);
+    border-radius: 999px;
+    padding: 3px 10px;
+    font-family: var(--gdc-font-ui);
+    font-size: 11.5px;
+    font-weight: 600;
+}
+
+.lesson-card-foot {
+    display: flex;
+    gap: 16px;
+    padding: 11px 16px;
+    border-top: 1px solid var(--gdc-border);
+    font-family: var(--gdc-font-ui);
+    font-size: 13px;
+    color: var(--gdc-ink-faint);
+}
+
+.lesson-card-foot .meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ------------------------------------------------------- shared utilities */
+
+.gdc-shell {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 32px;
+}
+
+.visually-hidden {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.skip-link {
+    position: absolute;
+    left: -9999px;
+    top: 0;
+    z-index: 100;
+    background: var(--gdc-navy);
+    color: white;
+    padding: 12px 20px;
+    font-family: var(--gdc-font-ui);
+    font-weight: 700;
+}
+
+.skip-link:focus {
+    left: 0;
+    color: white;
+}
+
+:focus-visible {
+    outline: 3px solid var(--gdc-accent);
+    outline-offset: 2px;
+}
+
+/* --------------------------------------------------------- gdc breakpoints */
+
+@media screen and (min-width: 1850px) {
+    .email-button, .instagram-button, .discord-button { width: 12.5vw; }
+}
+
+/* 1400, not the club's 1360: at the wide 50px margins the nav row needs
+   1379px, so the tight margins must hold until past that. */
+@media screen and (max-width: 1400px) {
+    #navbar-logo { margin-left: 16px; margin-right: 16px; }
+    .navbutton { margin-right: 16px; }
+}
+
+@media screen and (max-width: 1150px) {
+    #footer-middle { display: none; }
+}
+
+@media screen and (max-width: 950px) {
+    .email-button, .instagram-button, .discord-button { width: 200px; }
+}
+
+@media screen and (max-width: 900px) {
+    .gdc-shell { padding: 0 18px; }
+    #title { font-size: 64px; }
+    #subtitle { font-size: 22px; }
+    #header, #header.compact { height: 320px; }
+}
+
+@media screen and (max-width: 775px) {
+    #footer { text-align: center; }
+    #footer-left, #footer-right { flex: 1 1 100%; }
+    .email-button, .instagram-button, .discord-button { width: 60%; }
+}
+
+@media screen and (max-width: 768px) {
+    #navbar-logo { margin-left: 0; margin-right: 0; }
+    .navbutton { margin-left: 0; margin-right: 0; font-size: 20px; }
+}
+
+@media screen and (max-width: 525px) {
+    #title { font-size: 18vw; }
+    #header, #header.compact { height: 280px; }
+}
+
+@media screen and (max-width: 420px) {
+    #subtitle { font-size: 6.67vw; }
+}
+
+@media screen and (max-width: 400px) {
+    .email-button, .instagram-button, .discord-button { width: 80%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}

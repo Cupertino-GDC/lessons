@@ -1,0 +1,58 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1"><title>measure</title></head>
+<body><pre id="out">…</pre><div id="host"></div>
+<script>
+var TARGETS = [
+  ['../index.html', 375], ['../index.html', 900], ['../index.html', 1440],
+  ['../lesson.html?id=unity-platformer', 375], ['../lesson.html?id=unity-platformer', 900],
+  ['../lesson.html?id=unity-platformer', 1440],
+  ['../editor.html', 375], ['../editor.html', 900], ['../editor.html', 1440]
+];
+var lines = [], frames = [];
+TARGETS.forEach(function (t) {
+  var f = document.createElement('iframe');
+  f.style.cssText = 'width:' + t[1] + 'px;height:1000px;border:0;position:absolute;left:-9999px';
+  f.src = t[0];
+  document.getElementById('host').appendChild(f);
+  frames.push([f, t]);
+});
+setTimeout(function () {
+  frames.forEach(function (pair) {
+    var f = pair[0], t = pair[1];
+    try {
+      var w = f.contentWindow, d = f.contentDocument;
+      var overflow = d.documentElement.scrollWidth - w.innerWidth;
+      var tall = [];
+      Array.prototype.forEach.call(d.querySelectorAll('input,select,.search-wrap,.ed-field,.file-row,.chip,.engine-tab'),
+        function (n) {
+          var h = n.getBoundingClientRect().height;
+          /* Anything short that has ballooned is the flex-basis-as-height trap. */
+          if (h > 120 && n.tagName !== 'TEXTAREA') {
+            tall.push(n.tagName.toLowerCase() + '.' + String(n.className).split(' ')[0] + '=' + Math.round(h));
+          }
+        });
+      var offenders = [];
+      Array.prototype.forEach.call(d.querySelectorAll('*'), function (n) {
+        if (n.offsetParent === null) return;
+        var r = n.getBoundingClientRect();
+        if (r.right > w.innerWidth + 1) {
+          var p = n.parentElement, scroller = false;
+          while (p) {
+            var ov = w.getComputedStyle(p).overflowX;
+            if (ov === 'auto' || ov === 'scroll') { scroller = true; break; }
+            p = p.parentElement;
+          }
+          if (!scroller) offenders.push(n.tagName.toLowerCase() + '.' + String(n.className).split(' ')[0]);
+        }
+      });
+      lines.push(t[0].replace('../', '') + ' @' + t[1] +
+        '  pageOverflow=' + (overflow > 0 ? overflow + 'px  <-- BAD' : 'none') +
+        '  stretched=[' + tall.join(',') + ']' +
+        '  escaping=[' + offenders.slice(0, 6).join(',') + ']');
+    } catch (err) {
+      lines.push(t[0] + ' @' + t[1] + '  ERROR ' + err.message);
+    }
+  });
+  document.getElementById('out').textContent = lines.join('\n');
+}, 2500);
+</script></body></html>

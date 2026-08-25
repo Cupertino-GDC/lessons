@@ -1,0 +1,26 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><title>navcheck</title></head>
+<body><pre id="out">…</pre><div id="host"></div>
+<script>
+var WIDTHS = [375, 768, 900, 992, 1050, 1150, 1200, 1300, 1360, 1400, 1440, 1600];
+WIDTHS.forEach(function (w) {
+  var f = document.createElement('iframe');
+  f.style.cssText = 'width:' + w + 'px;height:400px;border:0;position:absolute;left:-9999px';
+  f.src = '../index.html'; f.dataset.w = w;
+  document.getElementById('host').appendChild(f);
+});
+setTimeout(function () {
+  var lines = [];
+  Array.prototype.forEach.call(document.querySelectorAll('iframe'), function (f) {
+    var w = f.contentWindow, d = f.contentDocument;
+    var nav = d.querySelector('#navbar-div nav');
+    var ul = d.querySelector('ul.navbar-nav');
+    var collapsed = w.getComputedStyle(d.querySelector('#collapsibleNavbar')).display === 'none';
+    var right = ul ? Math.round(ul.getBoundingClientRect().right) : 0;
+    lines.push('@' + String(f.dataset.w).padStart(5) +
+      '  hamburger=' + (collapsed ? 'yes' : 'no ') +
+      '  navRight=' + String(right).padStart(5) +
+      '  ' + (!collapsed && right > Number(f.dataset.w) ? '<-- CLIPPED' : 'ok'));
+  });
+  document.getElementById('out').textContent = lines.join('\n');
+}, 2500);
+</script></body></html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+
+    <meta name="description" content="A step-by-step game development lesson from Cupertino Game Dev Club.">
+    <meta property="og:title" content="Lesson | Game Dev Club">
+    <meta property="og:image" content="imgs/GDCLogo_Web.png">
+    <link rel="shortcut icon" href="imgs/GDCBrowserTabIcon.png">
+
+    <link rel="stylesheet" href="css/primary.css">
+    <link rel="stylesheet" href="css/lesson.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
+    <title>Lesson | GDC</title>
+</head>
+
+<body data-page="lessons">
+    <a class="skip-link" href="#lesson-main">Skip to lesson</a>
+
+    <div data-gdc-navbar></div>
+
+    <main id="lesson-main" class="lesson-page">
+
+        <div class="lesson-loading" data-loading>
+            <i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i>
+            <p>Loading lesson…</p>
+        </div>
+
+        <div class="lesson-error gdc-shell" data-error hidden>
+            <div class="gdc-card error-card">
+                <i class="fa-solid fa-compass" aria-hidden="true"></i>
+                <h1 data-error-title>Lesson not found</h1>
+                <p data-error-body></p>
+                <a class="gdc-btn navy" href="index.html">
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> Back to all lessons
+                </a>
+            </div>
+        </div>
+
+        <div data-lesson hidden>
+
+            <!-- ============ TOP: media (left) + required files (right) ============ -->
+            <header class="lesson-hero">
+                <div class="gdc-shell">
+                    <nav class="breadcrumb" aria-label="Breadcrumb">
+                        <a href="index.html">Lessons</a>
+                        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                        <a data-crumb-engine href="index.html"></a>
+                        <i class="fa-solid fa-chevron-right" aria-hidden="true"></i>
+                        <span data-crumb-title></span>
+                    </nav>
+
+                    <div class="lesson-headline">
+                        <div>
+                            <h1 class="lesson-title" data-title></h1>
+                            <p class="lesson-summary" data-summary></p>
+                        </div>
+                        <div class="lesson-progress" data-progress hidden>
+                            <div class="progress-track"><div class="progress-fill" data-progress-fill></div></div>
+                            <span class="progress-label" data-progress-label></span>
+                            <button class="gdc-btn ghost small" type="button" data-progress-reset>Reset</button>
+                        </div>
+                    </div>
+
+                    <div class="lesson-split">
+                        <div class="lesson-split-left" data-gallery-host></div>
+                        <div class="lesson-split-right" data-files-host></div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- ============ BOTTOM: blog-post style instructions ============ -->
+            <div class="lesson-body gdc-shell">
+                <div class="lesson-body-grid">
+                    <div class="lesson-article-host" data-article-host></div>
+                    <aside class="lesson-aside" data-toc-host></aside>
+                </div>
+
+                <nav class="lesson-pager" data-pager aria-label="Lesson navigation"></nav>
+
+                <section class="related" data-related hidden>
+                    <h2 class="related-title">Related lessons</h2>
+                    <div class="related-grid" data-related-grid></div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <footer data-gdc-footer></footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    <script src="js/primary.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/lesson.js"></script>
+</body>
+
+</html>

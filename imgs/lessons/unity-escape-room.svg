@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 270" width="480" height="270" aria-hidden="true">
+  <defs>
+    <linearGradient id="g" gradientTransform="rotate(45)">
+      <stop offset="0%" stop-color="#420a2a"/>
+      <stop offset="100%" stop-color="#b02a6e"/>
+    </linearGradient>
+    <pattern id="p" width="30" height="30" patternUnits="userSpaceOnUse">
+      <path d="M30 0H0V30" fill="none" stroke="#ffa8cf" stroke-opacity=".12" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="v" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="55%" stop-color="#000" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#000" stop-opacity=".30"/>
+    </linearGradient>
+  </defs>
+  <rect width="480" height="270" fill="url(#g)"/>
+  <rect width="480" height="270" fill="url(#p)"/>
+  <circle cx="228" cy="30" r="75" fill="#ffa8cf" fill-opacity="0.09"/>
+  <circle cx="202" cy="82" r="81" fill="#ffa8cf" fill-opacity="0.12"/>
+  <rect x="30" y="199" width="43" height="49" rx="4" fill="#ffa8cf" fill-opacity="0.14"/>
+  <rect x="84" y="148" width="23" height="112" rx="4" fill="#ffa8cf" fill-opacity="0.12"/>
+  <rect x="126" y="113" width="36" height="139" rx="4" fill="#ffa8cf" fill-opacity="0.11"/>
+  <rect x="174" y="200" width="40" height="48" rx="4" fill="#ffa8cf" fill-opacity="0.18"/>
+  <rect x="225" y="159" width="43" height="96" rx="4" fill="#ffa8cf" fill-opacity="0.19"/>
+  <rect x="283" y="106" width="41" height="156" rx="4" fill="#ffa8cf" fill-opacity="0.17"/>
+  <rect x="339" y="110" width="29" height="159" rx="4" fill="#ffa8cf" fill-opacity="0.17"/>
+  <path d="M0 106 C 160 66, 320 238, 480 198" fill="none" stroke="#ffa8cf" stroke-opacity=".22" stroke-width="2"/>
+  <rect width="480" height="270" fill="url(#v)"/>
+</svg>

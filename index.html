@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">
+
+    <meta name="description"
+        content="Browse every Cupertino Game Dev Club lesson — filter by component and game engine, then follow the step-by-step walkthrough.">
+    <meta name="keywords"
+        content="GDC, Game Dev Club, Cupertino, lessons, Unity, Godot, Blender, game development, tutorials">
+    <meta property="og:title" content="Lessons | Game Dev Club">
+    <meta property="og:description"
+        content="Browse every Cupertino Game Dev Club lesson — filter by component and game engine.">
+    <meta property="og:image" content="imgs/GDCLogo_Web.png">
+    <link rel="shortcut icon" href="imgs/GDCBrowserTabIcon.png">
+
+    <link rel="stylesheet" href="css/primary.css">
+    <link rel="stylesheet" href="css/browse.css">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css">
+
+    <title>Lessons | GDC</title>
+</head>
+
+<body data-page="lessons">
+    <a class="skip-link" href="#results">Skip to lessons</a>
+
+    <div data-gdc-navbar></div>
+
+    <header id="header" class="compact">
+        <h1 id="title">Lessons</h1>
+        <h1 id="subtitle">Every lesson GDC has ever taught</h1>
+    </header>
+
+    <main class="browse gdc-shell">
+
+        <!-- Engine rail — top-level sort, MakerWorld's category tabs -->
+        <div class="engine-rail" role="tablist" aria-label="Filter by game engine" data-engine-rail></div>
+
+        <div class="browse-body">
+
+            <!-- Left sidebar — sort by component -->
+            <button class="filter-toggle gdc-btn ghost small" type="button" data-filter-toggle
+                aria-expanded="false" aria-controls="filter-sidebar">
+                <i class="fa-solid fa-sliders" aria-hidden="true"></i> Filters
+            </button>
+
+            <aside class="sidebar gdc-card" id="filter-sidebar" data-sidebar>
+                <section class="filter-group">
+                    <h2 class="filter-title">Components</h2>
+                    <ul class="filter-list" data-component-list></ul>
+                </section>
+
+                <section class="filter-group">
+                    <h2 class="filter-title">Difficulty</h2>
+                    <ul class="filter-list" data-difficulty-list></ul>
+                </section>
+
+                <button class="gdc-btn ghost small full" type="button" data-clear-all>
+                    Clear all filters
+                </button>
+            </aside>
+
+            <section class="results" id="results">
+                <div class="toolbar">
+                    <div class="search-wrap">
+                        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+                        <label class="visually-hidden" for="lesson-search">Search lessons</label>
+                        <input class="search-input" id="lesson-search" type="search"
+                            placeholder="Search lessons, tags, topics…" autocomplete="off" data-search>
+                    </div>
+                    <div class="toolbar-right">
+                        <label class="visually-hidden" for="lesson-sort">Sort lessons</label>
+                        <select class="sort-select" id="lesson-sort" data-sort>
+                            <option value="featured">Sort: Curriculum order</option>
+                            <option value="az">Sort: A – Z</option>
+                            <option value="za">Sort: Z – A</option>
+                            <option value="difficulty">Sort: Easiest first</option>
+                            <option value="steps">Sort: Most parts</option>
+                            <option value="duration">Sort: Shortest first</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="active-filters" data-active-filters hidden></div>
+
+                <p class="result-count" data-count aria-live="polite"></p>
+
+                <div class="lesson-grid" data-grid></div>
+
+                <div class="empty-state" data-empty hidden>
+                    <i class="fa-regular fa-face-smile" aria-hidden="true"></i>
+                    <h2 data-empty-title>No lessons here yet</h2>
+                    <p data-empty-body></p>
+                    <button class="gdc-btn navy small" type="button" data-clear-all>Clear all filters</button>
+                </div>
+            </section>
+        </div>
+
+        <section class="browse-cta gdc-card">
+            <div>
+                <h2>Taught a lesson? Add it here.</h2>
+                <p>Build the page in the lesson editor, copy the generated object into
+                    <code>data/lessons.json</code>, and it shows up in this grid.</p>
+            </div>
+            <a class="gdc-btn navy" href="editor.html">
+                <i class="fa-solid fa-pen-ruler" aria-hidden="true"></i> Open the lesson editor
+            </a>
+        </section>
+    </main>
+
+    <footer data-gdc-footer></footer>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+    <script src="js/primary.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/render.js"></script>
+    <script src="js/browse.js"></script>
+</body>
+
+</html>

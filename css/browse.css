@@ -1,0 +1,364 @@
+/* ==========================================================================
+   browse.css — MakerWorld's models-page layout, GDC's palette.
+   Engine rail across the top, component filters down the left, card grid.
+   ========================================================================== */
+
+.browse {
+    padding-top: 32px;
+    padding-bottom: 64px;
+}
+
+/* --------------------------------------------------------- engine rail    */
+
+.engine-rail {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding-bottom: 14px;
+    margin-bottom: 22px;
+    scrollbar-width: thin;
+}
+
+.engine-tab {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    border: 2px solid var(--gdc-border);
+    background: var(--gdc-surface);
+    color: var(--gdc-ink-muted);
+    border-radius: 999px;
+    padding: 11px 22px;
+    font-family: var(--gdc-font-ui);
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s;
+}
+
+.engine-tab:hover {
+    border-color: var(--gdc-accent);
+    background: var(--gdc-accent-tint);
+    color: var(--gdc-navy);
+}
+
+.engine-tab.active {
+    background: var(--gdc-navy);
+    border-color: var(--gdc-navy);
+    color: #fff;
+}
+
+.engine-count {
+    display: inline-block;
+    min-width: 24px;
+    padding: 1px 7px;
+    border-radius: 999px;
+    background: var(--gdc-accent-tint);
+    color: var(--gdc-accent);
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+}
+
+.engine-tab.active .engine-count {
+    background: rgba(255, 255, 255, 0.22);
+    color: #fff;
+}
+
+.engine-tab.is-empty:not(.active) { opacity: 0.5; }
+
+/* ------------------------------------------------------------- layout     */
+
+.browse-body {
+    display: grid;
+    grid-template-columns: 264px minmax(0, 1fr);
+    gap: 26px;
+    align-items: start;
+}
+
+.filter-toggle { display: none; }
+
+.sidebar {
+    position: sticky;
+    top: calc(var(--gdc-nav-h) + 16px);
+    padding: 22px 20px;
+    max-height: calc(100vh - var(--gdc-nav-h) - 40px);
+    overflow-y: auto;
+}
+
+.filter-group { margin-bottom: 24px; }
+
+.filter-title {
+    font-family: var(--gdc-font-body);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--gdc-navy);
+    margin: 0 0 12px;
+}
+
+.filter-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.filter-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: var(--gdc-ink-muted);
+    border-radius: 8px;
+    padding: 9px 11px;
+    font-family: var(--gdc-font-ui);
+    font-size: 15px;
+    font-weight: 500;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.filter-option:hover {
+    background: var(--gdc-surface-sunken);
+    color: var(--gdc-navy);
+}
+
+.filter-option.active {
+    background: var(--gdc-accent-tint);
+    color: var(--gdc-navy);
+    font-weight: 700;
+}
+
+.filter-icon {
+    width: 18px;
+    text-align: center;
+    color: var(--gdc-accent);
+    flex: 0 0 auto;
+}
+
+.filter-label { flex: 1 1 auto; }
+
+.filter-count {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--gdc-ink-faint);
+    font-variant-numeric: tabular-nums;
+}
+
+.filter-option.active .filter-count { color: var(--gdc-accent); }
+
+/* An empty category is dimmed, never hidden — a zero count is information. */
+.filter-option.is-empty { opacity: 0.45; }
+
+/* ------------------------------------------------------------- toolbar    */
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 14px;
+}
+
+.search-wrap {
+    position: relative;
+    flex: 1 1 320px;
+    min-width: 0;
+}
+
+.search-wrap > .fa-magnifying-glass {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--gdc-ink-faint);
+    pointer-events: none;
+}
+
+.search-input,
+.sort-select {
+    width: 100%;
+    border: 2px solid var(--gdc-border);
+    border-radius: 999px;
+    background: var(--gdc-surface);
+    color: var(--gdc-ink);
+    font-family: var(--gdc-font-ui);
+    font-size: 15px;
+    padding: 12px 18px;
+    transition: border-color 0.2s;
+}
+
+.search-input { padding-left: 44px; }
+
+.search-input:focus,
+.sort-select:focus {
+    outline: none;
+    border-color: var(--gdc-accent);
+}
+
+.sort-select {
+    width: auto;
+    min-width: 210px;
+    cursor: pointer;
+    padding-right: 38px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23445668'%3E%3Cpath d='M8 11L3 6h10z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 14px;
+}
+
+/* ------------------------------------------------------- active filters   */
+
+.active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.active-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 0;
+    background: var(--gdc-navy);
+    color: #fff;
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-family: var(--gdc-font-ui);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.active-chip:hover { background: var(--gdc-accent); }
+
+.active-chip.clear-all {
+    background: transparent;
+    color: var(--gdc-accent);
+    border: 2px solid var(--gdc-border);
+}
+
+.active-chip.clear-all:hover {
+    background: var(--gdc-accent-tint);
+    border-color: var(--gdc-accent);
+}
+
+.result-count {
+    font-family: var(--gdc-font-ui);
+    font-size: 14px;
+    color: var(--gdc-ink-faint);
+    margin: 0 0 16px;
+}
+
+/* ---------------------------------------------------------- lesson grid   */
+
+.lesson-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(272px, 1fr));
+    gap: 22px;
+}
+
+/* --------------------------------------------------------- empty state    */
+
+.empty-state {
+    text-align: center;
+    padding: 64px 24px;
+    background: var(--gdc-surface);
+    border-radius: var(--gdc-radius);
+    box-shadow: var(--gdc-shadow-sm);
+}
+
+.empty-state i {
+    font-size: 44px;
+    color: var(--gdc-accent-soft);
+    margin-bottom: 14px;
+}
+
+.empty-state h2 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--gdc-navy);
+    margin: 0 0 10px;
+}
+
+.empty-state p {
+    font-family: var(--gdc-font-ui);
+    color: var(--gdc-ink-muted);
+    max-width: 52ch;
+    margin: 0 auto 20px;
+    line-height: 1.6;
+}
+
+/* ------------------------------------------------------------- bottom cta */
+
+.browse-cta {
+    margin-top: 40px;
+    padding: 26px 30px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 18px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.browse-cta h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--gdc-navy);
+    margin: 0 0 6px;
+}
+
+.browse-cta p {
+    font-family: var(--gdc-font-ui);
+    font-size: 15px;
+    color: var(--gdc-ink-muted);
+    margin: 0;
+    max-width: 62ch;
+}
+
+.browse-cta code {
+    background: var(--gdc-surface-sunken);
+    border-radius: 4px;
+    padding: 1px 6px;
+    color: var(--gdc-navy);
+    font-size: 13.5px;
+}
+
+/* ------------------------------------------------------------ responsive  */
+
+@media screen and (max-width: 900px) {
+    .browse-body { grid-template-columns: minmax(0, 1fr); }
+
+    .filter-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 14px;
+    }
+
+    .sidebar {
+        display: none;
+        position: static;
+        max-height: none;
+        margin-bottom: 18px;
+    }
+
+    .sidebar.open { display: block; }
+
+    .toolbar { flex-direction: column; align-items: stretch; }
+    /* In a column flex container flex-basis sets the HEIGHT — without this the
+       search box grows to 320px tall. */
+    .search-wrap { flex: 0 0 auto; }
+    .sort-select { width: 100%; }
+}
+
+@media screen and (max-width: 560px) {
+    .lesson-grid { grid-template-columns: minmax(0, 1fr); }
+    .browse-cta { flex-direction: column; align-items: flex-start; }
+}
