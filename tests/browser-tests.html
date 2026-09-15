@@ -27,8 +27,36 @@ function setVal(node, value) {
   node.value = value;
   node.dispatchEvent(new Event('input', { bubbles: true }));
 }
+function sleep(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
+function placeCaret(node, offset) {
+  node.focus();
+  var textNode = node.firstChild || node;
+  var len = (textNode.textContent || '').length;
+  var range = document.createRange();
+  range.setStart(textNode, Math.min(offset, len));
+  range.collapse(true);
+  var sel = window.getSelection();
+  sel.removeAllRanges();
+  sel.addRange(range);
+}
+function editableAt(path) {
+  return document.querySelector('.ed-canvas [data-ed-path="' + path + '"]');
+}
+function typeInto(node, text) {
+  node.textContent = text;
+  node.dispatchEvent(new Event('input', { bubbles: true }));
+}
+function pressKey(node, key, opts) {
+  opts = opts || {};
+  node.dispatchEvent(new KeyboardEvent('keydown', {
+    key: key, shiftKey: !!opts.shiftKey, bubbles: true, cancelable: true
+  }));
+}
+function currentExport() {
+  return JSON.parse(document.querySelector('.ed-output').value);
+}
 
-setTimeout(function () {
+setTimeout(async function () {
   try {
     /* ---- editor booted ---- */
     var output = document.querySelector('.ed-output');
@@ -111,6 +139,249 @@ setTimeout(function () {
       'https://www.youtube.com/embed/jlX_u2-iX6g');
     check('embed url passes through', GDCRender.toEmbedUrl('https://www.youtube.com/embed/jlX_u2-iX6g'),
       'https://www.youtube.com/embed/jlX_u2-iX6g');
+
+    /* ================================================================
+       Canvas: click-to-edit-in-place engine (ported from magmalabs.dev's
+       inline blog builder). Fresh starter draft for a clean baseline. */
+    btn('Load a starter template').click();
+
+    function canvasEl() { return document.querySelector('.ed-canvas'); }
+    ok('canvas container exists', !!canvasEl());
+    check('canvas drew one .ed-block per content card',
+      canvasEl().querySelectorAll('.ed-block').length, 9);
+    check('canvas drew a trailing insert rail after the last block',
+      canvasEl().querySelectorAll('.ed-inserter').length, 10);   /* one before each block + one trailing */
+
+    /* ---- typing into a canvas field flows into the draft (debounced) ---- */
+    var buildField = editableAt('f.0.text');   /* card 0: "What you'll build" */
+    ok('canvas rendered the first card\'s paragraph as editable', !!buildField);
+    typeInto(buildField, 'Typed straight into the canvas.');
+    await sleep(320);   /* scheduleExport() debounces 250ms */
+    check('debounced typing reached the export JSON',
+      currentExport().content[0].figures[0].text, 'Typed straight into the canvas.');
+
+    /* ---- Enter splits a paragraph at the caret, no debounce needed ---- */
+    var splitField = editableAt('f.0.text');
+    placeCaret(splitField, 5);   /* after "Typed" */
+    pressKey(splitField, 'Enter');
+    var afterSplit = currentExport();
+    check('Enter split the paragraph into two figures',
+      afterSplit.content[0].figures.length, 2);
+    check('first half kept the text before the caret',
+      afterSplit.content[0].figures[0].text, 'Typed');
+    check('second half kept the text after the caret (export trims it, like every paragraph)',
+      afterSplit.content[0].figures[1].text, 'straight into the canvas.');
+    ok('focus landed in the new second figure',
+      document.activeElement && document.activeElement.getAttribute('data-ed-path') === 'f.1.text');
+
+    /* Structural checks below read the CANVAS (draft.content, unfiltered) via
+       .ed-block class names, not currentExport() — a freshly inserted block
+       has no content yet, and serialize() correctly drops empty cards from
+       the export (same validation the old form editor always had). Export
+       and draft length only agree once every card has real content, so
+       structural moves must be verified against the canvas, not the export. */
+    function blockTypes() {
+      return Array.prototype.map.call(canvasEl().querySelectorAll('.ed-block'), function (b) {
+        return Array.prototype.filter.call(b.classList, function (c) {
+          return c.indexOf('ed-block--') === 0;
+        })[0].slice('ed-block--'.length);
+      });
+    }
+
+    /* ---- the insert rail + type picker adds a block at the right index -- */
+    var beforeInsert = blockTypes();
+    var firstInserterBtn = document.querySelector('.ed-inserter-btn[data-ed-index="0"]');
+    firstInserterBtn.click();
+    var picker = document.querySelector('.ed-picker');
+    ok('clicking an insert rail opens the type picker', !!picker);
+    var qaPick = picker.querySelector('.ed-picker-item[data-ed-type="qa"]');
+    qaPick.click();
+    check('picking a type inserts a block at that index',
+      blockTypes(), ['qa'].concat(beforeInsert));
+    ok('picker closes after picking', !document.querySelector('.ed-picker'));
+
+    /* ---- toolbar: move / duplicate / delete operate on the right card --- */
+    var qaBlock = canvasEl().querySelectorAll('.ed-block')[0];
+    qaBlock.querySelector('[data-ed-action="move-down"]').click();
+    check('move-down swapped the new block below its neighbor',
+      blockTypes(), [beforeInsert[0], 'qa'].concat(beforeInsert.slice(1)));
+
+    var movedBlock = canvasEl().querySelectorAll('.ed-block')[1];
+    movedBlock.querySelector('[data-ed-action="duplicate"]').click();
+    check('duplicate inserted a copy right after the original',
+      [blockTypes()[1], blockTypes()[2]], ['qa', 'qa']);
+    check('content grew by one from the duplicate',
+      blockTypes().length, beforeInsert.length + 2);
+
+    var duplicateBlock = canvasEl().querySelectorAll('.ed-block')[2];
+    duplicateBlock.querySelector('[data-ed-action="delete"]').click();
+    check('delete removed the duplicate and only the duplicate',
+      blockTypes(), [beforeInsert[0], 'qa'].concat(beforeInsert.slice(1)));
+
+    /* ---- block type switcher replaces the card, keeping its position ---- */
+    var firstTextIndex = blockTypes().indexOf('text');
+    var textBlock = canvasEl().querySelectorAll('.ed-block')[firstTextIndex];
+    var typeSelect = textBlock.querySelector('[data-ed-action="type"]');
+    typeSelect.value = 'callout';
+    typeSelect.dispatchEvent(new Event('change', { bubbles: true }));
+    check('changing the block type replaced the card in place',
+      blockTypes()[firstTextIndex], 'callout');
+
+    /* ---- Backspace on a genuinely empty block deletes it ---------------- */
+    var beforeBackspace = currentExport().content.length;
+    var lastInserter = document.querySelectorAll('.ed-inserter-btn');
+    lastInserter[lastInserter.length - 1].click();
+    document.querySelector('.ed-picker-item[data-ed-type="text"]').click();
+    /* Several earlier cards also address a figure as "f.0.text" — a global
+       editableAt() lookup would silently grab one of THOSE instead. The new
+       block is provably last in DOM order, so scope the query to it. */
+    var freshBlocks = canvasEl().querySelectorAll('.ed-block');
+    var freshBlock = freshBlocks[freshBlocks.length - 1];
+    var freshField = freshBlock.querySelector('[data-ed-path="f.0.text"]');
+    ok('a freshly inserted block is focused and editable', !!freshField);
+    /* Simulate "typed then deleted back to nothing" — the realistic trigger,
+       since a never-touched field still holds literal placeholder text. */
+    typeInto(freshField, 'x');
+    typeInto(freshField, '');
+    placeCaret(freshField, 0);
+    pressKey(freshField, 'Backspace');
+    check('Backspace on an empty block removed it',
+      currentExport().content.length, beforeBackspace);
+
+    /* ---- the "⋯ fields" popover reuses figureEditor() for non-text data - */
+    var imageBlock = Array.prototype.filter.call(canvasEl().querySelectorAll('.ed-block'), function (b) {
+      return b.className.indexOf('ed-block--image') !== -1;
+    })[0];
+    imageBlock.querySelector('[data-ed-action="fields"]').click();
+    var popover = document.querySelector('.ed-popover');
+    ok('the fields button opens a popover', !!popover);
+    ok('the popover reuses figureEditor rows', !!popover.querySelector('.ed-figure'));
+    var srcInput = Array.prototype.filter.call(popover.querySelectorAll('.ed-field'), function (f) {
+      return f.querySelector('.ed-field-label').textContent === 'Image path';
+    })[0].querySelector('input');
+    setVal(srcInput, 'imgs/lessons/from-popover.svg');
+    check('editing a popover field (image src) reaches the export',
+      currentExport().content.filter(function (c) { return c.type === 'image'; })[0].figures[0].src,
+      'imgs/lessons/from-popover.svg');
+    popover.querySelector('.ed-popover-close').click();
+    ok('the close button dismisses the popover', !document.querySelector('.ed-popover'));
+
+    /* ---- reordering the underlying array (drag calls the same primitive
+       the move-up/move-down buttons use — see moveItem in editor.js) ------ */
+    var beforeReorder = blockTypes();
+    var firstBlock = canvasEl().querySelectorAll('.ed-block')[0];
+    firstBlock.querySelector('[data-ed-action="move-down"]').click();
+    var afterReorder = blockTypes();
+    check('move-down reordering swaps exactly the first two entries',
+      [afterReorder[0], afterReorder[1]], [beforeReorder[1], beforeReorder[0]]);
+
+    /* ---- the canvas is the SAME renderer as the public page: escaping ---
+       still holds for content typed straight into a contenteditable node. */
+    btn('Load a starter template').click();
+    var hostileField = editableAt('f.0.text');
+    typeInto(hostileField, '<img src=x onerror=alert(1)>');
+    await sleep(320);
+    ok('typed markup is never parsed as HTML in the canvas',
+      canvasEl().querySelector('[data-ed-path="f.0.text"] img') === null);
+    check('typed markup is preserved as literal text',
+      editableAt('f.0.text').textContent, '<img src=x onerror=alert(1)>');
+
+    /* ================================================================
+       Regression: form fields (Metadata / Media / Files / the fallback
+       Content cards / the "⋯" popover) must NOT lose focus on every
+       keystroke. Each used to call a full rerenderAll()/rebuildBody() per
+       character, which tore the input out from under the user's cursor —
+       this checks document.activeElement is still the SAME node after
+       typing, not a freshly rebuilt lookalike. */
+    btn('Load a starter template').click();
+
+    function fieldByLabel(container, label) {
+      var wrap = Array.prototype.filter.call(container.querySelectorAll('.ed-field'), function (f) {
+        return f.querySelector('.ed-field-label').textContent === label;
+      })[0];
+      return wrap && wrap.querySelector('input, textarea, select');
+    }
+
+    /* ---- Title: the field most likely to be typed into character by
+       character, and the one with special "also update the ID" logic ---- */
+    var titleField = fieldByLabel(document, 'Title');
+    titleField.focus();
+    titleField.value = 'T';
+    titleField.dispatchEvent(new Event('input', { bubbles: true }));
+    ok('typing one character in Title keeps the SAME input focused',
+      document.activeElement === titleField);
+    titleField.value = 'Ty';
+    titleField.dispatchEvent(new Event('input', { bubbles: true }));
+    titleField.value = 'Typ';
+    titleField.dispatchEvent(new Event('input', { bubbles: true }));
+    ok('still the same node three keystrokes later', document.activeElement === titleField);
+    var idField = fieldByLabel(document, 'Lesson ID');
+    check('the ID field updated to match, without stealing focus',
+      idField.value, 'typ');
+
+    /* Once the ID has been hand-edited, Title no longer drives it — and
+       still must not disturb its own focus either way. */
+    idField.focus();
+    idField.value = 'my-custom-id';
+    idField.dispatchEvent(new Event('input', { bubbles: true }));
+    titleField.focus();
+    titleField.value = 'Typing More';
+    titleField.dispatchEvent(new Event('input', { bubbles: true }));
+    check('a hand-edited ID is not overwritten by further Title typing',
+      idField.value, 'my-custom-id');
+    ok('Title stays focused after a hand-edited-ID keystroke too',
+      document.activeElement === titleField);
+
+    /* ---- a media caption field (repeatable-row editor) ------------------ */
+    document.querySelector('.ed-content-panel').closest('.ed-fallback-panel').setAttribute('open', '');
+    var addMediaBtn = Array.prototype.filter.call(document.querySelectorAll('button'), function (b) {
+      return b.textContent.trim() === '+ Add media';
+    })[0];
+    addMediaBtn.click();
+    var captionField = fieldByLabel(document.querySelector('[data-lesson-editor]'), 'Caption');
+    ok('a media caption field exists after adding a media row', !!captionField);
+    captionField.focus();
+    captionField.value = 'A';
+    captionField.dispatchEvent(new Event('input', { bubbles: true }));
+    captionField.value = 'A c';
+    captionField.dispatchEvent(new Event('input', { bubbles: true }));
+    ok('the media caption field keeps focus across keystrokes',
+      document.activeElement === captionField);
+
+    /* ---- a fallback-form card's own text field (textarea, multi-line) --- */
+    var paragraphArea = Array.prototype.filter.call(
+      document.querySelectorAll('.ed-card-stack textarea'), function (t) {
+        return t.placeholder === 'Explain this step…';
+      })[0];
+    ok('the fallback form exposes the first text card\'s textarea', !!paragraphArea);
+    paragraphArea.focus();
+    var caretPos = 3;
+    paragraphArea.setSelectionRange(caretPos, caretPos);
+    /* execCommand('insertText'), not a raw .value= reassignment: assigning
+       .value directly always resets a textarea's caret to the end (a plain
+       browser quirk, unrelated to focus) — insertText is what a real
+       keystroke does, and is the honest way to check the caret survives. */
+    document.execCommand('insertText', false, 'X');
+    paragraphArea.dispatchEvent(new Event('input', { bubbles: true }));
+    ok('the fallback card textarea keeps focus after typing',
+      document.activeElement === paragraphArea);
+    check('the caret position in that textarea is preserved, not reset to the end',
+      paragraphArea.selectionStart, caretPos + 1);
+
+    /* ---- a field inside the "⋯" popover ---------------------------------- */
+    var imgBlock = Array.prototype.filter.call(canvasEl().querySelectorAll('.ed-block'), function (b) {
+      return b.className.indexOf('ed-block--image') !== -1;
+    })[0];
+    imgBlock.querySelector('[data-ed-action="fields"]').click();
+    var popoverSrc = fieldByLabel(document.querySelector('.ed-popover'), 'Image path');
+    ok('the popover exposes the image path field', !!popoverSrc);
+    popoverSrc.focus();
+    popoverSrc.value = 'imgs/x';
+    popoverSrc.dispatchEvent(new Event('input', { bubbles: true }));
+    popoverSrc.value = 'imgs/xy';
+    popoverSrc.dispatchEvent(new Event('input', { bubbles: true }));
+    ok('a popover field keeps focus across keystrokes',
+      document.activeElement === popoverSrc);
   } catch (err) {
     fails++;
     out.push('THREW  ' + err.message + '\n' + err.stack);

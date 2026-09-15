@@ -341,6 +341,7 @@
         matchesEngine: matchesEngine,
         engineBadge: engineBadge,
         estimateDuration: estimateDuration,
+        normalizeCard: normalizeCard,
         normalizeLesson: normalizeLesson,
         loadLessons: loadLessons,
         visibleLessons: visibleLessons,

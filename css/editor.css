@@ -44,6 +44,32 @@
     padding: 0;
 }
 
+/* The form editor is a fallback now that the canvas is the primary surface. */
+.ed-fallback-panel > summary {
+    cursor: pointer;
+    padding: 11px 14px;
+    border: 2px solid var(--gdc-border);
+    border-radius: var(--gdc-radius);
+    background: var(--gdc-surface);
+    color: var(--gdc-ink-muted);
+    font-family: var(--gdc-font-ui);
+    font-size: 13.5px;
+    font-weight: 600;
+    list-style: none;
+    transition: border-color 0.15s, color 0.15s;
+}
+
+.ed-fallback-panel > summary::-webkit-details-marker { display: none; }
+.ed-fallback-panel > summary::after { content: ' ▾'; }
+.ed-fallback-panel[open] > summary::after { content: ' ▴'; }
+
+.ed-fallback-panel > summary:hover {
+    border-color: var(--gdc-accent);
+    color: var(--gdc-navy);
+}
+
+.ed-fallback-panel[open] > summary { margin-bottom: 18px; }
+
 /* ------------------------------------------------------- section headers  */
 
 .ed-section-head { margin-bottom: 16px; }
@@ -260,18 +286,321 @@ textarea.ed-input { resize: vertical; }
 .gallery-placeholder i { font-size: 26px; }
 .gallery-placeholder p { margin: 0; }
 
-/* The preview is a real lesson page at ~60% scale, so it fits the column. */
-.ed-preview-lesson .lesson-title { font-size: 26px; }
-.ed-preview-lesson .lesson-summary { font-size: 14px; }
-.ed-preview-lesson .lesson-split { grid-template-columns: minmax(0, 1fr); gap: 16px; margin-top: 14px; }
-.ed-preview-lesson .files-panel { padding: 14px; }
-.ed-preview-lesson .files-title { font-size: 17px; }
-.ed-preview-lesson .lesson-article { padding: 20px 18px; margin-top: 16px; }
-.ed-preview-lesson .block-title { font-size: 19px; }
-.ed-preview-lesson .block-paragraph,
-.ed-preview-lesson .block-list { font-size: 14px; }
-.ed-preview-lesson .code-pre { font-size: 11.5px; }
-.ed-preview-lesson .gallery-nav { width: 32px; height: 32px; }
+/* Now the primary wide surface (not the 430px sidebar it used to sit in), so
+   the header renders near lesson.html's real proportions — just a touch
+   tighter, and the split collapses to one column sooner since this panel is
+   narrower than the full lesson page. */
+.ed-preview-lesson .lesson-title { font-size: 34px; }
+.ed-preview-lesson .lesson-split { grid-template-columns: minmax(0, 1fr); gap: 20px; margin-top: 16px; }
+.ed-preview-lesson .lesson-article { padding: 0; margin-top: 20px; box-shadow: none; background: transparent; }
+
+/* ── Canvas (in-place editor) ────────────────────────────────────────────
+   Scoped under .ed-canvas so none of this reaches the public lesson page,
+   which reuses the same .block-*/.lesson-article markup. */
+
+.ed-canvas {
+    position: relative;
+    background: var(--gdc-surface);
+    border-radius: var(--gdc-radius);
+    box-shadow: var(--gdc-shadow-card);
+    padding: 36px 40px;
+}
+
+.ed-canvas-empty {
+    font-family: var(--gdc-font-ui);
+    font-size: 14px;
+    color: var(--gdc-ink-faint);
+    font-style: italic;
+    text-align: center;
+    margin: 0;
+    padding: 20px 0;
+}
+
+.ed-block {
+    position: relative;
+    border-radius: 8px;
+    /* Color-only highlight, no shadow/scale — matches the site-wide rule
+       that a hover state changes color, never lifts or gains a shadow. */
+    outline: 2px solid transparent;
+    outline-offset: 4px;
+    transition: outline-color 0.15s;
+}
+
+.ed-block:hover,
+.ed-block:focus-within {
+    outline-color: var(--gdc-accent-soft);
+}
+
+.ed-block--broken {
+    padding: 14px;
+    border: 2px dashed rgb(214, 90, 90);
+    background: rgba(214, 90, 90, 0.06);
+}
+
+/* The toolbar sits above the block and only appears on hover/focus, so the
+   canvas reads as the finished lesson until you interact with it. */
+.ed-block-toolbar {
+    position: absolute;
+    top: -18px;
+    right: 4px;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    padding: 4px 6px;
+    border: 2px solid var(--gdc-border);
+    border-radius: 999px;
+    background: var(--gdc-surface);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.15s;
+}
+
+.ed-block:hover > .ed-block-toolbar,
+.ed-block:focus-within > .ed-block-toolbar,
+.ed-block-toolbar:focus-within {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.ed-block-handle {
+    cursor: grab;
+    padding: 0 4px;
+    color: var(--gdc-ink-faint);
+    line-height: 1;
+    user-select: none;
+}
+
+.ed-block-handle:active { cursor: grabbing; }
+
+.ed-block-type {
+    height: 24px;
+    max-width: 118px;
+    padding: 0 4px;
+    border: 1px solid var(--gdc-border);
+    border-radius: 999px;
+    background: var(--gdc-surface-sunken);
+    color: var(--gdc-ink);
+    font-family: var(--gdc-font-ui);
+    font-size: 11px;
+}
+
+.ed-block-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 24px;
+    padding: 0 6px;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--gdc-ink-muted);
+    font-size: 12px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.ed-block-btn:hover:not(:disabled),
+.ed-block-btn.is-active {
+    background: var(--gdc-accent-tint);
+    color: var(--gdc-navy);
+}
+
+.ed-block-btn:disabled { opacity: 0.35; cursor: default; }
+
+/* ── editable fields ────────────────────────────────────────────────────── */
+
+.ed-editable {
+    outline: none;
+    border-radius: 4px;
+    /* Shift+Enter stores a real newline; show it rather than collapsing it. */
+    white-space: pre-wrap;
+}
+
+.ed-editable:hover { background: var(--gdc-accent-tint); }
+
+.ed-editable:focus {
+    background: var(--gdc-accent-tint);
+    box-shadow: 0 0 0 2px var(--gdc-accent-soft);
+}
+
+.ed-field-placeholder {
+    color: var(--gdc-ink-faint);
+    font-style: italic;
+    opacity: 0.85;
+}
+
+/* An image/video with no source yet: a drop-target-looking tile instead of a
+   broken icon. */
+.ed-image-empty img {
+    min-height: 140px;
+    border: 2px dashed var(--gdc-border);
+    border-radius: 8px;
+    background: var(--gdc-surface-sunken);
+}
+
+/* ── insert rail ────────────────────────────────────────────────────────── */
+
+.ed-inserter {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 14px;
+    margin: -7px 0;
+    z-index: 2;
+}
+
+.ed-inserter-line {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--gdc-accent-soft);
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.ed-inserter-btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--gdc-border);
+    border-radius: 999px;
+    background: var(--gdc-surface);
+    color: var(--gdc-ink-muted);
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.ed-inserter:hover .ed-inserter-line,
+.ed-inserter:focus-within .ed-inserter-line,
+.ed-inserter.is-open .ed-inserter-line,
+.ed-inserter.is-drop-target .ed-inserter-line {
+    opacity: 1;
+}
+
+.ed-inserter:hover .ed-inserter-btn,
+.ed-inserter:focus-within .ed-inserter-btn,
+.ed-inserter.is-open .ed-inserter-btn {
+    opacity: 1;
+}
+
+.ed-inserter.is-drop-target .ed-inserter-line {
+    background: var(--gdc-navy);
+    height: 3px;
+}
+
+/* ── block picker ───────────────────────────────────────────────────────── */
+
+.ed-picker {
+    position: absolute;
+    top: 22px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 6;
+    padding: 8px;
+    border: 2px solid var(--gdc-border);
+    border-radius: var(--gdc-radius);
+    background: var(--gdc-surface);
+    box-shadow: var(--gdc-shadow-lift);
+}
+
+.ed-picker-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+    gap: 4px;
+}
+
+.ed-picker-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 10px;
+    border: 2px solid transparent;
+    border-radius: 8px;
+    background: transparent;
+    color: var(--gdc-ink);
+    font-family: var(--gdc-font-ui);
+    font-size: 12.5px;
+    text-align: left;
+    cursor: pointer;
+}
+
+.ed-picker-item i { color: var(--gdc-accent); }
+
+.ed-picker-item:hover {
+    background: var(--gdc-accent-tint);
+    border-color: var(--gdc-accent-soft);
+    color: var(--gdc-navy);
+}
+
+/* ── structured-field popover ───────────────────────────────────────────── */
+
+.ed-popover {
+    position: absolute;
+    z-index: 20;
+    width: min(440px, calc(100vw - 32px));
+    max-height: min(60vh, 560px);
+    overflow: auto;
+    border: 2px solid var(--gdc-border);
+    border-radius: var(--gdc-radius);
+    background: var(--gdc-surface);
+    box-shadow: var(--gdc-shadow-lift);
+}
+
+.ed-popover-header {
+    position: sticky;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--gdc-border);
+    background: var(--gdc-surface);
+    font-family: var(--gdc-font-ui);
+    color: var(--gdc-navy);
+}
+
+.ed-popover-close {
+    border: 0;
+    background: transparent;
+    color: var(--gdc-ink-muted);
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.ed-popover-close:hover { color: var(--gdc-navy); }
+
+.ed-popover-body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 14px;
+}
+
+/* ── canvas-only overrides of published-page styles ────────────────────── */
+
+/* The whole link card is an <a>; read it as text, not a link, while editing. */
+.ed-canvas .link-embed { cursor: text; }
+
+/* Copy button is inert while editing — no JS needed, just don't let it fire. */
+.ed-canvas .code-copy { opacity: 0.4; pointer-events: none; }
+
+.ed-canvas .qa-question { cursor: text; }
+
+/* Text selection during a drag would fight the drag itself. */
+.ed-dragging .ed-editable { user-select: none; }
+.ed-dragging .ed-block { cursor: grabbing; }
 
 /* ------------------------------------------------------------- add tray   */
 
@@ -433,12 +762,18 @@ textarea.ed-input { resize: vertical; }
 
 @media screen and (max-width: 1240px) {
     .ed-shell { grid-template-columns: minmax(0, 1fr); }
+    /* The canvas is already the first child of .ed-main, so DOM order alone
+       puts it above Export on narrow screens — no reordering needed. */
     .ed-side {
         position: static;
         max-height: none;
         overflow: visible;
-        order: -1;   /* export + preview above the form on narrow screens */
     }
+}
+
+@media screen and (max-width: 900px) {
+    .ed-canvas { padding: 24px 20px; }
+    .ed-block-toolbar { top: -14px; }
 }
 
 @media screen and (max-width: 700px) {

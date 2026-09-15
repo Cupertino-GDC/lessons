@@ -2,6 +2,224 @@
   "$comment": "Lesson catalog for gamedevclub.tech. Author new entries with editor.html.",
   "updatedAt": "2026-08-24",
   "lessons": [
+{
+  "id": "unity-input-system",
+  "visibility": true,
+  "title": "Unity Input System",
+  "summary": "One or two sentences describing what a member will have built by the end.",
+  "engines": [
+    "unity"
+  ],
+  "components": [
+    "mechanics"
+  ],
+  "difficulty": "beginner",
+  "series": "Developing your first game",
+  "thumbnail": "",
+  "author": "Alex Li",
+  "writtenAt": "2026-09-09",
+  "updatedAt": null,
+  "durationMinutes": null,
+  "tags": [
+    "example"
+  ],
+  "media": [],
+  "files": [],
+  "content": [
+    {
+      "type": "text",
+      "title": "What you'll build",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Move a player around the unity scene using arrow key controls"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Create a new Unity project",
+      "figures": [
+        {
+          "type": "list",
+          "items": [
+            "Click the blue \"New project\" button in the top right",
+            "Select \"Universal 2D\" as your template",
+            "Select GitHub as your version control provider",
+            "Click \"Create Project\""
+          ]
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-input-system/creating-a-project.png",
+          "alt": "The project creation page",
+          "caption": "The project creation page"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "The Unity UI",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "The Unity UI consists of a few main sections visualized by the image below"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "list",
+          "items": [
+            "Scene: This is where you edit what the game looks like. Takes up most of the screen.",
+            "Hierarchy: Displays the relationships between objects located in the scene. Usually located on the left side.",
+            "Inspector: Shows an individual object in high detail. Usually located on the right side.",
+            "Project: Shows project scripts, sprites, and other imported or created components. Usually located on the bottom.",
+            "Console: Shows messages, warnings, and errors logged during playtime. Usually located on the bottom."
+          ]
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-input-system/unity-screen.png",
+          "alt": "What the Unity UI looks like",
+          "caption": "What the Unity UI looks like"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Creating input actions",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Unity takes player input through the Player Input component. In order to use this component, we need to create an Input Actions object. To do this"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Right click in the Project tab",
+            "Click \"Create\"",
+            "Under the create menu, click \"Input Actions\""
+          ]
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-input-system/creating-input-actions.png",
+          "alt": "How to create input actions in Unity",
+          "caption": "How to create input actions in Unity"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Creating inputs",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "To create an individual input action, follow the instructions below"
+        },
+        {
+          "type": "paragraph",
+          "text": "3. Click \"+\" under \"Actions\""
+        },
+        {
+          "type": "paragraph",
+          "text": "4. Click \"Add Binding\""
+        },
+        {
+          "type": "paragraph",
+          "text": "5. Type the key you want to trigger the particular action"
+        },
+        {
+          "type": "paragraph",
+          "text": "6. Rename the action to what you want that key to do (such as \"Move left\" or \"Jump\")"
+        },
+        {
+          "type": "paragraph",
+          "text": "Repeat steps 4-5 to add multiple key triggers for the same action."
+        },
+        {
+          "type": "paragraph",
+          "text": "Repeat this process for every in game action you want to perform. This InputActions object can be edited at any time meaning you can go back and add new inputs after creating it."
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-input-system/create-input.png"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "MonoBehaviour",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "When you first open the script, you should see something like the code shown below"
+        },
+        {
+          "type": "paragraph",
+          "text": "MonoBehaviour is the base class used for attaching components to game objects. It includes several built in methods such as"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Awake: Executes once when the script is loaded",
+            "Start: Executes once after Awake just before Updates start",
+            "Update: Executes once every frame while the script is enabled",
+            "FixedUpdate: Executes at fixed intervals - useful for physics",
+            "LateUpdate: Executes once every frame after Update"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "code",
+      "figures": [
+        {
+          "code": "using UnityEngine;\n\npublic class PlayerMovement : MonoBehaviour\n{\n    // Start is called once before the first execution of Update after the MonoBehaviour is created\n    void Start()\n    {\n        \n    }\n\n    // Update is called once per frame\n    void Update()\n    {\n        \n    }\n}\n",
+          "filename": "PlayerMovement.cs",
+          "language": "C#"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "For more detailed information about MonoBehaviour, check out the official Unity documentation"
+        }
+      ]
+    },
+    {
+      "type": "link-embed",
+      "figures": [
+        {
+          "url": "https://docs.unity3d.com/6000.6/Documentation/ScriptReference/MonoBehaviour.html",
+          "label": "Unity Scripting API - MonoBehaviour"
+        }
+      ]
+    }
+  ]
+},
     {
       "id": "unity-platformer",
       "visibility": true,

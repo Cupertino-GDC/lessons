@@ -143,35 +143,68 @@
             .filter(Boolean);
     }
 
-    function serializeFigure(card, figure, warnings, label) {
+    /* Canvas-only placeholders. serializeFigure(..., { forCanvas: true }) never
+       drops a figure — an empty one renders a placeholder so it's still a real,
+       clickable DOM node in the canvas. The export path (opts omitted) is
+       completely unaffected: same drop-and-warn behavior as always. */
+    var ED_PLACEHOLDER = '—';
+    var ED_PLACEHOLDER_PARAGRAPH = 'Write something…';
+    var ED_EMPTY_IMAGE_SRC = 'data:image/svg+xml;utf8,' +
+        encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"/>');
+
+    function serializeFigure(card, figure, warnings, label, opts) {
+        opts = opts || {};
         var type = card.type;
+        figure = figure || {};
 
         if (type === 'text') {
             if (figure.type === 'list') {
+                if (opts.forCanvas) {
+                    /* Blank lines survive as placeholders so line index N always
+                       maps to the Nth <li> — export still drops them via
+                       splitLines. */
+                    var rawLines = String(figure.itemsText || '').split(/\r?\n/);
+                    var canvasItems = rawLines.map(function (l) { return l.trim() || ED_PLACEHOLDER; });
+                    if (!canvasItems.length) canvasItems = [ED_PLACEHOLDER];
+                    return { type: 'list', items: canvasItems };
+                }
                 var items = splitLines(figure.itemsText);
                 if (!items.length) { warnings.push(label + ': empty list removed.'); return null; }
                 return { type: 'list', items: items };
             }
             var text = D.cleanText(figure.text);
-            if (!text) { warnings.push(label + ': empty paragraph removed.'); return null; }
+            if (!text) {
+                if (opts.forCanvas) return { type: 'paragraph', text: ED_PLACEHOLDER_PARAGRAPH };
+                warnings.push(label + ': empty paragraph removed.');
+                return null;
+            }
             return { type: 'paragraph', text: text };
         }
 
         if (type === 'image') {
             var src = D.cleanText(figure.src);
-            if (!src) { warnings.push(label + ': image with no path removed.'); return null; }
-            if (!D.cleanText(figure.alt)) {
+            if (!src && !opts.forCanvas) {
+                warnings.push(label + ': image with no path removed.');
+                return null;
+            }
+            if (!opts.forCanvas && !D.cleanText(figure.alt)) {
                 warnings.push(label + ': image has no alt text — screen readers will skip it.');
             }
-            var img = { src: src };
+            var img = { src: src || (opts.forCanvas ? ED_EMPTY_IMAGE_SRC : src) };
             if (figure.alt) img.alt = D.cleanText(figure.alt);
             if (figure.caption) img.caption = D.cleanText(figure.caption);
             return img;
         }
 
         if (type === 'code') {
+            /* renderCodeBlock never drops a figure for empty code — it always
+               renders a (possibly empty) block — so forCanvas just skips the
+               warn-and-drop, it doesn't need a placeholder string. */
             var code = String(figure.code == null ? '' : figure.code);
-            if (!code.trim()) { warnings.push(label + ': empty code block removed.'); return null; }
+            if (!code.trim() && !opts.forCanvas) {
+                warnings.push(label + ': empty code block removed.');
+                return null;
+            }
             var snippet = { code: code };
             snippet.filename = D.cleanText(figure.filename) || 'snippet.txt';
             if (figure.language) snippet.language = D.cleanText(figure.language);
@@ -181,15 +214,25 @@
 
         if (type === 'video') {
             var vsrc = D.cleanText(figure.src);
-            if (!vsrc) { warnings.push(label + ': video with no URL removed.'); return null; }
+            if (!vsrc) {
+                /* renderVideoBlock drops a figure with a falsy src, so — unlike
+                   code — a placeholder URL is required, not just a skipped warning.
+                   about:blank is a valid, harmless iframe src. */
+                if (opts.forCanvas) vsrc = 'about:blank';
+                else { warnings.push(label + ': video with no URL removed.'); return null; }
+            }
             var video = { src: vsrc };
             if (figure.caption) video.caption = D.cleanText(figure.caption);
             return video;
         }
 
         if (type === 'callout') {
+            /* renderCalloutBlock never drops a figure for empty text either. */
             var ctext = D.cleanText(figure.text);
-            if (!ctext) { warnings.push(label + ': empty callout removed.'); return null; }
+            if (!ctext && !opts.forCanvas) {
+                warnings.push(label + ': empty callout removed.');
+                return null;
+            }
             var callout = { tone: figure.tone || 'note', text: ctext };
             if (figure.title) callout.title = D.cleanText(figure.title);
             return callout;
@@ -197,8 +240,11 @@
 
         if (type === 'link-embed') {
             var url = D.cleanText(figure.url);
-            if (!url) { warnings.push(label + ': link with no URL removed.'); return null; }
-            var link = { url: url };
+            if (!url && !opts.forCanvas) {
+                warnings.push(label + ': link with no URL removed.');
+                return null;
+            }
+            var link = { url: url || '#' };
             if (figure.label) link.label = D.cleanText(figure.label);
             if (figure.site) link.site = D.cleanText(figure.site);
             if (figure.description) link.description = D.cleanText(figure.description);
@@ -207,13 +253,20 @@
 
         if (type === 'qa') {
             var question = D.cleanText(figure.question);
-            if (!question) { warnings.push(label + ': Q&A with no question removed.'); return null; }
+            if (!question) {
+                if (opts.forCanvas) return { question: ED_PLACEHOLDER, answer: D.cleanText(figure.answer) };
+                warnings.push(label + ': Q&A with no question removed.');
+                return null;
+            }
             return { question: question, answer: D.cleanText(figure.answer) };
         }
 
         if (type === 'download') {
             var ref = Number(figure.fileRef);
             if (isNaN(ref) || !draft.files[ref]) {
+                /* renderDownloadBlock already degrades a bad fileRef to a
+                   friendly "no files linked" line — nothing to placeholder. */
+                if (opts.forCanvas) return { fileRef: isNaN(ref) ? -1 : ref };
                 warnings.push(label + ': download points at a file that no longer exists.');
                 return null;
             }
@@ -223,7 +276,37 @@
         return null;
     }
 
-    function serialize(warnings) {
+    /* Serializes one draft card. Shared by the export path (serialize()) and
+       the canvas, which renders each card individually so it can keep a handle
+       on which DOM belongs to which draft card. */
+    function serializeCard(card, index, warnings, opts) {
+        opts = opts || {};
+        var label = 'Block ' + (index + 1) + ' (' + card.type + ')';
+        var figures = (card.figures || [])
+            .map(function (figure) { return serializeFigure(card, figure, warnings, label, opts); })
+            .filter(Boolean);
+
+        if (!figures.length) {
+            if (opts.forCanvas) {
+                /* Every type's forCanvas branch tolerates a missing figure —
+                   this keeps a structurally-empty card from vanishing entirely. */
+                var placeholder = serializeFigure(card, null, [], label, opts);
+                if (placeholder) figures.push(placeholder);
+            } else {
+                warnings.push(label + ': has no content, removed from the export.');
+                return null;
+            }
+        }
+
+        var result = { type: card.type };
+        if (D.cleanText(card.title)) result.title = D.cleanText(card.title);
+        if (card.type === 'image' && card.layout === 'grid') result.layout = 'grid';
+        result.figures = figures;
+        return result;
+    }
+
+    function serialize(warnings, opts) {
+        opts = opts || {};
         var id = D.slugify(draft.id || draft.title);
         if (!id) warnings.push('Metadata: this lesson needs an ID (or a title to derive one from).');
         if (!D.cleanText(draft.title)) warnings.push('Metadata: this lesson needs a title.');
@@ -284,19 +367,7 @@
         }).filter(Boolean);
 
         out.content = draft.content.map(function (card, index) {
-            var label = 'Block ' + (index + 1) + ' (' + card.type + ')';
-            var figures = card.figures
-                .map(function (figure) { return serializeFigure(card, figure, warnings, label); })
-                .filter(Boolean);
-            if (!figures.length) {
-                warnings.push(label + ': has no content, removed from the export.');
-                return null;
-            }
-            var result = { type: card.type };
-            if (D.cleanText(card.title)) result.title = D.cleanText(card.title);
-            if (card.type === 'image' && card.layout === 'grid') result.layout = 'grid';
-            result.figures = figures;
-            return result;
+            return serializeCard(card, index, warnings, opts);
         }).filter(Boolean);
 
         if (!out.content.length) {
@@ -398,6 +469,16 @@
     var LANGUAGES = ['C#', 'GDScript', 'JavaScript', 'Python', 'HLSL/ShaderLab',
         'JSON', 'Bash', 'C++', 'Java', 'Plain text'];
 
+    /* `rerender` is a STRUCTURAL rebuild (rerenderAll, or the "⋯" popover's
+       rebuildBody) — reserved for changes that alter which fields are on
+       screen (add/remove/reorder a figure, or a type toggle that swaps the
+       field set). Every plain value field below calls refresh() directly
+       instead: it updates the export + canvas without tearing down this
+       form, so the input the user is actively typing in is never destroyed
+       and re-created out from under their cursor. Calling `rerender` on
+       every keystroke was exactly that bug — see cardEditor's block-heading
+       field for the same fix, and renderMetadata's Title field for the one
+       case that needed a real (but now targeted) alternative. */
     function figureEditor(card, figure, index, rerender) {
         var box = el('div', 'ed-figure');
 
@@ -421,6 +502,8 @@
         var body = el('div', 'ed-figure-body');
 
         if (card.type === 'text') {
+            /* The only genuinely structural field here: paragraph vs list
+               swaps the field set below it. */
             body.appendChild(field('Figure type', selectInput(figure.type || 'paragraph', [
                 { value: 'paragraph', label: 'Paragraph' },
                 { value: 'list', label: 'List' }
@@ -428,53 +511,53 @@
 
             if (figure.type === 'list') {
                 body.appendChild(field('List items',
-                    textArea(figure.itemsText, function (v) { figure.itemsText = v; rerender(); },
+                    textArea(figure.itemsText, function (v) { figure.itemsText = v; refresh(); },
                         5, 'One item per line'),
                     'One item per line.'));
             } else {
                 body.appendChild(field('Paragraph text',
-                    textArea(figure.text, function (v) { figure.text = v; rerender(); },
+                    textArea(figure.text, function (v) { figure.text = v; refresh(); },
                         4, 'Explain this step…')));
             }
         }
 
         if (card.type === 'image') {
             body.appendChild(field('Image path',
-                textInput(figure.src, function (v) { figure.src = v; rerender(); },
+                textInput(figure.src, function (v) { figure.src = v; refresh(); },
                     'imgs/lessons/my-lesson/step-1.png')));
             body.appendChild(field('Alt text',
-                textInput(figure.alt, function (v) { figure.alt = v; rerender(); },
+                textInput(figure.alt, function (v) { figure.alt = v; refresh(); },
                     'What the screenshot shows'),
                 'Required for screen readers. Describe what a reader would miss.'));
             body.appendChild(field('Caption',
-                textInput(figure.caption, function (v) { figure.caption = v; rerender(); },
+                textInput(figure.caption, function (v) { figure.caption = v; refresh(); },
                     'Optional caption shown under the image')));
         }
 
         if (card.type === 'code') {
             var row = el('div', 'ed-row');
             row.appendChild(field('Filename',
-                textInput(figure.filename, function (v) { figure.filename = v; rerender(); },
+                textInput(figure.filename, function (v) { figure.filename = v; refresh(); },
                     'PlayerMovement.cs')));
             row.appendChild(field('Language', selectInput(figure.language || 'C#',
                 LANGUAGES.map(function (l) { return { value: l, label: l }; }),
-                function (v) { figure.language = v; rerender(); })));
+                function (v) { figure.language = v; refresh(); })));
             body.appendChild(row);
             body.appendChild(field('Code',
-                textArea(figure.code, function (v) { figure.code = v; rerender(); },
+                textArea(figure.code, function (v) { figure.code = v; refresh(); },
                     12, 'void Update() { ... }', true)));
             body.appendChild(field('Caption',
-                textInput(figure.caption, function (v) { figure.caption = v; rerender(); },
+                textInput(figure.caption, function (v) { figure.caption = v; refresh(); },
                     'Optional note under the code')));
         }
 
         if (card.type === 'video') {
             body.appendChild(field('Video URL',
-                textInput(figure.src, function (v) { figure.src = v; rerender(); },
+                textInput(figure.src, function (v) { figure.src = v; refresh(); },
                     'https://www.youtube.com/watch?v=…'),
                 'A normal YouTube or Vimeo link works — it is converted to an embed.'));
             body.appendChild(field('Caption',
-                textInput(figure.caption, function (v) { figure.caption = v; rerender(); },
+                textInput(figure.caption, function (v) { figure.caption = v; refresh(); },
                     'Optional caption')));
         }
 
@@ -483,38 +566,38 @@
                 { value: 'note', label: 'Note' },
                 { value: 'tip', label: 'Tip' },
                 { value: 'warn', label: 'Warning' }
-            ], function (v) { figure.tone = v; rerender(); })));
+            ], function (v) { figure.tone = v; refresh(); })));
             body.appendChild(field('Heading',
-                textInput(figure.title, function (v) { figure.title = v; rerender(); },
+                textInput(figure.title, function (v) { figure.title = v; refresh(); },
                     'Optional bold heading')));
             body.appendChild(field('Text',
-                textArea(figure.text, function (v) { figure.text = v; rerender(); },
+                textArea(figure.text, function (v) { figure.text = v; refresh(); },
                     3, 'Watch out for…')));
         }
 
         if (card.type === 'link-embed') {
             body.appendChild(field('URL',
-                textInput(figure.url, function (v) { figure.url = v; rerender(); },
+                textInput(figure.url, function (v) { figure.url = v; refresh(); },
                     'https://docs.google.com/presentation/…')));
             var linkRow = el('div', 'ed-row');
             linkRow.appendChild(field('Label',
-                textInput(figure.label, function (v) { figure.label = v; rerender(); },
+                textInput(figure.label, function (v) { figure.label = v; refresh(); },
                     'Part 1 — Unity basics')));
             linkRow.appendChild(field('Site',
-                textInput(figure.site, function (v) { figure.site = v; rerender(); },
+                textInput(figure.site, function (v) { figure.site = v; refresh(); },
                     'Google Slides')));
             body.appendChild(linkRow);
             body.appendChild(field('Description',
-                textInput(figure.description, function (v) { figure.description = v; rerender(); },
+                textInput(figure.description, function (v) { figure.description = v; refresh(); },
                     'Optional one-liner')));
         }
 
         if (card.type === 'qa') {
             body.appendChild(field('Question',
-                textInput(figure.question, function (v) { figure.question = v; rerender(); },
+                textInput(figure.question, function (v) { figure.question = v; refresh(); },
                     'Why is my character falling through the floor?')));
             body.appendChild(field('Answer',
-                textArea(figure.answer, function (v) { figure.answer = v; rerender(); },
+                textArea(figure.answer, function (v) { figure.answer = v; refresh(); },
                     3, 'Because…')));
         }
 
@@ -527,7 +610,7 @@
             body.appendChild(field('Linked file',
                 selectInput(figure.fileRef, options, function (v) {
                     figure.fileRef = v === '' ? '' : Number(v);
-                    rerender();
+                    refresh();
                 }),
                 'Points at an entry in the Files list above, so each URL lives in one place.'));
         }
@@ -582,7 +665,7 @@
         var body = el('div', 'ed-card-body');
 
         body.appendChild(field('Block heading',
-            textInput(card.title, function (v) { card.title = v; rerender(); },
+            textInput(card.title, function (v) { card.title = v; refresh(); },
                 'Optional — becomes a section title'),
             'Headed blocks get a progress checkbox and a table-of-contents entry.'));
 
@@ -590,7 +673,7 @@
             body.appendChild(field('Layout', selectInput(card.layout || 'single', [
                 { value: 'single', label: 'Single column' },
                 { value: 'grid', label: 'Grid' }
-            ], function (v) { card.layout = v; rerender(); })));
+            ], function (v) { card.layout = v; refresh(); })));
         }
 
         var figures = el('div', 'ed-figures');
@@ -620,6 +703,951 @@
         return value;
     }
 
+    /* ============================================== canvas: path addressing */
+    /*
+       The canvas is the click-to-edit-in-place engine that replaced the old
+       read-only preview, ported from magmalabs.dev's inline blog-builder
+       (commit b0ced1e6, 2026-08-25). The mechanism: every content block is
+       rendered through the exact same GDCRender functions the public lesson
+       page uses (serialized with { forCanvas: true } so an empty figure still
+       renders a placeholder instead of vanishing), then an "annotator" per
+       block type walks that real DOM and marks specific nodes contenteditable
+       with a data-ed-path address back into the draft. One delegated listener
+       on the canvas root resolves data-ed-path -> draft card -> field and
+       writes typed text straight into the draft — no form field ever exists
+       for plain text. Fields that would corrupt under contenteditable (image
+       src, code body, URLs) stay in a popover that reuses figureEditor()
+       verbatim.
+
+       Editable nodes carry data-ed-path resolved against the *draft* card:
+         title            -> card.title
+         f.<n>.<field>    -> card.figures[n][field]
+         f.<n>.items.<r>  -> line r of card.figures[n].itemsText
+    */
+
+    function splitLinesRaw(value) {
+        return String(value || '').split(/\r?\n/);
+    }
+
+    function edGetPath(card, path) {
+        if (!card || !path) return '';
+        var parts = String(path).split('.');
+        if (parts[0] === 'title') return card.title || '';
+        if (parts[0] !== 'f') return '';
+
+        var figure = (card.figures || [])[Number(parts[1])];
+        if (!figure) return '';
+
+        if (parts[2] === 'items') {
+            return splitLinesRaw(figure.itemsText)[Number(parts[3])] || '';
+        }
+
+        var value = figure[parts[2]];
+        return value == null ? '' : String(value);
+    }
+
+    function edSetPath(card, path, value) {
+        if (!card || !path) return;
+        var parts = String(path).split('.');
+        if (parts[0] === 'title') { card.title = value; return; }
+        if (parts[0] !== 'f') return;
+
+        var figure = (card.figures || [])[Number(parts[1])];
+        if (!figure) return;
+
+        if (parts[2] === 'items') {
+            var items = splitLinesRaw(figure.itemsText);
+            var idx = Number(parts[3]);
+            while (items.length <= idx) items.push('');
+            items[idx] = value;
+            figure.itemsText = items.join('\n');
+            return;
+        }
+
+        figure[parts[2]] = value;
+    }
+
+    /* ---------------------------------------------------- caret + editable */
+
+    var edEditableMode = '';
+    function getEditableMode() {
+        if (edEditableMode) return edEditableMode;
+        var probe = document.createElement('div');
+        try {
+            probe.contentEditable = 'plaintext-only';
+            edEditableMode = probe.contentEditable === 'plaintext-only' ? 'plaintext-only' : 'true';
+        } catch (err) {
+            edEditableMode = 'true';
+        }
+        return edEditableMode;
+    }
+
+    /* Caret as a plain character offset into the element's text, so it
+       survives the element being destroyed and rebuilt by a re-render. */
+    function edCaretOffset(node) {
+        var selection = window.getSelection();
+        if (!selection || !selection.rangeCount || !node.contains(selection.focusNode)) return null;
+        var range = document.createRange();
+        range.selectNodeContents(node);
+        range.setEnd(selection.focusNode, selection.focusOffset);
+        return range.toString().length;
+    }
+
+    function edSetCaret(node, offset) {
+        if (!node) return;
+        node.focus();
+
+        var walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT);
+        var remaining = Math.max(0, offset);
+        var target = null;
+
+        while (walker.nextNode()) {
+            var length = walker.currentNode.textContent.length;
+            if (remaining <= length) { target = walker.currentNode; break; }
+            remaining -= length;
+        }
+
+        var range = document.createRange();
+        if (target) {
+            range.setStart(target, remaining);
+            range.collapse(true);
+        } else {
+            range.selectNodeContents(node);
+            range.collapse(false);
+        }
+
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+    }
+
+    function edMakeEditable(node, path, card, opts) {
+        if (!node) return null;
+        opts = opts || {};
+        node.setAttribute('data-ed-path', path);
+        node.setAttribute('contenteditable', getEditableMode());
+        node.classList.add('ed-editable');
+        if (opts.singleLine) node.setAttribute('data-ed-single-line', '1');
+
+        if (!D.cleanText(edGetPath(card, path))) {
+            node.classList.add('ed-field-placeholder');
+            node.setAttribute('data-ed-empty', '1');
+            if (!D.cleanText(node.textContent) && opts.placeholder) node.textContent = opts.placeholder;
+        }
+        return node;
+    }
+
+    /* Optional sub-nodes (an empty caption, a title the renderer only emits
+       when non-empty) are only in the DOM when the real renderer would draw
+       them — this creates the missing one so it has something to click.
+       `place` is "prepend", a sibling element to insert after, or omitted
+       to append. */
+    function edEnsureNode(parent, selector, tagName, className, place) {
+        var node = parent.querySelector(selector);
+        if (node) return node;
+
+        node = document.createElement(tagName);
+        if (className) node.className = className;
+
+        if (place === 'prepend') parent.prepend(node);
+        else if (place && place.nodeType === 1) place.after(node);
+        else parent.appendChild(node);
+        return node;
+    }
+
+    /* ------------------------------------------------------- annotators   */
+    /* Each walks the DOM renderBlock() produced (with forCanvas placeholders
+       baked in) and wires the nodes that hold plain text. Anything that would
+       corrupt under contenteditable — image/video src, code body, URLs, the
+       download block's resolved file — stays in the "⋯ fields" popover. */
+
+    var ED_ANNOTATORS = {
+        text: function (section, card) {
+            var nodes = section.querySelectorAll(':scope > .block-paragraph, :scope > .block-list');
+            (card.figures || []).forEach(function (figure, n) {
+                var node = nodes[n];
+                if (!node) return;
+
+                if (figure.type === 'list') {
+                    Array.prototype.forEach.call(node.children, function (li, r) {
+                        edMakeEditable(li, 'f.' + n + '.items.' + r, card, {
+                            singleLine: true, placeholder: 'List item'
+                        });
+                    });
+                    return;
+                }
+
+                edMakeEditable(node, 'f.' + n + '.text', card, { placeholder: ED_PLACEHOLDER_PARAGRAPH });
+            });
+        },
+
+        image: function (section, card) {
+            var figures = section.querySelectorAll(':scope > .block-images > .block-figure');
+            (card.figures || []).forEach(function (figure, n) {
+                var node = figures[n];
+                if (!node) return;
+                if (!D.cleanText(figure.src)) node.classList.add('ed-image-empty');
+
+                var caption = edEnsureNode(node, ':scope > figcaption', 'figcaption', null);
+                edMakeEditable(caption, 'f.' + n + '.caption', card, {
+                    singleLine: true, placeholder: 'Caption'
+                });
+            });
+        },
+
+        code: function (section, card) {
+            var blocks = section.querySelectorAll(':scope > .block-code-stack > .code-block');
+            (card.figures || []).forEach(function (figure, n) {
+                var node = blocks[n];
+                if (!node) return;
+                var filename = node.querySelector(':scope > .code-bar > .code-filename');
+                edMakeEditable(filename, 'f.' + n + '.filename', card, {
+                    singleLine: true, placeholder: 'filename'
+                });
+            });
+        },
+
+        video: function (section, card) {
+            var figures = section.querySelectorAll(':scope > .block-video-stack > .block-figure.video');
+            (card.figures || []).forEach(function (figure, n) {
+                var node = figures[n];
+                if (!node) return;
+                var caption = edEnsureNode(node, ':scope > figcaption', 'figcaption', null);
+                edMakeEditable(caption, 'f.' + n + '.caption', card, {
+                    singleLine: true, placeholder: 'Caption'
+                });
+            });
+        },
+
+        callout: function (section, card) {
+            var boxes = section.querySelectorAll(':scope > .callout');
+            (card.figures || []).forEach(function (figure, n) {
+                var node = boxes[n];
+                if (!node) return;
+                var body = node.querySelector(':scope > .callout-body');
+                if (!body) return;
+                var title = edEnsureNode(body, ':scope > .callout-title', 'strong', 'callout-title', 'prepend');
+                var text = body.querySelector(':scope > p');
+                edMakeEditable(title, 'f.' + n + '.title', card, {
+                    singleLine: true, placeholder: 'Optional heading'
+                });
+                edMakeEditable(text, 'f.' + n + '.text', card, { placeholder: 'Watch out for…' });
+            });
+        },
+
+        'link-embed': function (section, card) {
+            var links = section.querySelectorAll(':scope > .block-links > .link-embed');
+            (card.figures || []).forEach(function (figure, n) {
+                var node = links[n];
+                if (!node) return;
+                var body = node.querySelector(':scope > .link-embed-body');
+                if (!body) return;
+                var label = body.querySelector(':scope > .link-embed-label');
+                var site = edEnsureNode(body, ':scope > .link-embed-site', 'span', 'link-embed-site');
+                var desc = edEnsureNode(body, ':scope > .link-embed-desc', 'span', 'link-embed-desc');
+                edMakeEditable(label, 'f.' + n + '.label', card, {
+                    singleLine: true, placeholder: 'Link title'
+                });
+                edMakeEditable(site, 'f.' + n + '.site', card, { singleLine: true, placeholder: 'Source' });
+                edMakeEditable(desc, 'f.' + n + '.description', card, { placeholder: 'Description' });
+            });
+        },
+
+        qa: function (section, card) {
+            var items = section.querySelectorAll(':scope > .block-qa > .qa-item');
+            (card.figures || []).forEach(function (figure, n) {
+                var node = items[n];
+                if (!node) return;
+                node.open = true;   /* stay open while editing so the answer isn't hidden */
+                var question = node.querySelector(':scope > .qa-question');
+                var answer = node.querySelector(':scope > .qa-answer');
+                edMakeEditable(question, 'f.' + n + '.question', card, {
+                    singleLine: true, placeholder: 'Question'
+                });
+                edMakeEditable(answer, 'f.' + n + '.answer', card, { placeholder: 'Answer' });
+            });
+        }
+
+        /* No `download` annotator: a resolved file row has nothing meaningful
+           to type inline — editing it is entirely the "⋯ fields" popover's job. */
+    };
+
+    function blockTypeLabel(type) {
+        var meta = D.BLOCK_TYPES.filter(function (b) { return b.key === type; })[0];
+        return meta ? meta.label : type;
+    }
+
+    function annotateBlock(section, card) {
+        if (!section || !card) return;
+
+        var head = edEnsureNode(section, ':scope > .block-head', 'div', 'block-head', 'prepend');
+        var heading = edEnsureNode(head, ':scope > .block-title', 'h2', 'block-title');
+        edMakeEditable(heading, 'title', card, {
+            singleLine: true,
+            placeholder: blockTypeLabel(card.type) + ' heading'
+        });
+
+        var annotate = ED_ANNOTATORS[card.type];
+        if (annotate) annotate(section, card);
+    }
+
+    /* Renders one draft card through the real renderer: serialize with
+       forCanvas -> normalizeCard -> renderBlock. This is the direct extension
+       of the project's one shared-renderer rule — now the editing surface
+       itself is that renderer, not just a read-only preview of it. */
+    function renderCanvasCard(builderCard, index) {
+        var rawCard = serializeCard(builderCard, index, [], { forCanvas: true });
+        if (!rawCard) return null;
+        var normalized = D.normalizeCard(rawCard);
+        if (!normalized) return null;
+        /* download blocks resolve fileRef against a lesson-shaped files[]. */
+        return R.renderBlock(normalized, index, { files: draft.files }, {});
+    }
+
+    /* ---------------------------------------------------------- chrome    */
+
+    function createBlockButton(action, glyph, title, disabled) {
+        var btn = el('button', 'ed-block-btn');
+        btn.type = 'button';
+        btn.setAttribute('data-ed-action', action);
+        btn.setAttribute('aria-label', title);
+        btn.title = title;
+        btn.textContent = glyph;
+        btn.disabled = !!disabled;
+        return btn;
+    }
+
+    function createBlockToolbar(card, index, total) {
+        var bar = el('div', 'ed-block-toolbar');
+        bar.setAttribute('data-ed-action', 'toolbar');
+
+        var handle = el('span', 'ed-block-handle');
+        handle.setAttribute('data-ed-action', 'drag');
+        handle.setAttribute('draggable', 'true');
+        handle.title = 'Drag to reorder';
+        handle.setAttribute('aria-hidden', 'true');
+        handle.textContent = '⠿';
+        bar.appendChild(handle);
+
+        var typeSelect = el('select', 'ed-block-type');
+        typeSelect.setAttribute('data-ed-action', 'type');
+        typeSelect.setAttribute('aria-label', 'Block type');
+        D.BLOCK_TYPES.forEach(function (block) {
+            var opt = el('option', null, block.label);
+            opt.value = block.key;
+            if (block.key === card.type) opt.selected = true;
+            typeSelect.appendChild(opt);
+        });
+        bar.appendChild(typeSelect);
+
+        if (card.type === 'text') {
+            bar.appendChild(createBlockButton('toggle-list', '•—', 'Paragraph or bullet list'));
+        }
+
+        bar.appendChild(createBlockButton('add-figure', '+', 'Add ' + blockTypeLabel(card.type).toLowerCase() + ' item'));
+        bar.appendChild(createBlockButton('move-up', '↑', 'Move up', index === 0));
+        bar.appendChild(createBlockButton('move-down', '↓', 'Move down', index === total - 1));
+        bar.appendChild(createBlockButton('fields', '⋯', 'Edit fields'));
+        bar.appendChild(createBlockButton('duplicate', '⧉', 'Duplicate block'));
+        bar.appendChild(createBlockButton('delete', '✕', 'Delete block'));
+
+        return bar;
+    }
+
+    function createInserter(index) {
+        var rail = el('div', 'ed-inserter');
+        rail.setAttribute('data-ed-index', String(index));
+
+        var line = el('span', 'ed-inserter-line');
+        line.setAttribute('aria-hidden', 'true');
+        rail.appendChild(line);
+
+        var btn = el('button', 'ed-inserter-btn');
+        btn.type = 'button';
+        btn.setAttribute('data-ed-action', 'insert');
+        btn.setAttribute('data-ed-index', String(index));
+        btn.title = 'Insert a block here';
+        btn.setAttribute('aria-label', 'Insert a block here');
+        btn.textContent = '+';
+        rail.appendChild(btn);
+
+        return rail;
+    }
+
+    function createPicker(index) {
+        var picker = el('div', 'ed-picker');
+        picker.setAttribute('data-ed-action', 'picker');
+
+        var grid = el('div', 'ed-picker-grid');
+        D.BLOCK_TYPES.forEach(function (block) {
+            var btn = el('button', 'ed-picker-item');
+            btn.type = 'button';
+            btn.setAttribute('data-ed-action', 'pick');
+            btn.setAttribute('data-ed-type', block.key);
+            btn.setAttribute('data-ed-index', String(index));
+            btn.appendChild(icon(block.icon));
+            btn.appendChild(document.createTextNode(' ' + block.label));
+            grid.appendChild(btn);
+        });
+        picker.appendChild(grid);
+        return picker;
+    }
+
+    /* -------------------------------------------------------- the canvas  */
+    /* Title/summary/gallery/files-panel stay static, driven by the Metadata/
+       Media/Files sections exactly as before — only the content body becomes
+       the interactive canvas, matching magmalabs' own split (they don't
+       inline-edit the post title or citations either). */
+
+    function renderCanvas(lesson) {
+        refs.preview.textContent = '';
+
+        if (!lesson) {
+            refs.preview.appendChild(el('p', 'ed-empty',
+                'Add a title to see the lesson preview.'));
+            return;
+        }
+
+        var wrap = el('div', 'ed-preview-lesson');
+        wrap.appendChild(el('h1', 'lesson-title', lesson.title));
+        if (lesson.summary) wrap.appendChild(el('p', 'lesson-summary', lesson.summary));
+
+        var split = el('div', 'lesson-split');
+        var left = el('div', 'lesson-split-left');
+        left.appendChild(R.renderGallery(lesson));
+        var right = el('div', 'lesson-split-right');
+        right.appendChild(R.renderFilesPanel(lesson));
+        split.appendChild(left);
+        split.appendChild(right);
+        wrap.appendChild(split);
+
+        var canvas = el('div', 'ed-canvas');
+        canvas.setAttribute('data-ed-canvas', '1');
+
+        if (!draft.content.length) {
+            canvas.appendChild(el('p', 'ed-canvas-empty',
+                'No content yet — use + to add your first block.'));
+        }
+
+        draft.content.forEach(function (card, index) {
+            canvas.appendChild(createInserter(index));
+
+            var block = el('div', 'ed-block ed-block--' + card.type);
+            block.setAttribute('data-ed-card-key', card._id);
+            block.appendChild(createBlockToolbar(card, index, draft.content.length));
+
+            var rendered = renderCanvasCard(card, index);
+            if (rendered) {
+                annotateBlock(rendered, card);
+                block.appendChild(rendered);
+            } else {
+                block.classList.add('ed-block--broken');
+                block.appendChild(el('p', 'ed-empty', 'Could not render this block.'));
+            }
+
+            canvas.appendChild(block);
+        });
+
+        canvas.appendChild(createInserter(draft.content.length));
+        wrap.appendChild(canvas);
+
+        refs.preview.appendChild(wrap);
+    }
+
+    /* ----------------------------------------------------- event wiring   */
+
+    function findBuilderCardByKey(key) {
+        if (!key) return null;
+        return draft.content.filter(function (c) { return c._id === key; })[0] || null;
+    }
+
+    function findCanvasTarget(node) {
+        var target = node && node.closest ? node.closest('[data-ed-path]') : null;
+        if (!target || !refs.preview.contains(target)) return null;
+        var blockRoot = target.closest('[data-ed-card-key]');
+        var card = findBuilderCardByKey(blockRoot && blockRoot.getAttribute('data-ed-card-key'));
+        if (!card) return null;
+        return { el: target, card: card, path: target.getAttribute('data-ed-path') };
+    }
+
+    var exportTimer = null;
+    function scheduleExport() {
+        clearTimeout(exportTimer);
+        exportTimer = setTimeout(function () {
+            exportTimer = null;
+            updateExportOnly();
+        }, 250);
+    }
+
+    function restoreCaret(snapshot) {
+        if (!snapshot || !snapshot.key) return;
+        var target = refs.preview.querySelector(
+            '[data-ed-card-key="' + snapshot.key + '"] [data-ed-path="' + snapshot.path + '"]');
+        if (target) edSetCaret(target, Math.min(snapshot.offset, target.textContent.length));
+    }
+
+    /* Structural edits rebuild the canvas, so they say explicitly where the
+       caret should land afterwards. */
+    function applyStructuralChange(caretTarget) {
+        refresh();
+        restoreCaret(caretTarget);
+    }
+
+    function handleCanvasEnter(event, target) {
+        var node = target.el, card = target.card, path = target.path;
+        var parts = path.split('.');
+        var figureIndex = Number(parts[1]);
+        var figure = (card.figures || [])[figureIndex];
+        var isTextCard = card.type === 'text' && parts[0] === 'f' && figure;
+
+        event.preventDefault();
+
+        /* Shift+Enter is a literal newline in genuinely multi-line fields.
+           insertText("\n") would split a plaintext-only contenteditable into
+           nested <div>s instead, corrupting the markup — go through state. */
+        if (event.shiftKey && !node.hasAttribute('data-ed-single-line')) {
+            var offset = edCaretOffset(node);
+            var full = node.textContent;
+            var at = offset == null ? full.length : offset;
+            edSetPath(card, path, full.slice(0, at) + '\n' + full.slice(at));
+            applyStructuralChange({ key: card._id, path: path, offset: at + 1 });
+            return;
+        }
+
+        if (isTextCard && parts[2] === 'text') {
+            var off2 = edCaretOffset(node);
+            var full2 = node.textContent;
+            var at2 = off2 == null ? full2.length : off2;
+            figure.text = full2.slice(0, at2);
+            var nextFigure = defaultFigure('text');
+            nextFigure.text = full2.slice(at2);
+            card.figures.splice(figureIndex + 1, 0, nextFigure);
+            applyStructuralChange({ key: card._id, path: 'f.' + (figureIndex + 1) + '.text', offset: 0 });
+            return;
+        }
+
+        if (isTextCard && parts[2] === 'items') {
+            var row = Number(parts[3]);
+            var items = splitLinesRaw(figure.itemsText);
+
+            /* Enter on an empty trailing bullet exits the list, as in every
+               other editor. */
+            if (!D.cleanText(items[row]) && row === items.length - 1) {
+                items.splice(row, 1);
+                figure.itemsText = items.join('\n');
+                var afterList = defaultFigure('text');
+                card.figures.splice(figureIndex + 1, 0, afterList);
+                applyStructuralChange({ key: card._id, path: 'f.' + (figureIndex + 1) + '.text', offset: 0 });
+                return;
+            }
+
+            var off3 = edCaretOffset(node);
+            var at3 = off3 == null ? (items[row] || '').length : off3;
+            var current = items[row] || '';
+            items[row] = current.slice(0, at3);
+            items.splice(row + 1, 0, current.slice(at3));
+            figure.itemsText = items.join('\n');
+            applyStructuralChange({ key: card._id, path: 'f.' + figureIndex + '.items.' + (row + 1), offset: 0 });
+            return;
+        }
+
+        /* Everywhere else Enter just advances to the next field. */
+        var editables = Array.prototype.slice.call(refs.preview.querySelectorAll('[data-ed-path]'));
+        var next = editables[editables.indexOf(node) + 1];
+        if (next) edSetCaret(next, next.textContent.length);
+    }
+
+    function handleCanvasBackspace(event, target) {
+        var node = target.el, card = target.card;
+        if (edCaretOffset(node) !== 0 || D.cleanText(node.textContent)) return;
+
+        var editables = Array.prototype.slice.call(refs.preview.querySelectorAll('[data-ed-path]'));
+        var index = editables.indexOf(node);
+        var blockRoot = node.closest('[data-ed-card-key]');
+
+        /* Only collapse the block when EVERY field is empty. Placeholder text
+           is rendered into the node, so emptiness has to be judged by the
+           data-ed-empty marker rather than textContent alone. */
+        var blockEditables = Array.prototype.slice.call(blockRoot.querySelectorAll('[data-ed-path]'));
+        var blockIsEmpty = blockEditables.every(function (n) {
+            return n.hasAttribute('data-ed-empty') || !D.cleanText(n.textContent);
+        });
+        if (!blockIsEmpty) return;
+
+        event.preventDefault();
+
+        var cardIndex = draft.content.indexOf(card);
+        if (cardIndex === -1) return;
+        draft.content.splice(cardIndex, 1);
+
+        var previous = null;
+        for (var i = index - 1; i >= 0; i -= 1) {
+            if (!blockRoot.contains(editables[i])) { previous = editables[i]; break; }
+        }
+
+        var snapshot = previous ? {
+            key: previous.closest('[data-ed-card-key]').getAttribute('data-ed-card-key'),
+            path: previous.getAttribute('data-ed-path'),
+            offset: previous.textContent.length
+        } : null;
+
+        applyStructuralChange(snapshot);
+    }
+
+    function closePickers() {
+        refs.preview.querySelectorAll('.ed-picker').forEach(function (n) { n.remove(); });
+        refs.preview.querySelectorAll('.ed-inserter.is-open').forEach(function (n) {
+            n.classList.remove('is-open');
+        });
+    }
+
+    function focusFirstEditable(cardKey) {
+        var target = refs.preview.querySelector('[data-ed-card-key="' + cardKey + '"] [data-ed-path]');
+        if (target) edSetCaret(target, target.textContent.length);
+    }
+
+    /* Structured fields (image/video src, code body, link URLs, which file a
+       download block points at) can't be typed into the rendered output, so
+       they open a popover. It reuses figureEditor() verbatim rather than
+       restating every per-type field list a second time. Mounted on `root`,
+       outside refs.preview, so the canvas's own re-renders can't destroy it
+       mid-edit. */
+    function closeFieldPopover() {
+        root.querySelectorAll('.ed-popover').forEach(function (n) { n.remove(); });
+        refs.preview.querySelectorAll('[data-ed-action="fields"].is-active').forEach(function (n) {
+            n.classList.remove('is-active');
+        });
+    }
+
+    function openFieldPopover(card, anchor) {
+        closeFieldPopover();
+
+        var popover = el('div', 'ed-popover');
+
+        var header = el('div', 'ed-popover-header');
+        header.appendChild(el('strong', null, blockTypeLabel(card.type) + ' fields'));
+        var close = el('button', 'ed-popover-close');
+        close.type = 'button';
+        close.setAttribute('aria-label', 'Close');
+        close.textContent = '✕';
+        close.addEventListener('click', closeFieldPopover);
+        header.appendChild(close);
+        popover.appendChild(header);
+
+        var body = el('div', 'ed-popover-body');
+        popover.appendChild(body);
+
+        function rebuildBody() {
+            body.textContent = '';
+            if (card.type === 'image') {
+                body.appendChild(field('Layout', selectInput(card.layout || 'single', [
+                    { value: 'single', label: 'Single column' },
+                    { value: 'grid', label: 'Grid' }
+                ], function (v) { card.layout = v; refresh(); })));
+            }
+            (card.figures || []).forEach(function (figure, figureIndex) {
+                body.appendChild(figureEditor(card, figure, figureIndex, function () {
+                    refresh();
+                    rebuildBody();
+                }));
+            });
+            if (!(card.figures || []).length) {
+                body.appendChild(el('p', 'ed-empty', 'No items yet — use + on the block to add one.'));
+            }
+        }
+        rebuildBody();
+
+        root.appendChild(popover);
+        var box = anchor.getBoundingClientRect();
+        popover.style.top = (window.scrollY + box.bottom + 8) + 'px';
+        popover.style.left = Math.max(8, window.scrollX + box.left) + 'px';
+        anchor.classList.add('is-active');
+    }
+
+    function insertCard(type, index) {
+        var card = { _id: nextId('card'), type: type, title: '', layout: 'single',
+                     figures: [defaultFigure(type)] };
+        var at = Math.max(0, Math.min(index, draft.content.length));
+        draft.content.splice(at, 0, card);
+        refresh();
+        focusFirstEditable(card._id);
+    }
+
+    function wireCanvasEvents() {
+        refs.preview.addEventListener('input', function (event) {
+            if (event.isComposing) return;
+            var target = findCanvasTarget(event.target);
+            if (!target) return;
+            target.el.classList.remove('ed-field-placeholder');
+            target.el.removeAttribute('data-ed-empty');
+            /* Commit raw, untrimmed text — trimming mid-keystroke would eat
+               spaces as the user types. Trimming happens at serialize time. */
+            edSetPath(target.card, target.path, target.el.textContent);
+            scheduleExport();
+        });
+
+        refs.preview.addEventListener('compositionend', function (event) {
+            var target = findCanvasTarget(event.target);
+            if (!target) return;
+            edSetPath(target.card, target.path, target.el.textContent);
+            scheduleExport();
+        });
+
+        /* Plain text only: the schema stores strings and every renderer uses
+           textContent. */
+        refs.preview.addEventListener('paste', function (event) {
+            var target = findCanvasTarget(event.target);
+            if (!target) return;
+            event.preventDefault();
+            var text = (event.clipboardData || window.clipboardData).getData('text/plain');
+            document.execCommand('insertText', false, text);
+        });
+
+        refs.preview.addEventListener('beforeinput', function (event) {
+            if (!findCanvasTarget(event.target)) return;
+            if (/^format/.test(event.inputType || '')) event.preventDefault();
+        });
+
+        refs.preview.addEventListener('keydown', function (event) {
+            if (event.isComposing) return;
+            var target = findCanvasTarget(event.target);
+            if (!target) return;
+            if (event.key === 'Enter') handleCanvasEnter(event, target);
+            else if (event.key === 'Backspace') handleCanvasBackspace(event, target);
+        });
+
+        /* blur does not bubble — listen in the capture phase. Crossing the
+           empty/non-empty boundary changes which nodes the renderer emits
+           (an optional figcaption appears/disappears), so only THAT case
+           rebuilds the canvas. */
+        refs.preview.addEventListener('blur', function (event) {
+            var target = findCanvasTarget(event.target);
+            if (!target) return;
+            var isEmpty = !D.cleanText(edGetPath(target.card, target.path));
+            var wasEmpty = target.el.hasAttribute('data-ed-empty');
+            if (isEmpty !== wasEmpty) refresh();
+        }, true);
+
+        refs.preview.addEventListener('click', function (event) {
+            var actionEl = event.target.closest ? event.target.closest('[data-ed-action]') : null;
+            if (!actionEl) { closePickers(); return; }
+
+            var action = actionEl.getAttribute('data-ed-action');
+            if (action === 'toolbar' || action === 'picker' || action === 'drag') return;
+
+            event.preventDefault();
+
+            if (action === 'insert') {
+                var rail = actionEl.closest('.ed-inserter');
+                var alreadyOpen = rail.classList.contains('is-open');
+                closePickers();
+                if (alreadyOpen) return;
+                rail.classList.add('is-open');
+                rail.appendChild(createPicker(Number(actionEl.getAttribute('data-ed-index'))));
+                return;
+            }
+
+            if (action === 'pick') {
+                var type = actionEl.getAttribute('data-ed-type');
+                var pickIndex = Number(actionEl.getAttribute('data-ed-index'));
+                closePickers();
+                insertCard(type, pickIndex);
+                return;
+            }
+
+            var blockRoot = actionEl.closest('[data-ed-card-key]');
+            var card = blockRoot ? findBuilderCardByKey(blockRoot.getAttribute('data-ed-card-key')) : null;
+            var cardIndex = card ? draft.content.indexOf(card) : -1;
+            if (cardIndex === -1) return;
+
+            if (action === 'move-up' || action === 'move-down') {
+                moveItem(draft.content, cardIndex, action === 'move-up' ? -1 : 1);
+                refresh();
+                return;
+            }
+
+            if (action === 'duplicate') {
+                var copy = cardToDraft(JSON.parse(JSON.stringify(stripIds(card))));
+                draft.content.splice(cardIndex + 1, 0, copy);
+                refresh();
+                return;
+            }
+
+            if (action === 'delete') {
+                var hasContent = (card.figures || []).some(function (figure) {
+                    return Object.keys(figure).some(function (k) {
+                        return k !== '_id' && k !== 'type' && D.cleanText(figure[k]);
+                    });
+                });
+                if (hasContent && !window.confirm('Delete this block and its content?')) return;
+                draft.content.splice(cardIndex, 1);
+                refresh();
+                return;
+            }
+
+            if (action === 'fields') {
+                if (actionEl.classList.contains('is-active')) closeFieldPopover();
+                else openFieldPopover(card, actionEl);
+                return;
+            }
+
+            if (action === 'add-figure') {
+                card.figures = card.figures || [];
+                card.figures.push(defaultFigure(card.type));
+                refresh();
+                return;
+            }
+
+            if (action === 'toggle-list') {
+                /* Lossless both ways: paragraph text becomes a single bullet
+                   and back. */
+                (card.figures || []).forEach(function (figure) {
+                    if (figure.type === 'list') {
+                        figure.type = 'paragraph';
+                        figure.text = splitLines(figure.itemsText).join(' ');
+                        figure.itemsText = '';
+                    } else {
+                        figure.type = 'list';
+                        figure.itemsText = D.cleanText(figure.text);
+                        figure.text = '';
+                    }
+                });
+                refresh();
+            }
+        });
+
+        /* Everything except editor chrome must be inert: a lesson editor is
+           not a page a click should navigate away from. Code-copy is disabled
+           via CSS pointer-events instead, since it needs no preventDefault. */
+        refs.preview.addEventListener('click', function (event) {
+            if (!event.target.closest) return;
+            if (event.target.closest('[data-ed-action]')) return;
+            var canvas = event.target.closest('[data-ed-canvas]');
+            if (!canvas) return;
+            var link = event.target.closest('a');
+            if (link && canvas.contains(link)) event.preventDefault();
+        });
+
+        refs.preview.addEventListener('change', function (event) {
+            var select = event.target.closest ? event.target.closest('[data-ed-action="type"]') : null;
+            if (!select) return;
+
+            var blockRoot = select.closest('[data-ed-card-key]');
+            var card = blockRoot ? findBuilderCardByKey(blockRoot.getAttribute('data-ed-card-key')) : null;
+            var cardIndex = card ? draft.content.indexOf(card) : -1;
+            if (cardIndex === -1) return;
+
+            var nextType = select.value;
+            if (nextType === card.type) return;
+
+            var replacement = { _id: nextId('card'), type: nextType, title: card.title,
+                                 layout: 'single', figures: [] };
+
+            /* Only text <-> callout carries content losslessly; everything
+               else starts clean rather than silently mangling the figures. */
+            if (card.type === 'text' && nextType === 'callout') {
+                replacement.figures = (card.figures || []).map(function (figure) {
+                    var callout = defaultFigure('callout');
+                    callout.text = figure.type === 'list'
+                        ? splitLines(figure.itemsText).join(' ')
+                        : D.cleanText(figure.text);
+                    return callout;
+                });
+            } else if (card.type === 'callout' && nextType === 'text') {
+                replacement.figures = (card.figures || []).map(function (figure) {
+                    var text = defaultFigure('text');
+                    text.text = D.cleanText(figure.text);
+                    return text;
+                });
+            }
+            if (!replacement.figures.length) replacement.figures = [defaultFigure(nextType)];
+
+            draft.content.splice(cardIndex, 1, replacement);
+            refresh();
+        });
+
+        /* ------------------------------------------------ drag to reorder */
+
+        var dragKey = '';
+
+        refs.preview.addEventListener('dragstart', function (event) {
+            var handle = event.target.closest ? event.target.closest('[data-ed-action="drag"]') : null;
+            if (!handle) return;
+            var blockRoot = handle.closest('[data-ed-card-key]');
+            dragKey = blockRoot ? blockRoot.getAttribute('data-ed-card-key') : '';
+            if (!dragKey) return;
+            event.dataTransfer.effectAllowed = 'move';
+            event.dataTransfer.setData('text/plain', dragKey);
+            event.dataTransfer.setDragImage(blockRoot, 12, 12);
+            refs.preview.classList.add('ed-dragging');
+        });
+
+        function inserterForPoint(y) {
+            var rails = Array.prototype.slice.call(refs.preview.querySelectorAll('.ed-inserter'));
+            var best = null, bestDistance = Infinity;
+            rails.forEach(function (rail) {
+                var box = rail.getBoundingClientRect();
+                var distance = Math.abs(box.top + box.height / 2 - y);
+                if (distance < bestDistance) { bestDistance = distance; best = rail; }
+            });
+            return best;
+        }
+
+        refs.preview.addEventListener('dragover', function (event) {
+            if (!dragKey) return;
+            event.preventDefault();
+            event.dataTransfer.dropEffect = 'move';
+            var rail = inserterForPoint(event.clientY);
+            refs.preview.querySelectorAll('.ed-inserter.is-drop-target').forEach(function (n) {
+                n.classList.remove('is-drop-target');
+            });
+            if (rail) rail.classList.add('is-drop-target');
+        });
+
+        function endDrag() {
+            dragKey = '';
+            refs.preview.classList.remove('ed-dragging');
+            refs.preview.querySelectorAll('.ed-inserter.is-drop-target').forEach(function (n) {
+                n.classList.remove('is-drop-target');
+            });
+        }
+
+        refs.preview.addEventListener('drop', function (event) {
+            if (!dragKey) return;
+            event.preventDefault();
+            var rail = inserterForPoint(event.clientY);
+            var card = findBuilderCardByKey(dragKey);
+            endDrag();
+            if (!rail || !card) return;
+
+            var from = draft.content.indexOf(card);
+            var to = Number(rail.getAttribute('data-ed-index'));
+            if (from === -1) return;
+            if (to > from) to -= 1;
+            if (to === from) return;
+
+            moveItem(draft.content, from, to - from);
+            refresh();
+        });
+
+        refs.preview.addEventListener('dragend', endDrag);
+
+        document.addEventListener('keydown', function (event) {
+            if (event.key === 'Escape') {
+                endDrag();
+                closePickers();
+                closeFieldPopover();
+            }
+        });
+
+        document.addEventListener('click', function (event) {
+            if (!event.target.closest) return;
+            if (event.target.closest('.ed-popover')) return;
+            if (event.target.closest('[data-ed-action="fields"]')) return;
+            closeFieldPopover();
+        });
+    }
+
     /* ================================================= repeatable rows ==== */
 
     function mediaEditor(item, index, rerender) {
@@ -646,18 +1674,18 @@
             { value: 'video', label: 'Video' }
         ], function (v) { item.type = v; rerender(); })));
         row.appendChild(field(item.type === 'video' ? 'Video URL' : 'Image path',
-            textInput(item.src, function (v) { item.src = v; rerender(); },
+            textInput(item.src, function (v) { item.src = v; refresh(); },
                 item.type === 'video'
                     ? 'https://www.youtube.com/watch?v=…'
                     : 'imgs/lessons/my-lesson/cover.png')));
         body.appendChild(row);
         if (item.type !== 'video') {
             body.appendChild(field('Alt text',
-                textInput(item.alt, function (v) { item.alt = v; rerender(); },
+                textInput(item.alt, function (v) { item.alt = v; refresh(); },
                     'What the image shows')));
         }
         body.appendChild(field('Caption',
-            textInput(item.caption, function (v) { item.caption = v; rerender(); }, 'Optional')));
+            textInput(item.caption, function (v) { item.caption = v; refresh(); }, 'Optional')));
         box.appendChild(body);
         return box;
     }
@@ -681,7 +1709,7 @@
 
         var body = el('div', 'ed-figure-body');
         body.appendChild(field('Name',
-            textInput(item.name, function (v) { item.name = v; rerender(); },
+            textInput(item.name, function (v) { item.name = v; refresh(); },
                 'Part 1 — Unity basics')));
 
         var row = el('div', 'ed-row');
@@ -691,23 +1719,23 @@
         ], function (v) { item.kind = v; rerender(); })));
         row.appendChild(field('Icon', selectInput(item.icon,
             Object.keys(D.FILE_ICONS).map(function (k) { return { value: k, label: k }; }),
-            function (v) { item.icon = v; rerender(); })));
+            function (v) { item.icon = v; refresh(); })));
         body.appendChild(row);
 
         if (item.kind === 'repo') {
             var repoRow = el('div', 'ed-row');
             repoRow.appendChild(field('Path in repo',
-                textInput(item.path, function (v) { item.path = v; rerender(); },
+                textInput(item.path, function (v) { item.path = v; refresh(); },
                     'files/my-lesson/starter.unitypackage')));
             repoRow.appendChild(field('Size',
-                textInput(item.size, function (v) { item.size = v; rerender(); }, '4.2 MB')));
+                textInput(item.size, function (v) { item.size = v; refresh(); }, '4.2 MB')));
             body.appendChild(repoRow);
         } else {
             body.appendChild(field('URL',
-                textInput(item.url, function (v) { item.url = v; rerender(); },
+                textInput(item.url, function (v) { item.url = v; refresh(); },
                     'https://docs.google.com/presentation/…')));
             body.appendChild(field('Source label',
-                textInput(item.source, function (v) { item.source = v; rerender(); },
+                textInput(item.source, function (v) { item.source = v; refresh(); },
                     'Google Slides')));
         }
         box.appendChild(body);
@@ -742,16 +1770,26 @@
         exportCard.appendChild(exportActions);
         side.appendChild(exportCard);
 
-        /* --- Live preview --- */
-        var previewCard = el('section', 'ed-panel gdc-card ed-preview');
-        previewCard.appendChild(sectionHeader('Preview', 'Live lesson preview',
-            'Drawn with the same renderer as the published lesson page, so what you see is what ships.'));
-        refs.preview = el('div', 'ed-preview-body');
-        previewCard.appendChild(refs.preview);
-        side.appendChild(previewCard);
-
         /* --- Main editing column --- */
         var main = el('div', 'ed-main');
+
+        /* Canvas — the primary surface. Wide, not the narrow sticky side
+           column: it's an interactive editor now, not a passive preview. */
+        var canvasCard = el('section', 'ed-panel gdc-card ed-preview');
+        var canvasHead = sectionHeader('Editor', 'The lesson itself', null);
+        var canvasNote = el('p', 'ed-section-note');
+        canvasNote.appendChild(document.createTextNode('Click any text to edit it in place. Hover between blocks for '));
+        canvasNote.appendChild(el('strong', null, '+'));
+        canvasNote.appendChild(document.createTextNode(' to insert one, drag '));
+        canvasNote.appendChild(el('strong', null, '⠿'));
+        canvasNote.appendChild(document.createTextNode(' to reorder, and use '));
+        canvasNote.appendChild(el('strong', null, '⋯'));
+        canvasNote.appendChild(document.createTextNode(' for fields that aren\'t plain text (image paths, code, URLs).'));
+        canvasHead.appendChild(canvasNote);
+        canvasCard.appendChild(canvasHead);
+        refs.preview = el('div', 'ed-preview-body');
+        canvasCard.appendChild(refs.preview);
+        main.appendChild(canvasCard);
 
         /* Workspace */
         var workspace = el('section', 'ed-panel gdc-card');
@@ -821,10 +1859,17 @@
         }));
         main.appendChild(filesCard);
 
-        /* Content */
-        var contentCard = el('section', 'ed-panel ed-content-panel');
-        contentCard.appendChild(sectionHeader('Content', 'Lesson blocks',
-            'The blog-post style walkthrough. Add blocks, reorder them, watch the preview.'));
+        /* Content — form fallback. The canvas above is the primary editor;
+           this panel edits the exact same draft.content through plain form
+           fields, for when a block ever fails to render on the canvas, or
+           bulk-editing a textarea is just faster than clicking. */
+        var fallback = el('details', 'ed-fallback-panel');
+        var fallbackSummary = el('summary', null, 'Form editor (fallback)');
+        fallback.appendChild(fallbackSummary);
+
+        var contentCard = el('div', 'ed-content-panel');
+        contentCard.appendChild(sectionHeader('Content', 'Lesson blocks (form view)',
+            'Edits the same content the canvas above shows — useful as a backup, or for bulk edits.'));
         refs.addTray = el('div', 'ed-add-tray');
         D.BLOCK_TYPES.forEach(function (block) {
             var btn = el('button', 'ed-add-btn');
@@ -843,7 +1888,8 @@
         contentCard.appendChild(refs.addTray);
         refs.cardStack = el('div', 'ed-card-stack');
         contentCard.appendChild(refs.cardStack);
-        main.appendChild(contentCard);
+        fallback.appendChild(contentCard);
+        main.appendChild(fallback);
 
         shell.appendChild(main);
         shell.appendChild(side);   /* after main: grid fills columns in DOM order */
@@ -869,12 +1915,12 @@
         }));
 
         var idRow = el('div', 'ed-row');
-        idRow.appendChild(field('Lesson ID',
-            textInput(draft.id, function (v) {
-                draft.id = v;
-                draft._idTouched = true;   /* stop deriving it from the title */
-                refresh();
-            }, 'unity-platformer'),
+        refs.idInput = textInput(draft.id, function (v) {
+            draft.id = v;
+            draft._idTouched = true;   /* stop deriving it from the title */
+            refresh();
+        }, 'unity-platformer');
+        idRow.appendChild(field('Lesson ID', refs.idInput,
             'Used in lesson.html?id=… — lowercase, dashes, no spaces.'));
         idRow.appendChild(field('Difficulty', selectInput(draft.difficulty,
             D.DIFFICULTIES.map(function (d) { return { value: d.key, label: d.label }; }),
@@ -884,10 +1930,16 @@
         host.appendChild(field('Title',
             textInput(draft.title, function (v) {
                 draft.title = v;
-                /* Derive the slug until the author overrides it by hand. */
-                if (!draft._idTouched) draft.id = D.slugify(v);
+                /* Derive the slug until the author overrides it by hand.
+                   Update the ID field's value directly instead of calling
+                   renderMetadata() — a full form rebuild on every Title
+                   keystroke would tear down and recreate the Title input
+                   itself, kicking the user's cursor out mid-word. */
+                if (!draft._idTouched) {
+                    draft.id = D.slugify(v);
+                    if (refs.idInput) refs.idInput.value = draft.id;
+                }
                 refresh();
-                if (!draft._idTouched) renderMetadata();
             }, 'Platformer')));
 
         host.appendChild(field('Summary',
@@ -985,34 +2037,6 @@
         }
     }
 
-    /* The preview runs the published lesson through the real renderer. */
-    function renderPreview(serialized) {
-        refs.preview.textContent = '';
-
-        var lesson = D.normalizeLesson(serialized);
-        if (!lesson || !lesson.content.length) {
-            refs.preview.appendChild(el('p', 'ed-empty',
-                'Add a title and at least one content block to see the lesson preview.'));
-            return;
-        }
-
-        var wrap = el('div', 'ed-preview-lesson');
-        wrap.appendChild(el('h1', 'lesson-title', lesson.title));
-        if (lesson.summary) wrap.appendChild(el('p', 'lesson-summary', lesson.summary));
-
-        var split = el('div', 'lesson-split');
-        var left = el('div', 'lesson-split-left');
-        left.appendChild(R.renderGallery(lesson));
-        var right = el('div', 'lesson-split-right');
-        right.appendChild(R.renderFilesPanel(lesson));
-        split.appendChild(left);
-        split.appendChild(right);
-        wrap.appendChild(split);
-
-        wrap.appendChild(R.renderArticle(lesson));
-        refs.preview.appendChild(wrap);
-    }
-
     function renderWarnings(warnings) {
         refs.warnings.textContent = '';
         if (!warnings.length) {
@@ -1047,16 +2071,28 @@
         });
     }
 
-    /* Recompute everything that derives from the draft. */
-    function refresh() {
+    /* Writes the JSON export + warnings + stats + autosave. Cheap — this runs
+       on every keystroke, including inside the canvas (debounced there via
+       scheduleExport). Does NOT touch the canvas DOM, so it never costs a
+       contenteditable node its caret. */
+    function updateExportOnly() {
         var warnings = [];
-        var serialized = serialize(warnings);
+        var serialized = serialize(warnings, {});
 
         refs.output.value = JSON.stringify(serialized, null, 2) + (refs.trailingComma ? ',' : '');
         renderWarnings(warnings);
         renderStats(serialized);
-        renderPreview(serialized);
         saveDraft();
+        return serialized;
+    }
+
+    /* Recompute everything that derives from the draft, including a full
+       canvas rebuild. Called for every structural change (add/delete/reorder/
+       metadata edit) — never from the canvas's own per-keystroke input
+       handler, which uses updateExportOnly() instead. */
+    function refresh() {
+        var serialized = updateExportOnly();
+        renderCanvas(D.normalizeLesson(serialized));
     }
 
     function rerenderAll() {
@@ -1175,6 +2211,7 @@
     if (draft.id && draft.title && draft.id !== D.slugify(draft.title)) draft._idTouched = true;
 
     buildShell();
+    wireCanvasEvents();
     rerenderAll();
 
     fetch('data/lessons.json', { cache: 'no-store' })
