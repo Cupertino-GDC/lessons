@@ -98,71 +98,11 @@
     },
     {
       "type": "text",
-      "title": "Creating input actions",
+      "title": "Create a script",
       "figures": [
         {
           "type": "paragraph",
-          "text": "Unity takes player input through the Player Input component. In order to use this component, we need to create an Input Actions object. To do this"
-        },
-        {
-          "type": "list",
-          "items": [
-            "Right click in the Project tab",
-            "Click \"Create\"",
-            "Under the create menu, click \"Input Actions\""
-          ]
-        }
-      ]
-    },
-    {
-      "type": "image",
-      "figures": [
-        {
-          "src": "imgs/lessons/unity-input-system/creating-input-actions.png",
-          "alt": "How to create input actions in Unity",
-          "caption": "How to create input actions in Unity"
-        }
-      ]
-    },
-    {
-      "type": "text",
-      "title": "Creating inputs",
-      "figures": [
-        {
-          "type": "paragraph",
-          "text": "To create an individual input action, follow the instructions below"
-        },
-        {
-          "type": "paragraph",
-          "text": "3. Click \"+\" under \"Actions\""
-        },
-        {
-          "type": "paragraph",
-          "text": "4. Click \"Add Binding\""
-        },
-        {
-          "type": "paragraph",
-          "text": "5. Type the key you want to trigger the particular action"
-        },
-        {
-          "type": "paragraph",
-          "text": "6. Rename the action to what you want that key to do (such as \"Move left\" or \"Jump\")"
-        },
-        {
-          "type": "paragraph",
-          "text": "Repeat steps 4-5 to add multiple key triggers for the same action."
-        },
-        {
-          "type": "paragraph",
-          "text": "Repeat this process for every in game action you want to perform. This InputActions object can be edited at any time meaning you can go back and add new inputs after creating it."
-        }
-      ]
-    },
-    {
-      "type": "image",
-      "figures": [
-        {
-          "src": "imgs/lessons/unity-input-system/create-input.png"
+          "text": "Right click in your project tab at the bottom and select Create -> Scripting -> MonoBehaviour Script"
         }
       ]
     },
@@ -215,6 +155,191 @@
         {
           "url": "https://docs.unity3d.com/6000.6/Documentation/ScriptReference/MonoBehaviour.html",
           "label": "Unity Scripting API - MonoBehaviour"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Fields",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "In order to move our player, we need to know a few factors, such as how fast we want our player to move, which player to move, and where to get the input from. Add the following fields into your script"
+        }
+      ]
+    },
+    {
+      "type": "code",
+      "figures": [
+        {
+          "code": "using UnityEngine;\nusing UnityEngine.InputSystem;\n\n[RequireComponent(typeof(Rigidbody2D))]\npublic class PlayerMovement : MonoBehaviour\n{\n    [SerializeField] private float moveSpeed = 5f;\n\n    private Rigidbody2D rb;\n    private Vector2 moveInput;",
+          "filename": "Example.cs",
+          "language": "C#"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Initializing the Rigidbody2D",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "In Awake, run GetComponent to initialize the script's reference to the object's Rigidbody2D component"
+        }
+      ]
+    },
+    {
+      "type": "code",
+      "figures": [
+        {
+          "code": "    private void Awake()\n    {\n        rb = GetComponent<Rigidbody2D>();\n    }",
+          "filename": "Example.cs",
+          "language": "C#"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Moving",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "The OnMove method will be called by the actual PlayerInput component."
+        }
+      ]
+    },
+    {
+      "type": "code",
+      "figures": [
+        {
+          "code": "    public void OnMove(InputAction.CallbackContext context)\n    {\n        moveInput = context.ReadValue<Vector2>();\n    }",
+          "filename": "Example.cs",
+          "language": "C#"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Updating the position",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Update the player's position in FixedUpdate"
+        }
+      ]
+    },
+    {
+      "type": "code",
+      "figures": [
+        {
+          "code": "    private void FixedUpdate()\n    {\n        rb.linearVelocity = moveInput.normalized * moveSpeed;\n    }",
+          "filename": "Example.cs",
+          "language": "C#"
+        }
+      ]
+    },
+    {
+      "type": "code",
+      "title": "Final Script",
+      "figures": [
+        {
+          "code": "using UnityEngine;\nusing UnityEngine.InputSystem;\n\n[RequireComponent(typeof(Rigidbody2D))]\npublic class PlayerMovement : MonoBehaviour\n{\n    [SerializeField] private float moveSpeed = 5f;\n\n    private Rigidbody2D rb;\n    private Vector2 moveInput;\n\n    private void Awake()\n    {\n        rb = GetComponent<Rigidbody2D>();\n    }\n\n    public void OnMove(InputAction.CallbackContext context)\n    {\n        moveInput = context.ReadValue<Vector2>();\n    }\n\n    private void FixedUpdate()\n    {\n        rb.linearVelocity = moveInput.normalized * moveSpeed;\n    }\n}\n",
+          "filename": "Example.cs",
+          "language": "C#"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Create a new GameObject",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "We want to create a new player GameObject to actually move. To do this, right click in your hierarchy and select 2D Object -> Sprites -> Square"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-input-system/create-sprite.png"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Configure the script in editor",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "You should now have a new square in the scene. To add the script to this object, select it and in the inspector, click \"Add Component\". Search for your script and add it."
+        },
+        {
+          "type": "paragraph",
+          "text": "You should see a box with the label \"Move Speed\" under the script in inspector. The speed can be changed by adjusting this number without modifying the original script."
+        },
+        {
+          "type": "paragraph",
+          "text": "A Rigidbody2D component should have also been added to your player. Make sure to set \"Gravity Scale\" to 0 in order for your inputs to work correctly"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "The PlayerInput object",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Add the \"PlayerInput\" component to your GameObject. Configure it as follows"
+        },
+        {
+          "type": "list",
+          "items": [
+            "Default scheme: Keyboard & Mouse",
+            "Default map: Player",
+            "Camera: Main Camera (click the circle and select \"Main Camera\")",
+            "Behaviour: Invoke Unity Events"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-input-system/pi-configure.png"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "To connect your script with the PlayerInput component, expand Events -> Player"
+        },
+        {
+          "type": "paragraph",
+          "text": "Under Move click the plus sign to create a new binding. Attach your Player object by dragging it in from the hierarchy. In the dropdown on the right, select PlayerMovement -> OnMove"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-input-system/connect.png"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Testing",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Click the play button on the top bar to enter play mode and test your script. You should be able to move the square around using WASD controls"
         }
       ]
     }
