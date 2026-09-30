@@ -316,8 +316,19 @@ textarea.ed-input { resize: vertical; }
     padding: 20px 0;
 }
 
+/* Mirrors .block-row in lesson.css — two blocks only share a row once each
+   is narrow enough to fit (see packRows in data.js / renderCanvas). */
+.ed-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 16px;
+    align-items: start;
+}
+
 .ed-block {
     position: relative;
+    grid-column: span 6;
+    min-width: 0;
     border-radius: 8px;
     /* Color-only highlight, no shadow/scale — matches the site-wide rule
        that a hover state changes color, never lifts or gains a shadow. */
@@ -438,6 +449,47 @@ textarea.ed-input { resize: vertical; }
     border: 2px dashed var(--gdc-border);
     border-radius: 8px;
     background: var(--gdc-surface-sunken);
+}
+
+/* ── figure resize handle ───────────────────────────────────────────────
+   Each figure in an image/text/code/video block sits on the shared 6-col
+   grid (see lesson.css). Dragging this handle changes how many of the 6
+   columns the figure spans. */
+.ed-resizable { position: relative; }
+
+.ed-resize-handle {
+    position: absolute;
+    top: 0;
+    right: -8px;
+    bottom: 0;
+    width: 16px;
+    cursor: ew-resize;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 2;
+    touch-action: none;
+}
+
+.ed-resize-handle::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 4px;
+    height: 32px;
+    transform: translate(-50%, -50%);
+    border-radius: 999px;
+    background: var(--gdc-accent);
+}
+
+.ed-resizable:hover > .ed-resize-handle,
+.ed-resizable.is-resizing > .ed-resize-handle {
+    opacity: 1;
+}
+
+.ed-resizable.is-resizing {
+    outline: 2px dashed var(--gdc-accent-soft);
+    outline-offset: 3px;
 }
 
 /* ── insert rail ────────────────────────────────────────────────────────── */

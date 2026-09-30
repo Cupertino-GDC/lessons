@@ -152,6 +152,14 @@
     var ED_EMPTY_IMAGE_SRC = 'data:image/svg+xml;utf8,' +
         encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360"/>');
 
+    /* Carries a resized figure's width (in sixths of the block column) into
+       its serialized form. Omitted for the default full-width (6) case so
+       existing/ordinary lessons export unchanged. */
+    function withWidth(result, figure) {
+        if (result && figure && figure.width && figure.width !== 6) result.width = figure.width;
+        return result;
+    }
+
     function serializeFigure(card, figure, warnings, label, opts) {
         opts = opts || {};
         var type = card.type;
@@ -166,19 +174,19 @@
                     var rawLines = String(figure.itemsText || '').split(/\r?\n/);
                     var canvasItems = rawLines.map(function (l) { return l.trim() || ED_PLACEHOLDER; });
                     if (!canvasItems.length) canvasItems = [ED_PLACEHOLDER];
-                    return { type: 'list', items: canvasItems };
+                    return withWidth({ type: 'list', items: canvasItems }, figure);
                 }
                 var items = splitLines(figure.itemsText);
                 if (!items.length) { warnings.push(label + ': empty list removed.'); return null; }
-                return { type: 'list', items: items };
+                return withWidth({ type: 'list', items: items }, figure);
             }
             var text = D.cleanText(figure.text);
             if (!text) {
-                if (opts.forCanvas) return { type: 'paragraph', text: ED_PLACEHOLDER_PARAGRAPH };
+                if (opts.forCanvas) return withWidth({ type: 'paragraph', text: ED_PLACEHOLDER_PARAGRAPH }, figure);
                 warnings.push(label + ': empty paragraph removed.');
                 return null;
             }
-            return { type: 'paragraph', text: text };
+            return withWidth({ type: 'paragraph', text: text }, figure);
         }
 
         if (type === 'image') {
@@ -193,7 +201,7 @@
             var img = { src: src || (opts.forCanvas ? ED_EMPTY_IMAGE_SRC : src) };
             if (figure.alt) img.alt = D.cleanText(figure.alt);
             if (figure.caption) img.caption = D.cleanText(figure.caption);
-            return img;
+            return withWidth(img, figure);
         }
 
         if (type === 'code') {
@@ -209,7 +217,7 @@
             snippet.filename = D.cleanText(figure.filename) || 'snippet.txt';
             if (figure.language) snippet.language = D.cleanText(figure.language);
             if (figure.caption) snippet.caption = D.cleanText(figure.caption);
-            return snippet;
+            return withWidth(snippet, figure);
         }
 
         if (type === 'video') {
@@ -223,7 +231,7 @@
             }
             var video = { src: vsrc };
             if (figure.caption) video.caption = D.cleanText(figure.caption);
-            return video;
+            return withWidth(video, figure);
         }
 
         if (type === 'callout') {
@@ -855,6 +863,80 @@
         return node;
     }
 
+    /* --------------------------------------------------- figure resizing */
+    /* A figure's width lives on the draft as an integer 1-6 (sixths of the
+       block's 6-column row — see render.js's applyFigureWidth and the
+       matching grid CSS in lesson.css). Mid-drag this only touches the DOM
+       (gridColumn) for instant feedback; the draft, and a full refresh(),
+       only update on release — the same cheap/structural split
+       updateExportOnly()/refresh() already use elsewhere in the canvas. */
+
+    var resizeState = null;
+
+    function clampSpan(n) { return Math.max(1, Math.min(6, Math.round(n))); }
+
+    function attachResizeHandle(node, card, n) {
+        if (!node) return;
+        node.classList.add('ed-resizable');
+        var handle = el('span', 'ed-resize-handle');
+        handle.setAttribute('data-ed-action', 'resize');
+        handle.setAttribute('contenteditable', 'false');
+        handle.setAttribute('aria-hidden', 'true');
+        handle.title = 'Drag to resize (snaps to sixths)';
+        node.appendChild(handle);
+
+        handle.addEventListener('pointerdown', function (event) {
+            var figure = (card.figures || [])[n];
+            if (!figure) return;
+            event.preventDefault();
+            event.stopPropagation();
+            /* When this figure is the only one in its card, the width is
+               expressed on the card's own .ed-block instead (see
+               packRows/figureSpanForCard in data.js) — the figure's own row
+               is nested inside that block, so resizing *both* to the same
+               span would shrink it twice (quadratically). Only a
+               multi-figure card resizes the figure's own grid cell; a
+               single-figure card resizes the block. Never both. */
+            var ownsBlock = (card.figures || []).length === 1;
+            var target = ownsBlock ? node.closest('.ed-block') : node;
+            var container = target && target.parentElement;
+            if (!target || !container) return;
+            resizeState = {
+                card: card,
+                n: n,
+                figureNode: node,
+                target: target,
+                span: figure.width || 6,
+                containerWidth: container.getBoundingClientRect().width,
+                startWidth: target.getBoundingClientRect().width,
+                startX: event.clientX,
+                pointerId: event.pointerId
+            };
+            handle.setPointerCapture(event.pointerId);
+            node.classList.add('is-resizing');
+        });
+    }
+
+    document.addEventListener('pointermove', function (event) {
+        if (!resizeState || event.pointerId !== resizeState.pointerId) return;
+        var dx = event.clientX - resizeState.startX;
+        var span = clampSpan(6 * (resizeState.startWidth + dx) / resizeState.containerWidth);
+        resizeState.span = span;
+        resizeState.target.style.gridColumn = 'span ' + span;
+    });
+
+    document.addEventListener('pointerup', function (event) {
+        if (!resizeState || event.pointerId !== resizeState.pointerId) return;
+        var state = resizeState;
+        resizeState = null;
+        state.figureNode.classList.remove('is-resizing');
+        var figure = (state.card.figures || [])[state.n];
+        if (figure) {
+            figure.width = state.span;
+            refresh();
+        }
+    });
+
     /* ------------------------------------------------------- annotators   */
     /* Each walks the DOM renderBlock() produced (with forCanvas placeholders
        baked in) and wires the nodes that hold plain text. Anything that would
@@ -863,9 +945,13 @@
 
     var ED_ANNOTATORS = {
         text: function (section, card) {
-            var nodes = section.querySelectorAll(':scope > .block-paragraph, :scope > .block-list');
+            var wraps = section.querySelectorAll(':scope > .block-text-row > .block-text-item');
             (card.figures || []).forEach(function (figure, n) {
-                var node = nodes[n];
+                var wrap = wraps[n];
+                if (!wrap) return;
+                attachResizeHandle(wrap, card, n);
+
+                var node = wrap.firstElementChild;
                 if (!node) return;
 
                 if (figure.type === 'list') {
@@ -887,6 +973,7 @@
                 var node = figures[n];
                 if (!node) return;
                 if (!D.cleanText(figure.src)) node.classList.add('ed-image-empty');
+                attachResizeHandle(node, card, n);
 
                 var caption = edEnsureNode(node, ':scope > figcaption', 'figcaption', null);
                 edMakeEditable(caption, 'f.' + n + '.caption', card, {
@@ -900,6 +987,7 @@
             (card.figures || []).forEach(function (figure, n) {
                 var node = blocks[n];
                 if (!node) return;
+                attachResizeHandle(node, card, n);
                 var filename = node.querySelector(':scope > .code-bar > .code-filename');
                 edMakeEditable(filename, 'f.' + n + '.filename', card, {
                     singleLine: true, placeholder: 'filename'
@@ -912,6 +1000,7 @@
             (card.figures || []).forEach(function (figure, n) {
                 var node = figures[n];
                 if (!node) return;
+                attachResizeHandle(node, card, n);
                 var caption = edEnsureNode(node, ':scope > figcaption', 'figcaption', null);
                 edMakeEditable(caption, 'f.' + n + '.caption', card, {
                     singleLine: true, placeholder: 'Caption'
@@ -1129,26 +1218,37 @@
                 'No content yet — use + to add your first block.'));
         }
 
-        draft.content.forEach(function (card, index) {
-            canvas.appendChild(createInserter(index));
+        /* Rows (not individual blocks) are the insertion granularity now —
+           see packRows in data.js. Two blocks only share a row once each is
+           narrow enough to fit, so there's exactly one inserter rail before
+           the first row and after every row, not between every block. */
+        canvas.appendChild(createInserter(0));
+        D.packRows(draft.content).forEach(function (row) {
+            var rowEl = el('div', 'ed-row');
 
-            var block = el('div', 'ed-block ed-block--' + card.type);
-            block.setAttribute('data-ed-card-key', card._id);
-            block.appendChild(createBlockToolbar(card, index, draft.content.length));
+            row.forEach(function (item) {
+                var card = item.card, index = item.index;
+                var block = el('div', 'ed-block ed-block--' + card.type);
+                block.setAttribute('data-ed-card-key', card._id);
+                if (item.span !== 6) block.style.gridColumn = 'span ' + item.span;
+                block.appendChild(createBlockToolbar(card, index, draft.content.length));
 
-            var rendered = renderCanvasCard(card, index);
-            if (rendered) {
-                annotateBlock(rendered, card);
-                block.appendChild(rendered);
-            } else {
-                block.classList.add('ed-block--broken');
-                block.appendChild(el('p', 'ed-empty', 'Could not render this block.'));
-            }
+                var rendered = renderCanvasCard(card, index);
+                if (rendered) {
+                    annotateBlock(rendered, card);
+                    block.appendChild(rendered);
+                } else {
+                    block.classList.add('ed-block--broken');
+                    block.appendChild(el('p', 'ed-empty', 'Could not render this block.'));
+                }
 
-            canvas.appendChild(block);
+                rowEl.appendChild(block);
+            });
+
+            canvas.appendChild(rowEl);
+            canvas.appendChild(createInserter(row[row.length - 1].index + 1));
         });
 
-        canvas.appendChild(createInserter(draft.content.length));
         wrap.appendChild(canvas);
 
         refs.preview.appendChild(wrap);

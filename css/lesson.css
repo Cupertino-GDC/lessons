@@ -381,7 +381,22 @@
     padding: 40px 46px;
 }
 
-.block + .block { margin-top: 34px; }
+/* Blocks (cards) sit on the same 6-column grid their own figures use — a
+   card's `grid-column: span N` (see js/render.js's packRows/renderArticle)
+   only goes below 6 when it holds exactly one resizable figure that was
+   dragged narrower, which is what lets a different block slide into the
+   rest of that row. Row height falls out of normal grid sizing (the
+   tallest block in the row). */
+.block-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 16px;
+    align-items: start;
+}
+
+.block-row + .block-row { margin-top: 34px; }
+
+.block-row > .block { grid-column: span 6; min-width: 0; }
 
 .block-head {
     display: flex;
@@ -416,12 +431,37 @@
     text-decoration-thickness: 2px;
 }
 
+/* Each resizable block type lays its figures out on a 6-column grid. A
+   figure's width (in sixths) is set inline as `grid-column: span N`; the
+   default here (span 6, i.e. unset) keeps ordinary full-width figures
+   stacking exactly as before. Grid's sparse auto-placement wraps a figure
+   that doesn't fit the remaining columns onto the next row for free, which
+   is what lets narrower figures sit side by side. */
+.block-text-row,
+.block-images,
+.block-code-stack,
+.block-video-stack {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 16px 16px;
+    align-items: start;
+}
+
+.block-text-row > .block-text-item,
+.block-images > .block-figure,
+.block-code-stack > .code-block,
+.block-video-stack > .block-figure {
+    grid-column: span 6;
+    min-width: 0;
+    margin: 0;
+}
+
 .block-paragraph {
     font-family: var(--gdc-font-ui);
     font-size: 16.5px;
     line-height: 1.72;
     color: var(--gdc-ink-muted);
-    margin: 0 0 15px;
+    margin: 0;
 }
 
 .block-paragraph.muted { color: var(--gdc-ink-faint); font-style: italic; }
@@ -432,20 +472,12 @@
     line-height: 1.72;
     color: var(--gdc-ink-muted);
     padding-left: 22px;
-    margin: 0 0 15px;
+    margin: 0;
 }
 
 .block-list li { margin-bottom: 7px; }
 
 /* images */
-
-.block-images.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 16px;
-}
-
-.block-figure { margin: 0; }
 
 .block-figure img {
     width: 100%;
@@ -791,4 +823,14 @@
     .pager-link.next { margin-left: 0; }
     .block-title { font-size: 22px; }
     .lesson-article { padding: 22px 16px; }
+
+    /* Resized figures/blocks (grid-column: span N) collapse back to full
+       width instead of cramming a sixth of a phone-width column. */
+    .block-row > .block,
+    .block-text-row > .block-text-item,
+    .block-images > .block-figure,
+    .block-code-stack > .code-block,
+    .block-video-stack > .block-figure {
+        grid-column: span 6 !important;
+    }
 }

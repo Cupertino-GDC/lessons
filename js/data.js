@@ -174,6 +174,10 @@
                 out[key] = value;
             }
         });
+        if (figure.width != null) {
+            var w = Math.round(Number(figure.width));
+            out.width = (w >= 1 && w <= 6) ? w : 6;
+        }
         return out;
     }
 
@@ -186,6 +190,66 @@
         if (card.title) out.title = cleanText(card.title);
         if (card.layout) out.layout = cleanText(card.layout);
         return out;
+    }
+
+    /* --------------------------------------------------------- row packing */
+    /* Greedily packs a list of 1-6 spans into rows of at most 6, the same
+       way CSS Grid's sparse auto-placement does, and returns the widest row
+       (the narrowest a container holding all of them could be while still
+       fitting everything without rearranging). Used both for how wide a
+       card's own figures need their card to be, and for how the cards
+       themselves pack into page rows. */
+    function maxPackedRowSpan(spans) {
+        var maxRow = 0;
+        var used = 0;
+        (spans || []).forEach(function (span) {
+            if (used && used + span > 6) {
+                maxRow = Math.max(maxRow, used);
+                used = 0;
+            }
+            used += span;
+        });
+        return Math.max(maxRow, used) || 6;
+    }
+
+    /* A block is narrower than full-width only when its own figures —
+       packed the same way their internal row packs them — never need the
+       full 6 columns at once. A block with e.g. two 3-wide paragraphs that
+       pack onto the same internal row still needs all 6 columns (3+3), but
+       one with a 2-wide and a 3-wide figure only needs 5, freeing a column
+       for another block to share its page row. */
+    var ROW_RESIZABLE_TYPES = ['image', 'text', 'code', 'video'];
+
+    function figureSpanForCard(card) {
+        if (!card || ROW_RESIZABLE_TYPES.indexOf(card.type) === -1) return 6;
+        var figs = card.figures || [];
+        if (!figs.length) return 6;
+        return maxPackedRowSpan(figs.map(function (fig) {
+            var w = fig.width;
+            return (w >= 1 && w <= 6) ? w : 6;
+        }));
+    }
+
+    /* Mirrors CSS Grid's sparse auto-placement: greedily fills each row
+       until the next card's span won't fit, then starts a new row. Returns
+       rows of { card, index, span }, `index` being the position in the
+       original flat `cards` array. */
+    function packRows(cards) {
+        var rows = [];
+        var current = [];
+        var used = 0;
+        (cards || []).forEach(function (card, index) {
+            var span = figureSpanForCard(card);
+            if (current.length && used + span > 6) {
+                rows.push(current);
+                current = [];
+                used = 0;
+            }
+            current.push({ card: card, index: index, span: span });
+            used += span;
+        });
+        if (current.length) rows.push(current);
+        return rows;
     }
 
     function normalizeFile(file, index) {
@@ -342,6 +406,8 @@
         engineBadge: engineBadge,
         estimateDuration: estimateDuration,
         normalizeCard: normalizeCard,
+        figureSpanForCard: figureSpanForCard,
+        packRows: packRows,
         normalizeLesson: normalizeLesson,
         loadLessons: loadLessons,
         visibleLessons: visibleLessons,

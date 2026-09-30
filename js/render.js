@@ -327,18 +327,42 @@
 
     /* ------------------------------------------------------ block renders */
 
+    /* A resized figure carries an integer 1-6 (sixths of the block column).
+       6/default is left alone so ordinary full-width figures get no inline
+       style at all. `siblingCount` is how many figures this card has: when
+       it's the card's only figure, the width is instead expressed on the
+       *block* (see packRows/figureSpanForCard in data.js) — the figure's own
+       row is nested inside that already-narrowed block, so applying the
+       same fraction here too would shrink it twice (quadratically). Only a
+       multi-figure card (a gallery, several paragraphs) needs the figure's
+       own grid-column, since that card stays full-width at the block level. */
+    function applyFigureWidth(node, figure, siblingCount) {
+        if (siblingCount > 1 && figure && figure.width && figure.width !== 6) {
+            node.style.gridColumn = 'span ' + figure.width;
+        }
+        return node;
+    }
+
     function renderTextFigures(figures) {
-        var box = frag();
+        var row = el('div', 'block-text-row');
         figures.forEach(function (figure) {
+            var inner;
             if (figure.type === 'list' && Array.isArray(figure.items) && figure.items.length) {
-                var ul = el('ul', 'block-list');
-                figure.items.forEach(function (item) { ul.appendChild(el('li', null, item)); });
-                box.appendChild(ul);
+                inner = el('ul', 'block-list');
+                figure.items.forEach(function (item) { inner.appendChild(el('li', null, item)); });
             } else if (figure.text) {
-                box.appendChild(el('p', 'block-paragraph', figure.text));
+                inner = el('p', 'block-paragraph', figure.text);
+            } else {
+                return;
             }
+            /* The wrapper — not the <p>/<ul> itself — is the grid item, so
+               the editor can hang a resize handle off it without the handle
+               becoming a descendant of the contenteditable text. */
+            var wrap = el('div', 'block-text-item');
+            wrap.appendChild(inner);
+            row.appendChild(applyFigureWidth(wrap, figure, figures.length));
         });
-        return box;
+        return row;
     }
 
     function renderImageBlock(card) {
@@ -352,7 +376,7 @@
             img.loading = 'lazy';
             figEl.appendChild(img);
             if (figure.caption) figEl.appendChild(el('figcaption', null, figure.caption));
-            grid.appendChild(figEl);
+            grid.appendChild(applyFigureWidth(figEl, figure, card.figures.length));
         });
         return grid;
     }
@@ -401,7 +425,7 @@
             block.appendChild(pre);
 
             if (figure.caption) block.appendChild(el('p', 'code-caption', figure.caption));
-            stack.appendChild(block);
+            stack.appendChild(applyFigureWidth(block, figure, card.figures.length));
         });
         return stack;
     }
@@ -422,7 +446,7 @@
             holder.appendChild(iframe);
             figEl.appendChild(holder);
             if (figure.caption) figEl.appendChild(el('figcaption', null, figure.caption));
-            stack.appendChild(figEl);
+            stack.appendChild(applyFigureWidth(figEl, figure, card.figures.length));
         });
         return stack;
     }
@@ -568,8 +592,14 @@
             return article;
         }
 
-        lesson.content.forEach(function (card, index) {
-            article.appendChild(renderBlock(card, index, lesson, options));
+        D.packRows(lesson.content).forEach(function (row) {
+            var rowEl = el('div', 'block-row');
+            row.forEach(function (item) {
+                var section = renderBlock(item.card, item.index, lesson, options);
+                if (item.span !== 6) section.style.gridColumn = 'span ' + item.span;
+                rowEl.appendChild(section);
+            });
+            article.appendChild(rowEl);
         });
         return article;
     }

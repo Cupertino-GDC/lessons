@@ -3,6 +3,248 @@
   "updatedAt": "2026-08-24",
   "lessons": [
 {
+  "id": "pixel-art-character-design",
+  "visibility": true,
+  "title": "Pixel art character design",
+  "summary": "In this lesson, we will create a simple pixel art character walking.",
+  "engines": [
+    "any"
+  ],
+  "components": [
+    "art"
+  ],
+  "difficulty": "beginner",
+  "thumbnail": "imgs/lessons/intro-to-unity.svg",
+  "author": "Avelyn Park",
+  "writtenAt": "2024-09-01",
+  "updatedAt": null,
+  "durationMinutes": null,
+  "tags": [
+    "2d",
+    "pixel art"
+  ],
+  "media": [
+    {
+      "type": "image",
+      "src": "imgs/lessons/pixel-art-character-design/thumbnail.png"
+    }
+  ],
+  "files": [],
+  "content": [
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "In this lesson, we will create a simple pixel art character walking."
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Side profile",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Find or make a character that you would like to pixelate - for this lesson, we will use Frieren. Next, we will create a simple pixel character based on the model. Go to https://www.pixilart.com/, and click on start drawing.",
+          "width": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "Our artwork is drawn at 64x64 pixels because pixel art relies on low resolution to give characters their retro, simplified look. To make your artwork look crisp and sharp, upscale your final image when exporting (e.g., size 25x) rather than drawing on a larger canvas!",
+          "width": 4
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/pixel-art-character-design/pixilart-new.png",
+          "width": 2
+        }
+      ]
+    },
+    {
+      "type": "link-embed",
+      "figures": [
+        {
+          "url": "https://www.pixilart.com/",
+          "label": "Pixilart"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "When creating a character, it is essential that you simplify the character as best as you can, leaving out the details and leaving only the most visible character trait. For creating a side profile, first make a simple structure of the pixel art character. This will serve as the base.",
+          "width": 4
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/pixel-art-character-design/outline.png",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Create a new layer by clicking on the plus sign on the righthand side: think of it as a transparent sheet of film or glass stacked on top of other sheets that allow you to work on different parts of an artwork independently.",
+          "width": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "Then, we will start to add details - make sure they are simplified - cross reference the picture as you do this.",
+          "width": 4
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/pixel-art-character-design/newlayer.png",
+          "width": 2
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Adding details",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "First, the hair - Frieren’s hair is very unique, and it’s one of the traits that define her character, meaning, we need to emphasize this as much as possible! Make sure you are on the different layer as you follow these steps:Start with the outline -",
+          "width": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "Then, we will color it in! - feel free to use a paint can or the pencil tool for this part.",
+          "width": 4
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/pixel-art-character-design/hair.png",
+          "width": 2
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Next, we will draw her skin - make a different layer, situate it below the hair but above the base layer - you can organize the layers using the arrow buttons in the same panel.",
+          "width": 5
+        },
+        {
+          "type": "paragraph",
+          "text": "We start with the outline again - it can be different from the base, don’t worry if it doesn’t follow the base completely - just color in the blank parts.",
+          "width": 5
+        },
+        {
+          "type": "paragraph",
+          "text": "At this point, we can toggle off the visibility of the base - we won’t need it anymore - click the circle on the lefthand side. This will allow the base to be turned invisible and ineffective temporarily.",
+          "width": 5
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/pixel-art-character-design/skin-1.png",
+          "width": 1
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/pixel-art-character-design/bgtoggle.png",
+          "width": 5
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Next, we will color her in. Feel free to change the color as you do this. I changed mine from pink to yellow using the paint can tool.",
+          "width": 3
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/pixel-art-character-design/color-in.png",
+          "width": 2
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Now, we will start working on facial features - for the facial features, make sure you don’t get too detailed - you can edit the face as you go on.",
+          "width": 3
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Then we have the clothes - outline, color, all the repeating steps- make sure that this is in a different layer - sadly, if you draw in the same layer, you might face the consequence of restarting your drawing."
+        },
+        {
+          "type": "paragraph",
+          "text": "Lastly, we will polish things out: feel free to go back to the old layers and edit them, or make a new layer to add a little bit of details(Not too much)Polished final look with shadows:"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/pixel-art-character-design/features.png",
+          "width": 2
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/pixel-art-character-design/finished.png",
+          "caption": "Export transparently: File > export > download as png.",
+          "width": 2
+        }
+      ]
+    }
+  ]
+},
+
+{
   "id": "unity-input-system",
   "visibility": true,
   "title": "Unity Input System",
