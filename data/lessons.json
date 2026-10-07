@@ -1,7 +1,241 @@
+
 {
   "$comment": "Lesson catalog for gamedevclub.tech. Author new entries with editor.html.",
   "updatedAt": "2026-08-24",
   "lessons": [
+{
+  "id": "unity-2d-collisions",
+  "visibility": true,
+  "title": "Unity 2D Collisions",
+  "summary": "In this lesson, you will learn how to make the player interact with other objects. From the last lesson, you should already have a player that can move around in a 2d scene.",
+  "engines": [
+    "unity"
+  ],
+  "components": [
+    "mechanics",
+    "programming"
+  ],
+  "difficulty": "beginner",
+  "thumbnail": "imgs/lessons/unity-2d-collisions/ballpush.gif",
+  "author": "Lindsey Li",
+  "writtenAt": "2026-10-07",
+  "updatedAt": null,
+  "durationMinutes": null,
+  "tags": [],
+  "media": [],
+  "files": [],
+  "content": [
+    {
+      "type": "text",
+      "title": "Rigidbody 2D",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "You can add a Rigidbody 2D to objects which will apply physics to the objects",
+          "width": 4
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-2d-collisions/add-rb.png",
+          "width": 2
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "list",
+          "items": [
+            "There are three types of rigidbodies:",
+            "Dynamic: affected by physics, gravity, forces, used for players/enemies",
+            "Kinematic: objects that are moved using a script",
+            "Static: never moves, used for walls/platforms"
+          ],
+          "width": 3
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-2d-collisions/rb-type.png",
+          "width": 3
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-2d-collisions/player-rb.png",
+          "width": 2
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "The player should already have a Rigidbody 2d component. The gravity scale should be set to 0, which means that the player won’t fall down. You should also check the box that says Freeze Rotation Z under Constraints to prevent the player from rotating about the Z axis.",
+          "width": 4
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Colliders",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Colliders allow unity to automatically handle collision detection. Both objects need to have a collider in order for a collision to happen and one of them needs a Rigidbody."
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-2d-collisions/collider-menu.png",
+          "width": 3
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-2d-collisions/bc-inspector.png",
+          "width": 3
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "There are many types of colliders. Choose the collider that fits the shape of your object best. Usually simple shapes (boxes, circles, capsules) work the best and are the most often used.For the player, add a Box Collider 2D because it is a square shape. Always remember to choose the 2D version!You can change the size and position of the collider by pressing edit collider and directly changing it in the scene, or by changing the values in the inspector. The green outline around the object represents the collider."
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-2d-collisions/green-box.png",
+          "width": 2
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Creating a wall",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Now let’s make a wall that will block the player. First, create a new 2D object (right click → 2D Object → Sprites → Square). Add a Box Collider 2D to the wall. We don’t need a Rigidbody here because the wall doesn’t move.",
+          "width": 3
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-2d-collisions/wall.png"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Now, try moving your player into the wall, it shouldn’t be able to go through.",
+          "width": 4
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-2d-collisions/wallbump.gif",
+          "width": 2
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "We can also create objects that the player can push around.Make a new object with a Rigidbody 2D and Collider 2D. Remember to set the rigidbody to have gravity = 0 and freeze z rotation. Try moving the player to push the object, it should move in the same direction. You can make the object easier or harder to push by changing its mass or linear damping in the inspector.",
+          "width": 4
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-2d-collisions/ballpush.gif",
+          "width": 2
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Handling Collision",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "What if we want something to happen when the player collides with an object?There are some methods we can use that are automatically called when a collision happens.OnCollisionEnter2D: called when the collision first beginsOnCollisionStay2D: called every frame while the collision is happeningOnCollisionExit2D: called when the collision ends"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Create a new script for the player and add these methods. When you collide with objects in the scene, you should see messages show up in the console."
+        },
+        {
+          "type": "paragraph",
+          "text": "The parameter Collision2D collision has information about the collision, including the other object that the player collided with. You can access the other GameObject using collision.gameObject which allows you to access properties of the object."
+        }
+      ]
+    },
+    {
+      "type": "code",
+      "figures": [
+        {
+          "code": "    private void OnCollisionEnter2D(Collision2D collision)\n    {\n        // called when collision begins\n        Debug.Log(\"Player collided with \" + collision.gameObject.name);\n    }\n\n    private void OnCollisionStay2D(Collision2D collision)\n    {\n        // called every frame during the collision\n        Debug.Log(\"Colliding\");\n    }\n\n    private void OnCollisionExit2D(Collision2D collision)\n    {\n        // called when collision ends\n        Debug.Log(\"Collision ended\");\n    }",
+          "filename": "PlayerCollision.cs",
+          "language": "C#"
+        }
+      ]
+    },
+    {
+      "type": "link-embed",
+      "figures": [
+        {
+          "url": "https://docs.unity.com/en-us/engine/6000.7/manual/physics-section/physics-overview/collision-section/collider-interactions/oncollision",
+          "label": "OnCollision",
+          "site": "Unity Documentation"
+        }
+      ]
+    }
+  ]
+},
 {
   "id": "pixel-art-character-design",
   "visibility": true,
