@@ -4,6 +4,163 @@
   "updatedAt": "2026-08-24",
   "lessons": [
 {
+  "id": "unity-collectible-items",
+  "visibility": true,
+  "title": "Unity Collectible Items",
+  "summary": "In this lesson you will learn how to make the player collect objects. You should already have a player that can move around the scene and have simple collisions working.",
+  "engines": [
+    "unity"
+  ],
+  "components": [
+    "mechanics",
+    "programming"
+  ],
+  "difficulty": "beginner",
+  "thumbnail": "imgs/lessons/unity-collectible-items/coin-collect.gif",
+  "author": "Lindsey Li",
+  "writtenAt": "2026-10-07",
+  "updatedAt": null,
+  "durationMinutes": null,
+  "tags": [],
+  "media": [],
+  "files": [],
+  "content": [
+    {
+      "type": "text",
+      "title": "Triggers",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "First, let’s make a coin object that the player can collect. After the player touches the coin, it should disappear. In this case, we want Unity to detect the collision but we don’t want the player to be blocked by the coin, so we will use Triggers.",
+          "width": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "Create a new GameObject that represents the coin. In the Inspector, add a Circle Collider 2D component. Inside the collider component, check the box that says “Is Trigger”",
+          "width": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "A trigger has the same functionality as a regular collider without the physical reaction. Turning on Is Trigger means that the object will not be solid anymore and the player can walk through it, but Unity will still detect when the player is touching the object.",
+          "width": 4
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-collectible-items/trigger.png",
+          "width": 2
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Handling Triggers",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "There are some methods that are automatically called when an object touches the trigger, which are almost the same as the other collider methods. Add a new script to the coin object and add these methods. We want the coin to disappear as soon as the player touches it, so we will write code inside OnTriggerEnter2D.",
+          "width": 3
+        }
+      ]
+    },
+    {
+      "type": "code",
+      "figures": [
+        {
+          "code": "private void OnTriggerEnter2D(Collider2D collision)\n    {\n\n    }\n\nprivate void OnTriggerStay2D(Collider2D collision)\n    {\n        \n    }\n\nprivate void OnTriggerExit2D(Collider2D collision)\n    {\n        \n    }\n\n",
+          "filename": "Coin.cs",
+          "language": "C#",
+          "width": 3
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-collectible-items/tag.png",
+          "width": 2
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "OnTriggerEnter2D will be called when any object touches the coin, not just the player, so we need a way to identify whether the colliding object is the player. To do this, we can add the “Player” tag to the Player object in the Inspector.",
+          "width": 4
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "We can check if the collision object is the Player by comparing the tag and then destroying the coin. Here, “gameObject” refers to the object that the script is attached to, which is the coin in this case, so Destroy(gameObject) will remove the coin from the scene.",
+          "width": 3
+        }
+      ]
+    },
+    {
+      "type": "code",
+      "figures": [
+        {
+          "code": "    private void OnTriggerEnter2D(Collider2D collision)\n    {\n        if (collision.CompareTag(\"Player\"))\n        {\n            Debug.Log(\"collected coin\");\n            Destroy(gameObject);\n        }\n    }",
+          "filename": "Coin.cs",
+          "language": "C#",
+          "width": 3
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Prefabs",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "What if we want to add many coins into the scene quickly? If we just copy pasted everything, it would take a long time to change one detail like the size of the coin. We can use Prefabs, which are templates for a GameObject that lets you easily create the same object."
+        },
+        {
+          "type": "paragraph",
+          "text": "To make the coin object a prefab, drag the GameObject into your project window. To make more coins, simply drag the Prefab from the project window into the hierarchy or scene. If you change any property in the coin prefab, those changes will be applied to all coins."
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-collectible-items/prefab.png"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Now you should be able to collect coins!",
+          "width": 3
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-collectible-items/coin-collect.gif",
+          "width": 3
+        }
+      ]
+    }
+  ]
+},
+{
   "id": "unity-2d-collisions",
   "visibility": true,
   "title": "Unity 2D Collisions",
