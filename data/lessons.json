@@ -3,7 +3,133 @@
   "$comment": "Lesson catalog for gamedevclub.tech. Author new entries with editor.html.",
   "updatedAt": "2026-08-24",
   "lessons": [
+    {
+  "id": "unity-tilemaps",
+  "visibility": true,
+  "title": "Unity Tilemaps",
+  "summary": "In this lesson you will learn how to use tilemaps in Unity and how to build levels with the tilemap editor.",
+  "engines": [
+    "unity"
+  ],
+  "components": [
+    "level-design",
+    "art",
+    "mechanics"
+  ],
+  "difficulty": "beginner",
+  "thumbnail": "imgs/lessons/unity-tilemaps/finished.png",
+  "author": "Alex Li",
+  "writtenAt": "2026-10-21",
+  "updatedAt": null,
+  "durationMinutes": null,
+  "tags": [],
+  "media": [],
+  "files": [
+    {
+      "name": "Cobblestone (Tile)",
+      "kind": "repo",
+      "path": "imgs/lessons/unity-tilemaps/cobblestone.png",
+      "icon": "image"
+    },
+    {
+      "name": "Dirt (Tile)",
+      "kind": "repo",
+      "path": "imgs/lessons/unity-tilemaps/dirt.png",
+      "icon": "image"
+    }
+  ],
+  "content": [
+    {
+      "type": "text",
+      "title": "Tilemaps",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "By this point, you should know how to create an object in Unity. Create a new tilemap object (under Create -> 2D Object -> Tilemap -> Rectangular)"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-tilemaps/create-tilemap.png"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Tile palettes",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "In order to use our new tilemap, we need to add some tiles to the palette. With tilemaps, you are free to use whichever tiles you like but for this example, we will use the Minecraft cobblestone and dirt textures which you can download at the top of this page.",
+          "width": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "To create our tile palette, we first need to open the tilemap editor window. in the desktop bar, go Window -> 2D -> Tile Palette. This will open a new tab in a separate window. You can drag the “tab” section into an area next to the inspector to easily switch between the tabs.",
+          "width": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "Now to create the palette, click on the dropdown at the top that says \"Create New Tile Palette\". When you create a tilemap, it will ask you for a few settings. For this lesson, default settings are fine and we can just continue without changing anything.",
+          "width": 4
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-tilemaps/import-settings.png",
+          "width": 3
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Importing sprites into Unity",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "To import a sprite into Unity, you can just drag it from your file explorer into the Unity project tab. However, since we are using pixel art for these tiles, we need to change some of the import settings. Change the following import settings Sprite mode: Single (since we are using individual sprites, not sprite sheets Pixels per unite: 16 (size of the sprite we are using)Filter mode: Point (since we are using pixel art) Compression: None (again since we are using pixel art) Click “Apply” at the bottom to save these settings. Then, simply drag the tiles into the tile palette.",
+          "width": 3
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Using the tile editor",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "To use the tile editor, simply click on the tile you want to draw with and click on the tilemap to place tiles. You can also quickly fill entire squares with tiles or erase using the editor."
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-tilemaps/finished.png"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Making tiles collide",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "To make tiles collide with/block the player, add a TilemapCollider2D to the tilemap object and it will collide just like your manually placed walls."
+        }
+      ]
+    }
+  ]
+},
 {
+  
   "id": "unity-collectible-items",
   "visibility": true,
   "title": "Unity Collectible Items",
