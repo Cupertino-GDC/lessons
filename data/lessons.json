@@ -206,6 +206,90 @@
           "width": 2
         }
       ]
+    },
+    {
+      "type": "text",
+      "title": "Images and buttons",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Images work very similarly to sprites in the scene. Create an image in the Canvas (Right click > UI (Scene) > Image). You can assign a sprite texture to them and drag and resize it the same way as text."
+        },
+        {
+          "type": "paragraph",
+          "text": "Buttons are images with a text label and a click handler which can be used to easily create UI interactions. You can create a button in the scene using Right click > UI (Scene) > Button - TextMeshPro"
+        },
+        {
+          "type": "paragraph",
+          "text": "For this lesson, we will use the provided circle sprite as a button sprite. In order to use this for the buttons, we need to configure some scaling settings in the sprite editor."
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-ui-basics/button-9slice.png",
+          "width": 2
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "9-Slicing",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "UI buttons can be many sizes, and it would take a long time to make a new sprite for every size, so we use a method called 9-slicing to automatically resize one sprite to work for any button size. To set up this scaling, open the sprite editor from the inspector and drag the green lines (which start on the edge of the sprite) until they are near the center of the sprite like the image shown. Then, click \"Apply\" to save your settings.",
+          "width": 4
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Now assign this sprite as your button's main sprite and try resizing your button. Instead of stretching, the button should scale as a square with rounded corners."
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Button click events",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "We can use button click events to make buttons perform actions. For the example in this lesson, we will need 2 buttons and one other image. For the two buttons, set them up as follows: Click the plus sign at the bottom of the \"On Click\" box to create a new event. Drag the Image object into the \"On Click\" and under the dropdown, navigate to GameObject > SetActive. This should cause a checkbox to appear below it. Check this on for one button and off for another, and make sure you have a way to tell them apart.",
+          "width": 3
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-ui-basics/button-event.png",
+          "width": 3
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Now, clicking the buttons should show and hide the image."
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-ui-basics/finished.png"
+        }
+      ]
     }
   ]
 },
