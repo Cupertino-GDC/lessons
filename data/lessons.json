@@ -4,6 +4,212 @@
   "updatedAt": "2026-08-24",
   "lessons": [
     {
+  "id": "unity-ui-builder",
+  "visibility": true,
+  "title": "Unity UI builder",
+  "summary": "Learn the basics of Unity UI",
+  "engines": [
+    "unity"
+  ],
+  "components": [
+    "ui"
+  ],
+  "difficulty": "beginner",
+  "series": "Unity Fundamentals",
+  "thumbnail": "imgs/lessons/unity-ui-basics/finished.png",
+  "author": "Alex Li",
+  "writtenAt": "2026-10-28",
+  "updatedAt": null,
+  "durationMinutes": null,
+  "tags": [
+    "example"
+  ],
+  "media": [],
+  "files": [
+    {
+      "name": "Font",
+      "kind": "repo",
+      "path": "files/unity-ui-basics/ZLabsPixel_12px_M_CN.ttf",
+      "size": "4.2 MB",
+      "icon": "image"
+    }
+  ],
+  "content": [
+    {
+      "type": "text",
+      "title": "Create a UI Canvas",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Create a new Canvas object in your inspector (Right click -> UI (Canvas) -> Canvas"
+        },
+        {
+          "type": "paragraph",
+          "text": "UI operates in a different later than the scene, so we need to change some settings to easily edit it. Change the following settings on your Canvas object"
+        },
+        {
+          "type": "paragraph",
+          "text": "Render mode: Screen Space - Camera"
+        },
+        {
+          "type": "paragraph",
+          "text": "Render Camera: Main Camera"
+        },
+        {
+          "type": "paragraph",
+          "text": "Order in layer: 32767"
+        },
+        {
+          "type": "paragraph",
+          "text": "This will overlay your UI over your main world in the way you would see it in game."
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-ui-basics/canvas-settings.png",
+          "alt": "The scene hierarchy after adding the player sprite"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Canvas scaling",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "We want our UI to work with screens of different sizes, so we also need to set some canvas scaling settings."
+        },
+        {
+          "type": "paragraph",
+          "text": "Set the following settings in your Canvas Scaler"
+        },
+        {
+          "type": "paragraph",
+          "text": "UI Scale Mode: Scale with screen size"
+        },
+        {
+          "type": "paragraph",
+          "text": "Screen match mode: Match width or height"
+        },
+        {
+          "type": "paragraph",
+          "text": "Reference resolution: 1920x1080"
+        },
+        {
+          "type": "paragraph",
+          "text": "Match: 0.5"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-ui-basics/scale-settings.png",
+          "alt": "The scene hierarchy after adding the player sprite"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Testing with a constant aspect ratio",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "The Unity testing window automatically resizes to whatever size is not taken up by your project, inspector, and hierarchy windows which can sometimes be a very strange aspect ratio. In order to test using an aspect ratio similar to what you will actually see on a computer screen, you can lock your aspect ratio at the top of the Game window. For this lesson, we will be using 16:9 as our standard size.",
+          "width": 4
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-ui-basics/constant-aspect.png",
+          "alt": "The scene hierarchy after adding the player sprite",
+          "width": 2
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-ui-basics/text-editing.png",
+          "width": 3
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "To add text to your scene, create a new text object under your Canvas (Right click > UI (Scene) > Text - TextMeshPro). The first time you do this, Unity will ask you to import TMP essentials, this is expected so just click to import them. You can edit the text position and size using an intuitive drag editor similar to Google Slides, and the text itself in the inspector.",
+          "width": 3
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Custom fonts",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "The Unity default font is pretty boring and feels out of place, so let's add a custom pixel art font to our game. You can use the font attached at the top of this lesson or find your own font (TTF or OTF file). Drag the font into your Unity project to import it."
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-ui-basics/open-font.png",
+          "width": 2
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "We need to turn this font file into something the Unity text understands. To do this, we can use the TextMeshPro Font Asset Creator. You can open this under Window > TextMeshPro -> Font Asset Creator. This will open a window similar to the tilemap editor.",
+          "width": 4
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Click on the little circle in the \"Source Font\" box and select your font, or drag your font into the box. For this lesson, we do not have to change the default settings, so click \"Generate Font Atlas\" and save the asset as a new font asset.",
+          "width": 4
+        },
+        {
+          "type": "paragraph",
+          "text": "To use this font in your text, select it in the \"Font asset\" section of your text object.",
+          "width": 4
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-ui-basics/creator.png",
+          "width": 2
+        }
+      ]
+    }
+  ]
+},
+    {
   "id": "unity-tilemaps",
   "visibility": true,
   "title": "Unity Tilemaps",
