@@ -3,7 +3,7 @@
   "$comment": "Lesson catalog for gamedevclub.tech. Author new entries with editor.html.",
   "updatedAt": "2026-08-24",
   "lessons": [
-    {
+{
   "id": "unity-ui-builder",
   "visibility": true,
   "title": "Unity UI builder",
@@ -32,6 +32,13 @@
       "path": "files/unity-ui-basics/ZLabsPixel_12px_M_CN.ttf",
       "size": "4.2 MB",
       "icon": "image"
+    },
+    {
+      "name": "Starter sprite",
+      "kind": "repo",
+      "path": "files/unity-ui-basics/circle-p12.png",
+      "icon": "image",
+      "source": "files/unity-ui-basics/circle-p12.png"
     }
   ],
   "content": [
