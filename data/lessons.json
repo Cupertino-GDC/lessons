@@ -3,6 +3,160 @@
   "$comment": "Lesson catalog for gamedevclub.tech. Author new entries with editor.html.",
   "updatedAt": "2026-08-24",
   "lessons": [
+
+  {
+  "id": "unity-level-loading",
+  "visibility": true,
+  "title": "Unity Level Loading",
+  "summary": "In this lesson, you will learn how to create new levels and switch between levels.",
+  "engines": [
+    "unity"
+  ],
+  "components": [
+    "mechanics",
+    "level-design",
+    "programming"
+  ],
+  "difficulty": "beginner",
+  "series": "Unity Fundamentals",
+  "thumbnail": "imgs/lessons/unity-level-loading/new-scene.png",
+  "author": "Lindsey Li",
+  "writtenAt": "2026-11-18",
+  "updatedAt": null,
+  "durationMinutes": null,
+  "tags": [
+    "example"
+  ],
+  "media": [],
+  "files": [],
+  "content": [
+    {
+      "type": "text",
+      "title": "Creating a new scene",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "To make a new scene, go to Assets > Scenes folder and create a copy of your current scene. Double click on it to switch to the new scene and modify it however you want to make a new level."
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-level-loading/new-scene.png"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "We need to add the new scene to the list of builds to make sure Unity will recognize it. To do this, go to File > Build Profiles > Scene List. Press add scene or drag your scene into the box to add it. The number on the right represents the scene order, starting at scene 0. Make sure your scenes are in the right order.",
+          "width": 4
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-level-loading/order.png",
+          "width": 4
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-level-loading/build-profiles.png",
+          "width": 2
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-level-loading/create-script.png",
+          "width": 3
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Loading levels",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Next, we will write code to switch between levels. Create a new script called LevelLoader. Inside this script, we will write a few methods to help us load levels. First, we have to add using UnityEngine.SceneManagement at the top so that we can easily use Unity’s SceneManager to switch between scenes.",
+          "width": 3
+        }
+      ]
+    },
+    {
+      "type": "code",
+      "figures": [
+        {
+          "code": "using UnityEngine;\nusing UnityEngine.SceneManagement;",
+          "filename": "LevelLoader",
+          "language": "C#"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Then, we will create two methods to load a level, one that loads the next level and one that loads any level given the name. We can get the current scene index from SceneManager and pass in the next index to the LoadScene method to load the next level, making sure the next level exists first. We can also directly pass in a string to the LoadScene method."
+        }
+      ]
+    },
+    {
+      "type": "code",
+      "figures": [
+        {
+          "code": "    public void LoadLevel(string sceneName)\n    {\n        SceneManager.LoadScene(sceneName);\n    }",
+          "filename": "LevelLoader",
+          "language": "C#"
+        }
+      ]
+    },
+    {
+      "type": "code",
+      "figures": [
+        {
+          "code": "    public void LoadNextLevel()\n    {\n        int nextIndex = SceneManager.GetActiveScene().buildIndex + 1;\n        if (nextIndex < SceneManager.sceneCountInBuildSettings)\n        {\n            SceneManager.LoadScene(nextIndex);\n        }\n        else\n        {\n            Debug.Log(\"no more levels\");\n        }\n    }",
+          "filename": "LevelLoader",
+          "language": "C#"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "title": "Next level button",
+      "figures": [
+        {
+          "type": "paragraph",
+          "text": "Now, we will test our level loader. Go back to the first level and create an empty game object, then add your LevelLoader script to it. Then, add a new button to your canvas (Right click > UI > Button). Inside the OnClick part of the button, drag your LevelLoader object into it and choose LevelLoader.LoadNextLevel. This way, pressing the button will go to the next level.",
+          "width": 4
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "figures": [
+        {
+          "src": "imgs/lessons/unity-level-loading/button-nextlevel.png",
+          "width": 2
+        }
+      ]
+    }
+  ]
+},
 {
   "id": "unity-ui-builder",
   "visibility": true,
